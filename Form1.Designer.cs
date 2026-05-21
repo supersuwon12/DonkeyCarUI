@@ -28,91 +28,96 @@
         /// </summary>
         private void InitializeComponent()
         {
-            button6 = new Button();
-            label2 = new Label();
-            pictureBox1 = new PictureBox();
-            trackBar1 = new TrackBar();
+            btnLoadData = new Button();
+            lblPath = new Label();
+            pbCameraView = new PictureBox();
+            tbFrameSlider = new TrackBar();
             groupBox1 = new GroupBox();
-            button12 = new Button();
-            button11 = new Button();
-            button10 = new Button();
-            button8 = new Button();
-            button9 = new Button();
-            button7 = new Button();
-            label3 = new Label();
-            label4 = new Label();
+            btnPlay = new Button();
+            btnFastForward = new Button();
+            btnRewind = new Button();
+            btnPrevFrame = new Button();
+            btnNextFrame = new Button();
+            btnSpeed = new Button();
+            lblFrameIndex = new Label();
+            lblTitle = new Label();
             groupBox2 = new GroupBox();
-            progressBar2 = new ProgressBar();
+            pbThrottle = new ProgressBar();
             label7 = new Label();
-            label8 = new Label();
-            progressBar1 = new ProgressBar();
-            label6 = new Label();
+            lblThrottleValue = new Label();
+            pbSteering = new ProgressBar();
+            lblSteeringValue = new Label();
             label5 = new Label();
-            button1 = new Button();
-            textBox1 = new TextBox();
-            button2 = new Button();
-            button3 = new Button();
-            button13 = new Button();
-            button14 = new Button();
-            button15 = new Button();
-            label9 = new Label();
-            button4 = new Button();
-            textBox2 = new TextBox();
+            btnTrain = new Button();
+            txtLog = new TextBox();
+            btnSetPoint1 = new Button();
+            btnSetPoint2 = new Button();
+            btnDelete = new Button();
+            btnRestore = new Button();
+            btnRefresh = new Button();
+            lblRange = new Label();
+            btnFilter = new Button();
+            txtFilter = new TextBox();
             groupBox3 = new GroupBox();
-            textBox3 = new TextBox();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            txtDataList = new TextBox();
+            btnTestModel = new Button();
+            btnRenderGraph = new Button();
+            chartData = new System.Windows.Forms.DataVisualization.Charting.Chart();
+            ((System.ComponentModel.ISupportInitialize)pbCameraView).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)tbFrameSlider).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)chartData).BeginInit();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
             SuspendLayout();
             // 
-            // button6
+            // btnLoadData
             // 
-            button6.ImageAlign = ContentAlignment.MiddleRight;
-            button6.Location = new Point(173, 11);
-            button6.Name = "button6";
-            button6.Size = new Size(135, 27);
-            button6.TabIndex = 6;
-            button6.Text = "주행 데이터 불러오기";
-            button6.UseVisualStyleBackColor = true;
+            btnLoadData.ImageAlign = ContentAlignment.MiddleRight;
+            btnLoadData.Location = new Point(173, 11);
+            btnLoadData.Name = "btnLoadData";
+            btnLoadData.Size = new Size(135, 27);
+            btnLoadData.TabIndex = 6;
+            btnLoadData.Text = "주행 데이터 불러오기";
+            btnLoadData.UseVisualStyleBackColor = true;
             // 
-            // label2
+            // lblPath
             // 
-            label2.AutoSize = true;
-            label2.Location = new Point(319, 17);
-            label2.Name = "label2";
-            label2.Size = new Size(31, 15);
-            label2.TabIndex = 7;
-            label2.Text = "경로";
+            lblPath.AutoSize = true;
+            lblPath.Location = new Point(319, 17);
+            lblPath.Name = "lblPath";
+            lblPath.Size = new Size(31, 15);
+            lblPath.TabIndex = 7;
+            lblPath.Text = "경로";
             // 
-            // pictureBox1
+            // pbCameraView
             // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pictureBox1.Location = new Point(262, 45);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(326, 240);
-            pictureBox1.TabIndex = 8;
-            pictureBox1.TabStop = false;
+            pbCameraView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            pbCameraView.Location = new Point(275, 45);
+            pbCameraView.Name = "pbCameraView";
+            pbCameraView.Size = new Size(515, 385);
+            pbCameraView.SizeMode = PictureBoxSizeMode.Zoom;
+            pbCameraView.TabIndex = 8;
+            pbCameraView.TabStop = false;
             // 
-            // trackBar1
+            // tbFrameSlider
             // 
-            trackBar1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            trackBar1.Location = new Point(2, 291);
-            trackBar1.Name = "trackBar1";
-            trackBar1.Size = new Size(797, 45);
-            trackBar1.TabIndex = 9;
+            tbFrameSlider.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tbFrameSlider.Location = new Point(275, 440);
+            tbFrameSlider.Name = "tbFrameSlider";
+            tbFrameSlider.Size = new Size(515, 45);
+            tbFrameSlider.TabIndex = 9;
             // 
             // groupBox1
             // 
             groupBox1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBox1.Controls.Add(button12);
-            groupBox1.Controls.Add(button11);
-            groupBox1.Controls.Add(button10);
-            groupBox1.Controls.Add(button8);
-            groupBox1.Controls.Add(button9);
-            groupBox1.Controls.Add(button7);
-            groupBox1.Controls.Add(label3);
+            groupBox1.Controls.Add(btnPlay);
+            groupBox1.Controls.Add(btnFastForward);
+            groupBox1.Controls.Add(btnRewind);
+            groupBox1.Controls.Add(btnPrevFrame);
+            groupBox1.Controls.Add(btnNextFrame);
+            groupBox1.Controls.Add(btnSpeed);
+            groupBox1.Controls.Add(lblFrameIndex);
             groupBox1.Location = new Point(594, 45);
             groupBox1.Name = "groupBox1";
             groupBox1.Size = new Size(208, 240);
@@ -120,91 +125,91 @@
             groupBox1.TabStop = false;
             groupBox1.Text = "재생 설정";
             // 
-            // button12
+            // btnPlay
             // 
-            button12.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button12.Location = new Point(8, 175);
-            button12.Name = "button12";
-            button12.Size = new Size(186, 45);
-            button12.TabIndex = 11;
-            button12.Text = "▶";
-            button12.UseVisualStyleBackColor = true;
+            btnPlay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            btnPlay.Location = new Point(8, 175);
+            btnPlay.Name = "btnPlay";
+            btnPlay.Size = new Size(186, 45);
+            btnPlay.TabIndex = 11;
+            btnPlay.Text = "▶";
+            btnPlay.UseVisualStyleBackColor = true;
             // 
-            // button11
+            // btnFastForward
             // 
-            button11.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-            button11.Location = new Point(104, 124);
-            button11.Name = "button11";
-            button11.Size = new Size(90, 45);
-            button11.TabIndex = 14;
-            button11.Text = ">>";
-            button11.UseVisualStyleBackColor = true;
+            btnFastForward.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnFastForward.Location = new Point(104, 124);
+            btnFastForward.Name = "btnFastForward";
+            btnFastForward.Size = new Size(90, 45);
+            btnFastForward.TabIndex = 14;
+            btnFastForward.Text = ">>";
+            btnFastForward.UseVisualStyleBackColor = true;
             // 
-            // button10
+            // btnRewind
             // 
-            button10.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button10.Location = new Point(8, 123);
-            button10.Name = "button10";
-            button10.Size = new Size(90, 45);
-            button10.TabIndex = 13;
-            button10.Text = "<<";
-            button10.UseVisualStyleBackColor = true;
+            btnRewind.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRewind.Location = new Point(8, 123);
+            btnRewind.Name = "btnRewind";
+            btnRewind.Size = new Size(90, 45);
+            btnRewind.TabIndex = 13;
+            btnRewind.Text = "<<";
+            btnRewind.UseVisualStyleBackColor = true;
             // 
-            // button8
+            // btnPrevFrame
             // 
-            button8.Location = new Point(8, 72);
-            button8.Name = "button8";
-            button8.Size = new Size(90, 45);
-            button8.TabIndex = 11;
-            button8.Text = "<";
-            button8.UseVisualStyleBackColor = true;
+            btnPrevFrame.Location = new Point(8, 72);
+            btnPrevFrame.Name = "btnPrevFrame";
+            btnPrevFrame.Size = new Size(90, 45);
+            btnPrevFrame.TabIndex = 11;
+            btnPrevFrame.Text = "<";
+            btnPrevFrame.UseVisualStyleBackColor = true;
             // 
-            // button9
+            // btnNextFrame
             // 
-            button9.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button9.Location = new Point(104, 73);
-            button9.Name = "button9";
-            button9.Size = new Size(90, 45);
-            button9.TabIndex = 12;
-            button9.Text = ">";
-            button9.UseVisualStyleBackColor = true;
+            btnNextFrame.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnNextFrame.Location = new Point(104, 73);
+            btnNextFrame.Name = "btnNextFrame";
+            btnNextFrame.Size = new Size(90, 45);
+            btnNextFrame.TabIndex = 12;
+            btnNextFrame.Text = ">";
+            btnNextFrame.UseVisualStyleBackColor = true;
             // 
-            // button7
+            // btnSpeed
             // 
-            button7.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            button7.Location = new Point(104, 22);
-            button7.Name = "button7";
-            button7.Size = new Size(90, 45);
-            button7.TabIndex = 1;
-            button7.Text = "1.0";
-            button7.UseVisualStyleBackColor = true;
+            btnSpeed.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSpeed.Location = new Point(104, 22);
+            btnSpeed.Name = "btnSpeed";
+            btnSpeed.Size = new Size(90, 45);
+            btnSpeed.TabIndex = 1;
+            btnSpeed.Text = "1.0";
+            btnSpeed.UseVisualStyleBackColor = true;
             // 
-            // label3
+            // lblFrameIndex
             // 
-            label3.AutoSize = true;
-            label3.Location = new Point(23, 37);
-            label3.Name = "label3";
-            label3.Size = new Size(49, 15);
-            label3.TabIndex = 0;
-            label3.Text = "000000";
+            lblFrameIndex.AutoSize = true;
+            lblFrameIndex.Location = new Point(23, 37);
+            lblFrameIndex.Name = "lblFrameIndex";
+            lblFrameIndex.Size = new Size(49, 15);
+            lblFrameIndex.TabIndex = 0;
+            lblFrameIndex.Text = "000000";
             // 
-            // label4
+            // lblTitle
             // 
-            label4.AutoSize = true;
-            label4.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
-            label4.Location = new Point(8, 11);
-            label4.Name = "label4";
-            label4.Size = new Size(159, 25);
-            label4.TabIndex = 11;
-            label4.Text = "주행 데이터 관리";
+            lblTitle.AutoSize = true;
+            lblTitle.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
+            lblTitle.Location = new Point(8, 11);
+            lblTitle.Name = "lblTitle";
+            lblTitle.Size = new Size(159, 25);
+            lblTitle.TabIndex = 11;
+            lblTitle.Text = "주행 데이터 관리";
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(progressBar2);
+            groupBox2.Controls.Add(pbThrottle);
             groupBox2.Controls.Add(label7);
-            groupBox2.Controls.Add(label8);
-            groupBox2.Controls.Add(progressBar1);
-            groupBox2.Controls.Add(label6);
+            groupBox2.Controls.Add(lblThrottleValue);
+            groupBox2.Controls.Add(pbSteering);
+            groupBox2.Controls.Add(lblSteeringValue);
             groupBox2.Controls.Add(label5);
             groupBox2.Location = new Point(12, 45);
             groupBox2.Name = "groupBox2";
@@ -213,13 +218,13 @@
             groupBox2.TabStop = false;
             groupBox2.Text = "주행 데이터";
             // 
-            // progressBar2
+            // pbThrottle
             // 
-            progressBar2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            progressBar2.Location = new Point(142, 90);
-            progressBar2.Name = "progressBar2";
-            progressBar2.Size = new Size(97, 10);
-            progressBar2.TabIndex = 13;
+            pbThrottle.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pbThrottle.Location = new Point(142, 90);
+            pbThrottle.Name = "pbThrottle";
+            pbThrottle.Size = new Size(97, 10);
+            pbThrottle.TabIndex = 13;
             // 
             // label7
             // 
@@ -230,33 +235,33 @@
             label7.TabIndex = 13;
             label7.Text = "속도";
             // 
-            // label8
+            // lblThrottleValue
             // 
-            label8.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label8.AutoSize = true;
-            label8.Location = new Point(97, 87);
-            label8.Name = "label8";
-            label8.Size = new Size(39, 15);
-            label8.TabIndex = 14;
-            label8.Text = "label8";
+            lblThrottleValue.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblThrottleValue.AutoSize = true;
+            lblThrottleValue.Location = new Point(97, 87);
+            lblThrottleValue.Name = "lblThrottleValue";
+            lblThrottleValue.Size = new Size(39, 15);
+            lblThrottleValue.TabIndex = 14;
+            lblThrottleValue.Text = "label8";
             // 
-            // progressBar1
+            // pbSteering
             // 
-            progressBar1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            progressBar1.Location = new Point(141, 42);
-            progressBar1.Name = "progressBar1";
-            progressBar1.Size = new Size(97, 10);
-            progressBar1.TabIndex = 2;
+            pbSteering.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pbSteering.Location = new Point(141, 42);
+            pbSteering.Name = "pbSteering";
+            pbSteering.Size = new Size(97, 10);
+            pbSteering.TabIndex = 2;
             // 
-            // label6
+            // lblSteeringValue
             // 
-            label6.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            label6.AutoSize = true;
-            label6.Location = new Point(96, 38);
-            label6.Name = "label6";
-            label6.Size = new Size(39, 15);
-            label6.TabIndex = 1;
-            label6.Text = "label6";
+            lblSteeringValue.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            lblSteeringValue.AutoSize = true;
+            lblSteeringValue.Location = new Point(96, 38);
+            lblSteeringValue.Name = "lblSteeringValue";
+            lblSteeringValue.Size = new Size(39, 15);
+            lblSteeringValue.TabIndex = 1;
+            lblSteeringValue.Text = "label6";
             // 
             // label5
             // 
@@ -267,108 +272,110 @@
             label5.TabIndex = 0;
             label5.Text = "방향";
             // 
-            // button1
+            // btnTrain
             // 
-            button1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            button1.Location = new Point(12, 183);
-            button1.Name = "button1";
-            button1.Size = new Size(90, 31);
-            button1.TabIndex = 13;
-            button1.Text = "학습";
-            button1.UseVisualStyleBackColor = true;
+            btnTrain.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            btnTrain.Location = new Point(12, 183);
+            btnTrain.Name = "btnTrain";
+            btnTrain.Size = new Size(90, 31);
+            btnTrain.TabIndex = 13;
+            btnTrain.Text = "학습";
+            btnTrain.UseVisualStyleBackColor = true;
             // 
-            // textBox1
+            // txtLog
             // 
-            textBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            textBox1.Location = new Point(12, 220);
-            textBox1.Multiline = true;
-            textBox1.Name = "textBox1";
-            textBox1.Size = new Size(238, 65);
-            textBox1.TabIndex = 14;
+            txtLog.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            txtLog.Location = new Point(12, 220);
+            txtLog.Multiline = true;
+            txtLog.Name = "txtLog";
+            txtLog.ScrollBars = ScrollBars.Vertical;
+            txtLog.Size = new Size(245, 140);
+            txtLog.TabIndex = 14;
             // 
-            // button2
+            // btnSetPoint1
             // 
-            button2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button2.Location = new Point(12, 325);
-            button2.Name = "button2";
-            button2.Size = new Size(126, 40);
-            button2.TabIndex = 15;
-            button2.Text = "지점 설정 1";
-            button2.UseVisualStyleBackColor = true;
+            btnSetPoint1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSetPoint1.Location = new Point(12, 380);
+            btnSetPoint1.Name = "btnSetPoint1";
+            btnSetPoint1.Size = new Size(120, 35);
+            btnSetPoint1.TabIndex = 15;
+            btnSetPoint1.Text = "지점 설정 1";
+            btnSetPoint1.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnSetPoint2
             // 
-            button3.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button3.Location = new Point(144, 325);
-            button3.Name = "button3";
-            button3.Size = new Size(126, 40);
-            button3.TabIndex = 16;
-            button3.Text = "지점 설정 2";
-            button3.UseVisualStyleBackColor = true;
+            btnSetPoint2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnSetPoint2.Location = new Point(137, 380);
+            btnSetPoint2.Name = "btnSetPoint2";
+            btnSetPoint2.Size = new Size(120, 35);
+            btnSetPoint2.TabIndex = 16;
+            btnSetPoint2.Text = "지점 설정 2";
+            btnSetPoint2.UseVisualStyleBackColor = true;
             // 
-            // button13
+            // btnDelete
             // 
-            button13.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button13.Location = new Point(408, 325);
-            button13.Name = "button13";
-            button13.Size = new Size(126, 40);
-            button13.TabIndex = 18;
-            button13.Text = "삭제";
-            button13.UseVisualStyleBackColor = true;
+            btnDelete.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnDelete.Location = new Point(12, 450);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(120, 35);
+            btnDelete.TabIndex = 18;
+            btnDelete.Text = "삭제";
+            btnDelete.UseVisualStyleBackColor = true;
             // 
-            // button14
+            // btnRestore
             // 
-            button14.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button14.Location = new Point(540, 325);
-            button14.Name = "button14";
-            button14.Size = new Size(126, 40);
-            button14.TabIndex = 19;
-            button14.Text = "복원";
-            button14.UseVisualStyleBackColor = true;
+            btnRestore.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRestore.Location = new Point(137, 450);
+            btnRestore.Name = "btnRestore";
+            btnRestore.Size = new Size(120, 35);
+            btnRestore.TabIndex = 19;
+            btnRestore.Text = "복원";
+            btnRestore.UseVisualStyleBackColor = true;
             // 
-            // button15
+            // btnRefresh
             // 
-            button15.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button15.Location = new Point(672, 325);
-            button15.Name = "button15";
-            button15.Size = new Size(126, 40);
-            button15.TabIndex = 20;
-            button15.Text = "새로고침";
-            button15.UseVisualStyleBackColor = true;
+            btnRefresh.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnRefresh.Location = new Point(12, 490);
+            btnRefresh.Name = "btnRefresh";
+            btnRefresh.Size = new Size(245, 35);
+            btnRefresh.TabIndex = 20;
+            btnRefresh.Text = "새로고침";
+            btnRefresh.UseVisualStyleBackColor = true;
             // 
-            // label9
+            // lblRange
             // 
-            label9.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            label9.AutoSize = true;
-            label9.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label9.Location = new Point(316, 334);
-            label9.Name = "label9";
-            label9.Size = new Size(42, 21);
-            label9.TabIndex = 21;
-            label9.Text = "[0,0)";
+            lblRange.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            lblRange.AutoSize = true;
+            lblRange.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            lblRange.Location = new Point(12, 420);
+            lblRange.Name = "lblRange";
+            lblRange.Size = new Size(42, 21);
+            lblRange.TabIndex = 21;
+            lblRange.Text = "[0,0)";
             // 
-            // button4
+            // btnFilter
             // 
-            button4.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            button4.Location = new Point(12, 371);
-            button4.Name = "button4";
-            button4.Size = new Size(106, 24);
-            button4.TabIndex = 22;
-            button4.Text = "필터";
-            button4.UseVisualStyleBackColor = true;
+            btnFilter.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            btnFilter.Location = new Point(12, 535);
+            btnFilter.Name = "btnFilter";
+            btnFilter.Size = new Size(120, 24);
+            btnFilter.TabIndex = 22;
+            btnFilter.Text = "임계값 필터 적용";
+            btnFilter.UseVisualStyleBackColor = true;
             // 
-            // textBox2
+            // txtFilter
             // 
-            textBox2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox2.Location = new Point(124, 372);
-            textBox2.Name = "textBox2";
-            textBox2.Size = new Size(674, 23);
-            textBox2.TabIndex = 23;
+            txtFilter.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            txtFilter.Location = new Point(137, 536);
+            txtFilter.Name = "txtFilter";
+            txtFilter.Size = new Size(120, 23);
+            txtFilter.TabIndex = 23;
+            txtFilter.Text = "0.1";
             // 
             // groupBox3
             // 
             groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-            groupBox3.Controls.Add(textBox3);
+            groupBox3.Controls.Add(txtDataList);
             groupBox3.Location = new Point(808, 17);
             groupBox3.Name = "groupBox3";
             groupBox3.Size = new Size(176, 378);
@@ -376,42 +383,74 @@
             groupBox3.TabStop = false;
             groupBox3.Text = "데이터 리스트";
             // 
-            // textBox3
+            // txtDataList
             // 
-            textBox3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            textBox3.Location = new Point(8, 22);
-            textBox3.Multiline = true;
-            textBox3.Name = "textBox3";
-            textBox3.Size = new Size(160, 350);
-            textBox3.TabIndex = 0;
+            txtDataList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtDataList.Location = new Point(8, 22);
+            txtDataList.Multiline = true;
+            txtDataList.Name = "txtDataList";
+            txtDataList.Size = new Size(160, 350);
+            txtDataList.TabIndex = 0;
             // 
             // Form1
             // 
+            // btnTestModel
+            // 
+            btnTestModel.Anchor = AnchorStyles.Top | AnchorStyles.Left;
+            btnTestModel.Location = new Point(108, 183);
+            btnTestModel.Name = "btnTestModel";
+            btnTestModel.Size = new Size(90, 31);
+            btnTestModel.TabIndex = 25;
+            btnTestModel.Text = "모델 테스트";
+            btnTestModel.UseVisualStyleBackColor = true;
+            // 
+            // btnRenderGraph
+            // 
+            btnRenderGraph.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+            btnRenderGraph.Location = new Point(660, 560);
+            btnRenderGraph.Name = "btnRenderGraph";
+            btnRenderGraph.Size = new Size(130, 26);
+            btnRenderGraph.TabIndex = 27;
+            btnRenderGraph.Text = "그래프 렌더링";
+            btnRenderGraph.UseVisualStyleBackColor = true;
+            // 
+            // chartData
+            // 
+            chartData.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            chartData.Location = new Point(275, 485);
+            chartData.Name = "chartData";
+            chartData.Size = new Size(515, 70);
+            chartData.TabIndex = 26;
+            // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(988, 416);
+            ClientSize = new Size(1008, 601);
+            Controls.Add(btnRenderGraph);
+            Controls.Add(chartData);
+            Controls.Add(btnTestModel);
             Controls.Add(groupBox3);
-            Controls.Add(textBox2);
-            Controls.Add(button4);
-            Controls.Add(label9);
-            Controls.Add(button15);
-            Controls.Add(button14);
-            Controls.Add(button13);
-            Controls.Add(button3);
-            Controls.Add(button2);
-            Controls.Add(textBox1);
-            Controls.Add(button1);
+            Controls.Add(txtFilter);
+            Controls.Add(btnFilter);
+            Controls.Add(lblRange);
+            Controls.Add(btnRefresh);
+            Controls.Add(btnRestore);
+            Controls.Add(btnDelete);
+            Controls.Add(btnSetPoint2);
+            Controls.Add(btnSetPoint1);
+            Controls.Add(txtLog);
+            Controls.Add(btnTrain);
             Controls.Add(groupBox2);
-            Controls.Add(label4);
+            Controls.Add(lblTitle);
             Controls.Add(groupBox1);
-            Controls.Add(trackBar1);
-            Controls.Add(pictureBox1);
-            Controls.Add(label2);
-            Controls.Add(button6);
+            Controls.Add(tbFrameSlider);
+            Controls.Add(pbCameraView);
+            Controls.Add(lblPath);
+            Controls.Add(btnLoadData);
             Name = "Form1";
             Text = "Donkeycar UI";
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pbCameraView).EndInit();
+            ((System.ComponentModel.ISupportInitialize)tbFrameSlider).EndInit();
+            ((System.ComponentModel.ISupportInitialize)chartData).EndInit();
             groupBox1.ResumeLayout(false);
             groupBox1.PerformLayout();
             groupBox2.ResumeLayout(false);
@@ -423,37 +462,40 @@
         }
 
         #endregion
-        private Button button6;
-        private Label label2;
-        private PictureBox pictureBox1;
-        private TrackBar trackBar1;
+        private Button btnLoadData;
+        private Label lblPath;
+        private PictureBox pbCameraView;
+        private TrackBar tbFrameSlider;
         private GroupBox groupBox1;
-        private Button button11;
-        private Button button10;
-        private Button button8;
-        private Button button9;
-        private Button button7;
-        private Label label3;
-        private Button button12;
-        private Label label4;
+        private Button btnFastForward;
+        private Button btnRewind;
+        private Button btnPrevFrame;
+        private Button btnNextFrame;
+        private Button btnSpeed;
+        private Label lblFrameIndex;
+        private Button btnPlay;
+        private Label lblTitle;
         private GroupBox groupBox2;
-        private ProgressBar progressBar2;
+        private ProgressBar pbThrottle;
         private Label label7;
-        private Label label8;
-        private ProgressBar progressBar1;
-        private Label label6;
+        private Label lblThrottleValue;
+        private ProgressBar pbSteering;
+        private Label lblSteeringValue;
         private Label label5;
-        private Button button1;
-        private TextBox textBox1;
-        private Button button2;
-        private Button button3;
-        private Button button13;
-        private Button button14;
-        private Button button15;
-        private Label label9;
-        private Button button4;
-        private TextBox textBox2;
+        private Button btnTrain;
+        private TextBox txtLog;
+        private Button btnSetPoint1;
+        private Button btnSetPoint2;
+        private Button btnDelete;
+        private Button btnRestore;
+        private Button btnRefresh;
+        private Label lblRange;
+        private Button btnFilter;
+        private TextBox txtFilter;
         private GroupBox groupBox3;
-        private TextBox textBox3;
+        private TextBox txtDataList;
+        private Button btnTestModel;
+        private System.Windows.Forms.DataVisualization.Charting.Chart chartData;
+        private Button btnRenderGraph;
     }
 }
