@@ -34,8 +34,6 @@ namespace DonkeyCarUI
             btnPrevFrame.Click += BtnPrevFrame_Click;
             btnNextFrame.Click += BtnNextFrame_Click;
             cmbSpeed.Click += BtnSpeed_Click;
-            btnRewind.Click += BtnRewind_Click;
-            btnFastForward.Click += BtnFastForward_Click;
 
             // 지점 설정, 필터, 삭제, 학습 이벤트 연결
             btnSetPoint1.Click += BtnSetPoint1_Click;
@@ -43,10 +41,7 @@ namespace DonkeyCarUI
             btnDelete.Click += BtnDelete_Click;
             btnRestore.Click += BtnRestore_Click;
             btnFilter.Click += BtnFilter_Click;
-            btnRefresh.Click += BtnRefresh_Click;
-            btnTrain.Click += BtnTrain_Click;
             btnTestModel.Click += BtnTestModel_Click;
-            btnRenderGraph.Click += BtnRenderGraph_Click;
 
             // 차트 초기화 설정
             InitializeChart();
@@ -366,8 +361,8 @@ namespace DonkeyCarUI
         #region Edit and Filter Controls
         private void UpdateDataListText()
         {
-            txtDataList.Text = $"현재 표시 중: {_records.Count} 프레임\r\n" +
-                               $"원본: {_originalRecords.Count} 프레임";
+            //txtDataList.Text = $"현재 표시 중: {_records.Count} 프레임\r\n" +
+            //$"원본: {_originalRecords.Count} 프레임";
         }
 
         private void ResetSelection()
@@ -536,8 +531,8 @@ namespace DonkeyCarUI
                 return;
             }
 
-            txtLog.Text = "학습 중...\r\n";
-            btnTrain.Enabled = false;
+            //txtLog.Text = "학습 중...\r\n";
+            //btnTrain.Enabled = false;
 
             // Python 프로세스 비동기 실행
             Task.Run(() =>
@@ -585,7 +580,7 @@ namespace DonkeyCarUI
                 }
                 finally
                 {
-                    this.Invoke((MethodInvoker)delegate { btnTrain.Enabled = true; });
+                    //this.Invoke((MethodInvoker)delegate { btnTrain.Enabled = true; });
                 }
             });
         }
@@ -598,10 +593,10 @@ namespace DonkeyCarUI
                 return;
             }
 
-            txtLog.AppendText(message + "\r\n");
+            //txtLog.AppendText(message + "\r\n");
             // 텍스트 박스 맨 아래로 스크롤
-            txtLog.SelectionStart = txtLog.Text.Length;
-            txtLog.ScrollToCaret();
+            //txtLog.SelectionStart = txtLog.Text.Length;
+            //txtLog.ScrollToCaret();
         }
         #endregion
 
@@ -627,7 +622,7 @@ namespace DonkeyCarUI
 
             chartData.Series["Steering"].Points.Clear();
             chartData.Series["Throttle"].Points.Clear();
-
+            
             // 너무 많은 데이터가 있으면 차트가 멈추므로 샘플링 처리 (최대 1000개 정도만)
             int step = Math.Max(1, _records.Count / 1000);
 
@@ -701,5 +696,7 @@ namespace DonkeyCarUI
         {
 
         }
+
+
     }
 }
