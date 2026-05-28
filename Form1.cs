@@ -50,10 +50,67 @@ namespace DonkeyCarUI
 
             // 차트 초기화 설정
             InitializeChart();
+            chartData.MouseClick += ChartData_MouseClick;
 
             // 타이머 설정 (약 30 FPS 기준 = 33ms)
             _playbackTimer.Interval = 33;
             _playbackTimer.Tick += PlaybackTimer_Tick;
+
+            // 고급 기능 버튼 추가 (정지 데이터 제거, 데이터 스무딩)
+            Button btnRemoveStopped = new Button { Text = "정지 데이터 제거", Left = 12, Top = 570, Width = 120, Height = 25, ForeColor = Color.White, BackColor = Color.DarkSlateGray, FlatStyle = FlatStyle.Flat };
+            btnRemoveStopped.Click += BtnRemoveStopped_Click;
+            btnRemoveStopped.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            this.Controls.Add(btnRemoveStopped);
+
+            Button btnSmoothData = new Button { Text = "조향 스무딩(MA)", Left = 137, Top = 570, Width = 120, Height = 25, ForeColor = Color.White, BackColor = Color.DarkSlateBlue, FlatStyle = FlatStyle.Flat };
+            btnSmoothData.Click += BtnSmoothData_Click;
+            btnSmoothData.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
+            this.Controls.Add(btnSmoothData);
+
+            // 키보드 단축키 지원 활성화
+            this.KeyPreview = true;
+            this.KeyDown += Form1_KeyDown;
+        }
+
+        private void Form1_KeyDown(object? sender, KeyEventArgs e)
+        {
+            if (_records.Count == 0) return;
+
+            // 스페이스바: 재생/일시정지
+            if (e.KeyCode == Keys.Space)
+            {
+                BtnPlay_Click(this, EventArgs.Empty);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // 방향키 왼쪽: 이전 프레임
+            else if (e.KeyCode == Keys.Left)
+            {
+                BtnPrevFrame_Click(this, EventArgs.Empty);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // 방향키 오른쪽: 다음 프레임
+            else if (e.KeyCode == Keys.Right)
+            {
+                BtnNextFrame_Click(this, EventArgs.Empty);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // Delete 키: 현재 선택 범위 데이터 삭제
+            else if (e.KeyCode == Keys.Delete && _startIndex != -1 && _endIndex != -1)
+            {
+                BtnDelete_Click(this, EventArgs.Empty);
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
+            // A 키: 이상치(Anomaly) 데이터 자동 강조
+            else if (e.KeyCode == Keys.A)
+            {
+                DetectAndHighlightAnomalies();
+                e.Handled = true;
+                e.SuppressKeyPress = true;
+            }
         }
 
         private void BtnLoadData_Click(object? sender, EventArgs e)
@@ -164,12 +221,6 @@ namespace DonkeyCarUI
             {
                 MessageBox.Show($"데이터 로딩 중 오류 발생: {ex.Message}", "에러", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-
-        // 헬퍼 함수
-        private static string PathGetFileNameWithoutExpandedExtension(string path)
-        {
-            return Path.GetFileNameWithoutExtension(path);
         }
 
         private void TbFrameSlider_Scroll(object? sender, EventArgs e)
@@ -384,20 +435,86 @@ namespace DonkeyCarUI
                             {
                                 if (double.TryParse(txtFilter.Text, out double threshold))
                                 {
-                                    // 절대값 기준으로 임계값 이상인 데이터만 남김 (정지해있는 쓸모없는 데이터 필터링)
+                                    // 조향각이나 스로틀 값이 임계값 이상인(의미있는 움직임이 있는) 데이터만 필터링
                                     _records = _originalRecords.Where(r => Math.Abs(r.Throttle) >= threshold || Math.Abs(r.Angle) >= threshold).ToList();
 
-                                    tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                                    tbFrameSlider.Value = 0;
-
-                                    UpdateDataListText();
-                                    if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider.Value);
-                                    else MessageBox.Show("설정한 임계값 조건에 맞는 데이터가 없습니다.");
+                                    if (_records.Count > 0)
+                                    {
+                                        tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
+                                        tbFrameSlider.Value = 0;
+                                        UpdateDataListText();
+                                        UpdateUIForFrame(tbFrameSlider.Value);
+                                        MessageBox.Show($"필터 적용 완료: {_records.Count}개의 유효 프레임이 남았습니다.", "정보", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                    }
+                                    else
+                                    {
+                                        MessageBox.Show("설정한 임계값 조건에 맞는 데이터가 없습니다. 원본으로 복구합니다.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                        BtnRestore_Click(null, EventArgs.Empty);
+                                    }
                                 }
                                 else
                                 {
-                                    MessageBox.Show("필터 임계값은 숫자여야 합니다. (예: 0.1)");
+                                      MessageBox.Show("올바른 숫자(예: 0.1)를 입력해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
                                 }
+                            }
+
+                            // 특별 기능 1: 주행 속도(Throttle)가 완전히 0(정지 상태)인 불필요한 데이터 일괄 제거
+                            private void BtnRemoveStopped_Click(object? sender, EventArgs e)
+                            {
+                                if (_originalRecords.Count == 0) return;
+
+                                // Tolerance for floating point 0
+                                double epsilon = 0.01;
+                                int beforeCount = _records.Count;
+                                _records = _records.Where(r => Math.Abs(r.Throttle) > epsilon).ToList();
+
+                                int removed = beforeCount - _records.Count;
+                                if (_records.Count > 0)
+                                {
+                                    tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
+                                    tbFrameSlider.Value = 0;
+                                    UpdateDataListText();
+                                    UpdateUIForFrame(tbFrameSlider.Value);
+                                    BtnRenderGraph_Click(null, EventArgs.Empty); // 그래프 자동 업데이트
+                                    MessageBox.Show($"정지된 주행 데이터 {removed}개가 완벽히 제거되었습니다.\n이제 더 깨끗한 데이터로 학습할 수 있습니다.", "데이터 최적화", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                else
+                                {
+                                    MessageBox.Show("모든 데이터가 정지 상태입니다.", "알림");
+                                    BtnRestore_Click(null, EventArgs.Empty);
+                                }
+                            }
+
+                            // 특별 기능 2: 조향각(Steering) 데이터 스무딩(Moving Average) - 극단적으로 떨리는 손떨림 보정
+                            private void BtnSmoothData_Click(object? sender, EventArgs e)
+                            {
+                                if (_records.Count < 5) return;
+
+                                int windowSize = 5; // 5프레임 이동 평균
+                                var smoothedRecords = new List<DonkeyRecord>(_records);
+
+                                for (int i = 0; i < _records.Count; i++)
+                                {
+                                    double sumAngle = 0;
+                                    int count = 0;
+
+                                    // 앞뒤로 windowSize/2 만큼 검사하여 평균을 냄
+                                    for (int j = i - (windowSize / 2); j <= i + (windowSize / 2); j++)
+                                    {
+                                        if (j >= 0 && j < _records.Count)
+                                        {
+                                            sumAngle += _records[j].Angle;
+                                            count++;
+                                        }
+                                    }
+
+                                    smoothedRecords[i].Angle = sumAngle / count; // 평균값으로 덮어씌움 (부드러운 주행 곡선)
+                                }
+
+                                _records = smoothedRecords;
+                                UpdateUIForFrame(tbFrameSlider.Value);
+                                BtnRenderGraph_Click(null, EventArgs.Empty); // 그래프 반영
+                                MessageBox.Show("조향각 데이터 스무딩(이동 평균 필터)이 적용되었습니다.\n그래프를 확인해보세요. 센서 노이즈가 제거되어 훨씬 더 매끄러운 커브를 그립니다.", "데이터 최적화", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
 
                             private void BtnRefresh_Click(object? sender, EventArgs e)
@@ -525,6 +642,57 @@ namespace DonkeyCarUI
                                         MessageBox.Show("모델 테스트 기능 (5단계) - Python 연동 (예: drive.py 실행 등)\n향후 환경에 맞게 명령어 연동이 필요합니다.");
                                         // Example process call:
                                         // Process.Start("python", "manage.py drive --model models/mypilot.h5");
+                                    }
+
+                                    private void ChartData_MouseClick(object? sender, MouseEventArgs e)
+                                    {
+                                        if (_records.Count == 0) return;
+
+                                        var hit = chartData.HitTest(e.X, e.Y);
+                                        if (hit.ChartElementType == System.Windows.Forms.DataVisualization.Charting.ChartElementType.DataPoint)
+                                        {
+                                            var dp = hit.Series.Points[hit.PointIndex];
+                                            int frameIndex = (int)dp.XValue;
+
+                                            if (frameIndex >= 0 && frameIndex <= tbFrameSlider.Maximum)
+                                            {
+                                                tbFrameSlider.Value = frameIndex;
+                                                UpdateUIForFrame(frameIndex);
+                                            }
+                                        }
+                                    }
+
+                                    private void DetectAndHighlightAnomalies()
+                                    {
+                                        if (_records.Count == 0) return;
+
+                                        // A simple threshold for anomalies (e.g. extreme values where Steering is > 0.8 or Throttle is negative/erratic suddenly)
+                                        int anomalyCount = 0;
+                                        foreach (var pt in chartData.Series["Steering"].Points)
+                                        {
+                                            pt.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.None;
+                                        }
+
+                                        for (int i = 0; i < chartData.Series["Steering"].Points.Count; i++)
+                                        {
+                                            var dp = chartData.Series["Steering"].Points[i];
+                                            if (Math.Abs(dp.YValues[0]) >= 0.8)
+                                            {
+                                                dp.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
+                                                dp.MarkerColor = Color.Magenta;
+                                                dp.MarkerSize = 8;
+                                                anomalyCount++;
+                                            }
+                                        }
+
+                                        if (anomalyCount > 0)
+                                        {
+                                            MessageBox.Show($"이상데이터(조향각 0.8 이상) {anomalyCount}개가 차트에 하이라이트 되었습니다!\n해당 지점을 클릭하여 바로 확인할 수 있습니다.", "이상 감지", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        }
+                                        else
+                                        {
+                                            MessageBox.Show("감지된 이상치 데이터가 없습니다.", "이상 감지", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                        }
                                     }
                                     #endregion
                                 }
