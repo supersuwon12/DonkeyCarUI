@@ -622,7 +622,7 @@ namespace DonkeyCarUI
 
             chartData.Series["Steering"].Points.Clear();
             chartData.Series["Throttle"].Points.Clear();
-            
+
             // 너무 많은 데이터가 있으면 차트가 멈추므로 샘플링 처리 (최대 1000개 정도만)
             int step = Math.Max(1, _records.Count / 1000);
 
@@ -692,11 +692,8 @@ namespace DonkeyCarUI
         }
         #endregion
 
-        private void btnPlay_Click_1(object sender, EventArgs e)
-        {
+        
 
-        }
-
-
+        
     }
 }
