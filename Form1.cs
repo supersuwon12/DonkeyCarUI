@@ -44,8 +44,8 @@ namespace DonkeyCarUI
             btnTestModel.Click += BtnTestModel_Click;
 
             // 차트 초기화 설정
-            InitializeChart();
-            chartData.MouseClick += ChartData_MouseClick;
+            //InitializeChart();
+            //chartData.MouseClick += ChartData_MouseClick;
 
             // 타이머 설정 (약 30 FPS 기준 = 33ms)
             _playbackTimer.Interval = 33;
@@ -601,7 +601,7 @@ namespace DonkeyCarUI
         #endregion
 
         #region Extended Features (Graph & Test)
-        private void InitializeChart()
+ /*       private void InitializeChart()
         {
             chartData.Series.Clear();
             var seriesSteering = new System.Windows.Forms.DataVisualization.Charting.Series("Steering");
@@ -615,6 +615,7 @@ namespace DonkeyCarUI
             chartData.Series.Add(seriesSteering);
             chartData.Series.Add(seriesThrottle);
         }
+ */
 
         private void BtnRenderGraph_Click(object? sender, EventArgs e)
         {

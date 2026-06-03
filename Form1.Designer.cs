@@ -30,6 +30,13 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            groupBox13 = new GroupBox();
+            checkBox2 = new CheckBox();
+            label39 = new Label();
+            label40 = new Label();
+            label41 = new Label();
+            trackBar4 = new TrackBar();
+            trackBar5 = new TrackBar();
             groupBox5 = new GroupBox();
             btnSetPoint1 = new Button();
             button1 = new Button();
@@ -92,6 +99,7 @@
             progressBar1 = new ProgressBar();
             button3 = new Button();
             groupBox6 = new GroupBox();
+            label38 = new Label();
             comboBox5 = new ComboBox();
             label34 = new Label();
             label32 = new Label();
@@ -105,33 +113,15 @@
             textBox3 = new TextBox();
             label3 = new Label();
             tabPage3 = new TabPage();
-            splitContainer1 = new SplitContainer();
-            panel4 = new Panel();
-            pictureBox2 = new PictureBox();
-            panel5 = new Panel();
-            groupBox9 = new GroupBox();
-            progressBar2 = new ProgressBar();
-            label16 = new Label();
-            label17 = new Label();
-            progressBar3 = new ProgressBar();
-            label18 = new Label();
-            label19 = new Label();
-            label8 = new Label();
-            button5 = new Button();
-            label4 = new Label();
-            panel1 = new Panel();
-            groupBox10 = new GroupBox();
-            progressBar4 = new ProgressBar();
-            label20 = new Label();
-            label21 = new Label();
-            progressBar5 = new ProgressBar();
-            label22 = new Label();
-            label23 = new Label();
-            label9 = new Label();
-            button6 = new Button();
-            label38 = new Label();
-            pictureBox1 = new PictureBox();
-            panel3 = new Panel();
+            trackBar3 = new TrackBar();
+            panel6 = new Panel();
+            groupBox11 = new GroupBox();
+            progressBar6 = new ProgressBar();
+            label24 = new Label();
+            label25 = new Label();
+            progressBar7 = new ProgressBar();
+            label26 = new Label();
+            label27 = new Label();
             groupBox8 = new GroupBox();
             checkBox1 = new CheckBox();
             label15 = new Label();
@@ -149,24 +139,37 @@
             button9 = new Button();
             button10 = new Button();
             label12 = new Label();
-            panel6 = new Panel();
-            groupBox11 = new GroupBox();
-            progressBar6 = new ProgressBar();
-            label24 = new Label();
-            label25 = new Label();
-            progressBar7 = new ProgressBar();
-            label26 = new Label();
-            label27 = new Label();
-            trackBar3 = new TrackBar();
-            groupBox13 = new GroupBox();
-            checkBox2 = new CheckBox();
-            label39 = new Label();
-            label40 = new Label();
-            label41 = new Label();
-            trackBar4 = new TrackBar();
-            trackBar5 = new TrackBar();
+            splitContainer1 = new SplitContainer();
+            panel4 = new Panel();
+            pictureBox2 = new PictureBox();
+            panel5 = new Panel();
+            groupBox9 = new GroupBox();
+            progressBar2 = new ProgressBar();
+            label16 = new Label();
+            label17 = new Label();
+            progressBar3 = new ProgressBar();
+            label18 = new Label();
+            label19 = new Label();
+            label8 = new Label();
+            button5 = new Button();
+            label4 = new Label();
+            panel3 = new Panel();
+            pictureBox1 = new PictureBox();
+            panel1 = new Panel();
+            groupBox10 = new GroupBox();
+            progressBar4 = new ProgressBar();
+            label20 = new Label();
+            label21 = new Label();
+            progressBar5 = new ProgressBar();
+            label22 = new Label();
+            label23 = new Label();
+            label9 = new Label();
+            button6 = new Button();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
+            groupBox13.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
             groupBox5.SuspendLayout();
             groupBox4.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -180,6 +183,13 @@
             groupBox12.SuspendLayout();
             groupBox6.SuspendLayout();
             tabPage3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
+            panel6.SuspendLayout();
+            groupBox11.SuspendLayout();
+            groupBox8.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
+            groupBox7.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)splitContainer1).BeginInit();
             splitContainer1.Panel1.SuspendLayout();
             splitContainer1.Panel2.SuspendLayout();
@@ -188,20 +198,10 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
             panel5.SuspendLayout();
             groupBox9.SuspendLayout();
+            panel3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel1.SuspendLayout();
             groupBox10.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
-            panel3.SuspendLayout();
-            groupBox8.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).BeginInit();
-            groupBox7.SuspendLayout();
-            panel6.SuspendLayout();
-            groupBox11.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).BeginInit();
-            groupBox13.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar4).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar5).BeginInit();
             SuspendLayout();
             // 
             // tabControl1
@@ -240,6 +240,75 @@
             tabPage1.TabIndex = 0;
             tabPage1.Text = "주행 데이터 관리";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // groupBox13
+            // 
+            groupBox13.Controls.Add(checkBox2);
+            groupBox13.Controls.Add(label39);
+            groupBox13.Controls.Add(label40);
+            groupBox13.Controls.Add(label41);
+            groupBox13.Controls.Add(trackBar4);
+            groupBox13.Controls.Add(trackBar5);
+            groupBox13.Location = new Point(17, 434);
+            groupBox13.Name = "groupBox13";
+            groupBox13.Size = new Size(244, 169);
+            groupBox13.TabIndex = 52;
+            groupBox13.TabStop = false;
+            groupBox13.Text = "데이터 보정";
+            // 
+            // checkBox2
+            // 
+            checkBox2.AutoSize = true;
+            checkBox2.Location = new Point(101, 136);
+            checkBox2.Name = "checkBox2";
+            checkBox2.Size = new Size(62, 19);
+            checkBox2.TabIndex = 5;
+            checkBox2.Text = "활성화";
+            checkBox2.UseVisualStyleBackColor = true;
+            // 
+            // label39
+            // 
+            label39.AutoSize = true;
+            label39.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label39.Location = new Point(15, 136);
+            label39.Name = "label39";
+            label39.Size = new Size(65, 17);
+            label39.TabIndex = 4;
+            label39.Text = "흑백 반전";
+            // 
+            // label40
+            // 
+            label40.AutoSize = true;
+            label40.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label40.Location = new Point(5, 88);
+            label40.Name = "label40";
+            label40.Size = new Size(96, 17);
+            label40.TabIndex = 3;
+            label40.Text = "흐림 효과 조절";
+            // 
+            // label41
+            // 
+            label41.AutoSize = true;
+            label41.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label41.Location = new Point(15, 33);
+            label41.Name = "label41";
+            label41.Size = new Size(65, 17);
+            label41.TabIndex = 2;
+            label41.Text = "밝기 조절";
+            // 
+            // trackBar4
+            // 
+            trackBar4.Location = new Point(101, 20);
+            trackBar4.Name = "trackBar4";
+            trackBar4.Size = new Size(137, 45);
+            trackBar4.TabIndex = 0;
+            // 
+            // trackBar5
+            // 
+            trackBar5.Location = new Point(101, 76);
+            trackBar5.Name = "trackBar5";
+            trackBar5.Size = new Size(137, 45);
+            trackBar5.TabIndex = 1;
             // 
             // groupBox5
             // 
@@ -321,7 +390,7 @@
             listView1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             listView1.Location = new Point(277, 504);
             listView1.Name = "listView1";
-            listView1.Size = new Size(915, 97);
+            listView1.Size = new Size(704, 97);
             listView1.TabIndex = 49;
             listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -846,6 +915,15 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "모델 설정";
             // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Location = new Point(319, 101);
+            label38.Name = "label38";
+            label38.Size = new Size(360, 17);
+            label38.TabIndex = 52;
+            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
+            // 
             // comboBox5
             // 
             comboBox5.FormattingEnabled = true;
@@ -967,276 +1045,88 @@
             tabPage3.Text = "학습 미리보기";
             tabPage3.UseVisualStyleBackColor = true;
             // 
-            // splitContainer1
+            // trackBar3
             // 
-            splitContainer1.Dock = DockStyle.Top;
-            splitContainer1.Location = new Point(3, 3);
-            splitContainer1.Name = "splitContainer1";
+            trackBar3.AutoSize = false;
+            trackBar3.Location = new Point(8, 397);
+            trackBar3.Name = "trackBar3";
+            trackBar3.Size = new Size(1364, 41);
+            trackBar3.TabIndex = 44;
             // 
-            // splitContainer1.Panel1
+            // panel6
             // 
-            splitContainer1.Panel1.Controls.Add(panel4);
-            splitContainer1.Panel1.Controls.Add(panel5);
+            panel6.Controls.Add(groupBox11);
+            panel6.Controls.Add(groupBox8);
+            panel6.Controls.Add(groupBox7);
+            panel6.Location = new Point(3, 444);
+            panel6.Name = "panel6";
+            panel6.Size = new Size(1374, 175);
+            panel6.TabIndex = 43;
             // 
-            // splitContainer1.Panel2
+            // groupBox11
             // 
-            splitContainer1.Panel2.Controls.Add(panel3);
-            splitContainer1.Panel2.Controls.Add(panel1);
-            splitContainer1.Size = new Size(1374, 388);
-            splitContainer1.SplitterDistance = 687;
-            splitContainer1.TabIndex = 40;
+            groupBox11.Controls.Add(progressBar6);
+            groupBox11.Controls.Add(label24);
+            groupBox11.Controls.Add(label25);
+            groupBox11.Controls.Add(progressBar7);
+            groupBox11.Controls.Add(label26);
+            groupBox11.Controls.Add(label27);
+            groupBox11.Location = new Point(730, 6);
+            groupBox11.Name = "groupBox11";
+            groupBox11.Size = new Size(244, 121);
+            groupBox11.TabIndex = 40;
+            groupBox11.TabStop = false;
+            groupBox11.Text = "주행 데이터";
             // 
-            // panel4
+            // progressBar6
             // 
-            panel4.Controls.Add(pictureBox2);
-            panel4.Dock = DockStyle.Fill;
-            panel4.Location = new Point(0, 86);
-            panel4.Name = "panel4";
-            panel4.Padding = new Padding(10);
-            panel4.Size = new Size(687, 302);
-            panel4.TabIndex = 43;
+            progressBar6.Location = new Point(115, 90);
+            progressBar6.Name = "progressBar6";
+            progressBar6.Size = new Size(97, 10);
+            progressBar6.TabIndex = 13;
             // 
-            // pictureBox2
+            // label24
             // 
-            pictureBox2.BackColor = Color.Linen;
-            pictureBox2.Dock = DockStyle.Fill;
-            pictureBox2.Location = new Point(10, 10);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(667, 282);
-            pictureBox2.TabIndex = 1;
-            pictureBox2.TabStop = false;
+            label24.AutoSize = true;
+            label24.Location = new Point(6, 88);
+            label24.Name = "label24";
+            label24.Size = new Size(34, 17);
+            label24.TabIndex = 13;
+            label24.Text = "속도";
             // 
-            // panel5
+            // label25
             // 
-            panel5.Controls.Add(groupBox9);
-            panel5.Controls.Add(label8);
-            panel5.Controls.Add(button5);
-            panel5.Controls.Add(label4);
-            panel5.Dock = DockStyle.Top;
-            panel5.Location = new Point(0, 0);
-            panel5.Name = "panel5";
-            panel5.Size = new Size(687, 86);
-            panel5.TabIndex = 41;
+            label25.AutoSize = true;
+            label25.Location = new Point(70, 87);
+            label25.Name = "label25";
+            label25.Size = new Size(43, 17);
+            label25.TabIndex = 14;
+            label25.Text = "label8";
             // 
-            // groupBox9
+            // progressBar7
             // 
-            groupBox9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            groupBox9.Controls.Add(progressBar2);
-            groupBox9.Controls.Add(label16);
-            groupBox9.Controls.Add(label17);
-            groupBox9.Controls.Add(progressBar3);
-            groupBox9.Controls.Add(label18);
-            groupBox9.Controls.Add(label19);
-            groupBox9.Location = new Point(449, 7);
-            groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(213, 72);
-            groupBox9.TabIndex = 39;
-            groupBox9.TabStop = false;
-            groupBox9.Text = "AI모델 주행 데이터";
+            progressBar7.Location = new Point(114, 42);
+            progressBar7.Name = "progressBar7";
+            progressBar7.Size = new Size(97, 10);
+            progressBar7.TabIndex = 2;
             // 
-            // progressBar2
+            // label26
             // 
-            progressBar2.Location = new Point(110, 51);
-            progressBar2.Name = "progressBar2";
-            progressBar2.Size = new Size(97, 10);
-            progressBar2.TabIndex = 13;
+            label26.AutoSize = true;
+            label26.Location = new Point(69, 38);
+            label26.Name = "label26";
+            label26.Size = new Size(43, 17);
+            label26.TabIndex = 1;
+            label26.Text = "label6";
             // 
-            // label16
+            // label27
             // 
-            label16.AutoSize = true;
-            label16.Location = new Point(15, 49);
-            label16.Name = "label16";
-            label16.Size = new Size(34, 17);
-            label16.TabIndex = 13;
-            label16.Text = "속도";
-            // 
-            // label17
-            // 
-            label17.AutoSize = true;
-            label17.Location = new Point(65, 48);
-            label17.Name = "label17";
-            label17.Size = new Size(43, 17);
-            label17.TabIndex = 14;
-            label17.Text = "label8";
-            // 
-            // progressBar3
-            // 
-            progressBar3.Location = new Point(109, 26);
-            progressBar3.Name = "progressBar3";
-            progressBar3.Size = new Size(97, 10);
-            progressBar3.TabIndex = 2;
-            // 
-            // label18
-            // 
-            label18.AutoSize = true;
-            label18.Location = new Point(64, 22);
-            label18.Name = "label18";
-            label18.Size = new Size(43, 17);
-            label18.TabIndex = 1;
-            label18.Text = "label6";
-            // 
-            // label19
-            // 
-            label19.AutoSize = true;
-            label19.Location = new Point(14, 22);
-            label19.Name = "label19";
-            label19.Size = new Size(34, 17);
-            label19.TabIndex = 0;
-            label19.Text = "방향";
-            // 
-            // label8
-            // 
-            label8.AutoSize = true;
-            label8.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label8.Location = new Point(222, 48);
-            label8.Name = "label8";
-            label8.Size = new Size(34, 17);
-            label8.TabIndex = 41;
-            label8.Text = "경로";
-            // 
-            // button5
-            // 
-            button5.Location = new Point(5, 42);
-            button5.Name = "button5";
-            button5.Size = new Size(211, 29);
-            button5.TabIndex = 40;
-            button5.Text = "학습한 AI 모델 데이터 불러오기";
-            button5.UseVisualStyleBackColor = true;
-            // 
-            // label4
-            // 
-            label4.AutoSize = true;
-            label4.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
-            label4.Location = new Point(5, 11);
-            label4.Name = "label4";
-            label4.Size = new Size(133, 25);
-            label4.TabIndex = 39;
-            label4.Text = "학습 비교보기";
-            // 
-            // panel1
-            // 
-            panel1.Controls.Add(groupBox10);
-            panel1.Controls.Add(label9);
-            panel1.Controls.Add(button6);
-            panel1.Dock = DockStyle.Top;
-            panel1.Location = new Point(0, 0);
-            panel1.Name = "panel1";
-            panel1.Size = new Size(683, 86);
-            panel1.TabIndex = 0;
-            // 
-            // groupBox10
-            // 
-            groupBox10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
-            groupBox10.Controls.Add(progressBar4);
-            groupBox10.Controls.Add(label20);
-            groupBox10.Controls.Add(label21);
-            groupBox10.Controls.Add(progressBar5);
-            groupBox10.Controls.Add(label22);
-            groupBox10.Controls.Add(label23);
-            groupBox10.Location = new Point(450, 7);
-            groupBox10.Name = "groupBox10";
-            groupBox10.Size = new Size(213, 72);
-            groupBox10.TabIndex = 44;
-            groupBox10.TabStop = false;
-            groupBox10.Text = "AI모델 주행 데이터";
-            // 
-            // progressBar4
-            // 
-            progressBar4.Location = new Point(110, 51);
-            progressBar4.Name = "progressBar4";
-            progressBar4.Size = new Size(97, 10);
-            progressBar4.TabIndex = 13;
-            // 
-            // label20
-            // 
-            label20.AutoSize = true;
-            label20.Location = new Point(15, 49);
-            label20.Name = "label20";
-            label20.Size = new Size(34, 17);
-            label20.TabIndex = 13;
-            label20.Text = "속도";
-            // 
-            // label21
-            // 
-            label21.AutoSize = true;
-            label21.Location = new Point(65, 48);
-            label21.Name = "label21";
-            label21.Size = new Size(43, 17);
-            label21.TabIndex = 14;
-            label21.Text = "label8";
-            // 
-            // progressBar5
-            // 
-            progressBar5.Location = new Point(109, 26);
-            progressBar5.Name = "progressBar5";
-            progressBar5.Size = new Size(97, 10);
-            progressBar5.TabIndex = 2;
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(64, 22);
-            label22.Name = "label22";
-            label22.Size = new Size(43, 17);
-            label22.TabIndex = 1;
-            label22.Text = "label6";
-            // 
-            // label23
-            // 
-            label23.AutoSize = true;
-            label23.Location = new Point(14, 22);
-            label23.Name = "label23";
-            label23.Size = new Size(34, 17);
-            label23.TabIndex = 0;
-            label23.Text = "방향";
-            // 
-            // label9
-            // 
-            label9.AutoSize = true;
-            label9.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label9.Location = new Point(232, 48);
-            label9.Name = "label9";
-            label9.Size = new Size(34, 17);
-            label9.TabIndex = 43;
-            label9.Text = "경로";
-            // 
-            // button6
-            // 
-            button6.Location = new Point(13, 42);
-            button6.Name = "button6";
-            button6.Size = new Size(213, 29);
-            button6.TabIndex = 42;
-            button6.Text = "학습한 AI 모델 데이터 불러오기";
-            button6.UseVisualStyleBackColor = true;
-            // 
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Location = new Point(319, 101);
-            label38.Name = "label38";
-            label38.Size = new Size(360, 17);
-            label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
-            // 
-            // pictureBox1
-            // 
-            pictureBox1.BackColor = Color.Linen;
-            pictureBox1.Dock = DockStyle.Fill;
-            pictureBox1.Location = new Point(10, 10);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(663, 282);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
-            // panel3
-            // 
-            panel3.Controls.Add(pictureBox1);
-            panel3.Dock = DockStyle.Fill;
-            panel3.Location = new Point(0, 86);
-            panel3.Name = "panel3";
-            panel3.Padding = new Padding(10);
-            panel3.Size = new Size(683, 302);
-            panel3.TabIndex = 2;
+            label27.AutoSize = true;
+            label27.Location = new Point(7, 38);
+            label27.Name = "label27";
+            label27.Size = new Size(34, 17);
+            label27.TabIndex = 0;
+            label27.Text = "방향";
             // 
             // groupBox8
             // 
@@ -1408,157 +1298,267 @@
             label12.TabIndex = 0;
             label12.Text = "해당 프레임    :        00000";
             // 
-            // panel6
+            // splitContainer1
             // 
-            panel6.Controls.Add(groupBox11);
-            panel6.Controls.Add(groupBox8);
-            panel6.Controls.Add(groupBox7);
-            panel6.Location = new Point(3, 444);
-            panel6.Name = "panel6";
-            panel6.Size = new Size(1374, 175);
-            panel6.TabIndex = 43;
+            splitContainer1.Dock = DockStyle.Top;
+            splitContainer1.Location = new Point(3, 3);
+            splitContainer1.Name = "splitContainer1";
             // 
-            // groupBox11
+            // splitContainer1.Panel1
             // 
-            groupBox11.Controls.Add(progressBar6);
-            groupBox11.Controls.Add(label24);
-            groupBox11.Controls.Add(label25);
-            groupBox11.Controls.Add(progressBar7);
-            groupBox11.Controls.Add(label26);
-            groupBox11.Controls.Add(label27);
-            groupBox11.Location = new Point(730, 6);
-            groupBox11.Name = "groupBox11";
-            groupBox11.Size = new Size(244, 121);
-            groupBox11.TabIndex = 40;
-            groupBox11.TabStop = false;
-            groupBox11.Text = "주행 데이터";
+            splitContainer1.Panel1.Controls.Add(panel4);
+            splitContainer1.Panel1.Controls.Add(panel5);
             // 
-            // progressBar6
+            // splitContainer1.Panel2
             // 
-            progressBar6.Location = new Point(115, 90);
-            progressBar6.Name = "progressBar6";
-            progressBar6.Size = new Size(97, 10);
-            progressBar6.TabIndex = 13;
+            splitContainer1.Panel2.Controls.Add(panel3);
+            splitContainer1.Panel2.Controls.Add(panel1);
+            splitContainer1.Size = new Size(1374, 388);
+            splitContainer1.SplitterDistance = 687;
+            splitContainer1.TabIndex = 40;
             // 
-            // label24
+            // panel4
             // 
-            label24.AutoSize = true;
-            label24.Location = new Point(6, 88);
-            label24.Name = "label24";
-            label24.Size = new Size(34, 17);
-            label24.TabIndex = 13;
-            label24.Text = "속도";
+            panel4.Controls.Add(pictureBox2);
+            panel4.Dock = DockStyle.Fill;
+            panel4.Location = new Point(0, 86);
+            panel4.Name = "panel4";
+            panel4.Padding = new Padding(10);
+            panel4.Size = new Size(687, 302);
+            panel4.TabIndex = 43;
             // 
-            // label25
+            // pictureBox2
             // 
-            label25.AutoSize = true;
-            label25.Location = new Point(70, 87);
-            label25.Name = "label25";
-            label25.Size = new Size(43, 17);
-            label25.TabIndex = 14;
-            label25.Text = "label8";
+            pictureBox2.BackColor = Color.Linen;
+            pictureBox2.Dock = DockStyle.Fill;
+            pictureBox2.Location = new Point(10, 10);
+            pictureBox2.Name = "pictureBox2";
+            pictureBox2.Size = new Size(667, 282);
+            pictureBox2.TabIndex = 1;
+            pictureBox2.TabStop = false;
             // 
-            // progressBar7
+            // panel5
             // 
-            progressBar7.Location = new Point(114, 42);
-            progressBar7.Name = "progressBar7";
-            progressBar7.Size = new Size(97, 10);
-            progressBar7.TabIndex = 2;
+            panel5.Controls.Add(groupBox9);
+            panel5.Controls.Add(label8);
+            panel5.Controls.Add(button5);
+            panel5.Controls.Add(label4);
+            panel5.Dock = DockStyle.Top;
+            panel5.Location = new Point(0, 0);
+            panel5.Name = "panel5";
+            panel5.Size = new Size(687, 86);
+            panel5.TabIndex = 41;
             // 
-            // label26
+            // groupBox9
             // 
-            label26.AutoSize = true;
-            label26.Location = new Point(69, 38);
-            label26.Name = "label26";
-            label26.Size = new Size(43, 17);
-            label26.TabIndex = 1;
-            label26.Text = "label6";
+            groupBox9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox9.Controls.Add(progressBar2);
+            groupBox9.Controls.Add(label16);
+            groupBox9.Controls.Add(label17);
+            groupBox9.Controls.Add(progressBar3);
+            groupBox9.Controls.Add(label18);
+            groupBox9.Controls.Add(label19);
+            groupBox9.Location = new Point(449, 7);
+            groupBox9.Name = "groupBox9";
+            groupBox9.Size = new Size(213, 72);
+            groupBox9.TabIndex = 39;
+            groupBox9.TabStop = false;
+            groupBox9.Text = "AI모델 주행 데이터";
             // 
-            // label27
+            // progressBar2
             // 
-            label27.AutoSize = true;
-            label27.Location = new Point(7, 38);
-            label27.Name = "label27";
-            label27.Size = new Size(34, 17);
-            label27.TabIndex = 0;
-            label27.Text = "방향";
+            progressBar2.Location = new Point(110, 51);
+            progressBar2.Name = "progressBar2";
+            progressBar2.Size = new Size(97, 10);
+            progressBar2.TabIndex = 13;
             // 
-            // trackBar3
+            // label16
             // 
-            trackBar3.AutoSize = false;
-            trackBar3.Location = new Point(8, 397);
-            trackBar3.Name = "trackBar3";
-            trackBar3.Size = new Size(1364, 41);
-            trackBar3.TabIndex = 44;
+            label16.AutoSize = true;
+            label16.Location = new Point(15, 49);
+            label16.Name = "label16";
+            label16.Size = new Size(34, 17);
+            label16.TabIndex = 13;
+            label16.Text = "속도";
             // 
-            // groupBox13
+            // label17
             // 
-            groupBox13.Controls.Add(checkBox2);
-            groupBox13.Controls.Add(label39);
-            groupBox13.Controls.Add(label40);
-            groupBox13.Controls.Add(label41);
-            groupBox13.Controls.Add(trackBar4);
-            groupBox13.Controls.Add(trackBar5);
-            groupBox13.Location = new Point(17, 434);
-            groupBox13.Name = "groupBox13";
-            groupBox13.Size = new Size(244, 169);
-            groupBox13.TabIndex = 52;
-            groupBox13.TabStop = false;
-            groupBox13.Text = "데이터 보정";
+            label17.AutoSize = true;
+            label17.Location = new Point(65, 48);
+            label17.Name = "label17";
+            label17.Size = new Size(43, 17);
+            label17.TabIndex = 14;
+            label17.Text = "label8";
             // 
-            // checkBox2
+            // progressBar3
             // 
-            checkBox2.AutoSize = true;
-            checkBox2.Location = new Point(101, 136);
-            checkBox2.Name = "checkBox2";
-            checkBox2.Size = new Size(62, 19);
-            checkBox2.TabIndex = 5;
-            checkBox2.Text = "활성화";
-            checkBox2.UseVisualStyleBackColor = true;
+            progressBar3.Location = new Point(109, 26);
+            progressBar3.Name = "progressBar3";
+            progressBar3.Size = new Size(97, 10);
+            progressBar3.TabIndex = 2;
             // 
-            // label39
+            // label18
             // 
-            label39.AutoSize = true;
-            label39.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label39.Location = new Point(15, 136);
-            label39.Name = "label39";
-            label39.Size = new Size(65, 17);
-            label39.TabIndex = 4;
-            label39.Text = "흑백 반전";
+            label18.AutoSize = true;
+            label18.Location = new Point(64, 22);
+            label18.Name = "label18";
+            label18.Size = new Size(43, 17);
+            label18.TabIndex = 1;
+            label18.Text = "label6";
             // 
-            // label40
+            // label19
             // 
-            label40.AutoSize = true;
-            label40.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label40.Location = new Point(5, 88);
-            label40.Name = "label40";
-            label40.Size = new Size(96, 17);
-            label40.TabIndex = 3;
-            label40.Text = "흐림 효과 조절";
+            label19.AutoSize = true;
+            label19.Location = new Point(14, 22);
+            label19.Name = "label19";
+            label19.Size = new Size(34, 17);
+            label19.TabIndex = 0;
+            label19.Text = "방향";
             // 
-            // label41
+            // label8
             // 
-            label41.AutoSize = true;
-            label41.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label41.Location = new Point(15, 33);
-            label41.Name = "label41";
-            label41.Size = new Size(65, 17);
-            label41.TabIndex = 2;
-            label41.Text = "밝기 조절";
+            label8.AutoSize = true;
+            label8.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label8.Location = new Point(222, 48);
+            label8.Name = "label8";
+            label8.Size = new Size(34, 17);
+            label8.TabIndex = 41;
+            label8.Text = "경로";
             // 
-            // trackBar4
+            // button5
             // 
-            trackBar4.Location = new Point(101, 20);
-            trackBar4.Name = "trackBar4";
-            trackBar4.Size = new Size(137, 45);
-            trackBar4.TabIndex = 0;
+            button5.Location = new Point(5, 42);
+            button5.Name = "button5";
+            button5.Size = new Size(211, 29);
+            button5.TabIndex = 40;
+            button5.Text = "학습한 AI 모델 데이터 불러오기";
+            button5.UseVisualStyleBackColor = true;
             // 
-            // trackBar5
+            // label4
             // 
-            trackBar5.Location = new Point(101, 76);
-            trackBar5.Name = "trackBar5";
-            trackBar5.Size = new Size(137, 45);
-            trackBar5.TabIndex = 1;
+            label4.AutoSize = true;
+            label4.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
+            label4.Location = new Point(5, 11);
+            label4.Name = "label4";
+            label4.Size = new Size(133, 25);
+            label4.TabIndex = 39;
+            label4.Text = "학습 비교보기";
+            // 
+            // panel3
+            // 
+            panel3.Controls.Add(pictureBox1);
+            panel3.Dock = DockStyle.Fill;
+            panel3.Location = new Point(0, 86);
+            panel3.Name = "panel3";
+            panel3.Padding = new Padding(10);
+            panel3.Size = new Size(683, 302);
+            panel3.TabIndex = 2;
+            // 
+            // pictureBox1
+            // 
+            pictureBox1.BackColor = Color.Linen;
+            pictureBox1.Dock = DockStyle.Fill;
+            pictureBox1.Location = new Point(10, 10);
+            pictureBox1.Name = "pictureBox1";
+            pictureBox1.Size = new Size(663, 282);
+            pictureBox1.TabIndex = 0;
+            pictureBox1.TabStop = false;
+            // 
+            // panel1
+            // 
+            panel1.Controls.Add(groupBox10);
+            panel1.Controls.Add(label9);
+            panel1.Controls.Add(button6);
+            panel1.Dock = DockStyle.Top;
+            panel1.Location = new Point(0, 0);
+            panel1.Name = "panel1";
+            panel1.Size = new Size(683, 86);
+            panel1.TabIndex = 0;
+            // 
+            // groupBox10
+            // 
+            groupBox10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            groupBox10.Controls.Add(progressBar4);
+            groupBox10.Controls.Add(label20);
+            groupBox10.Controls.Add(label21);
+            groupBox10.Controls.Add(progressBar5);
+            groupBox10.Controls.Add(label22);
+            groupBox10.Controls.Add(label23);
+            groupBox10.Location = new Point(450, 7);
+            groupBox10.Name = "groupBox10";
+            groupBox10.Size = new Size(213, 72);
+            groupBox10.TabIndex = 44;
+            groupBox10.TabStop = false;
+            groupBox10.Text = "AI모델 주행 데이터";
+            // 
+            // progressBar4
+            // 
+            progressBar4.Location = new Point(110, 51);
+            progressBar4.Name = "progressBar4";
+            progressBar4.Size = new Size(97, 10);
+            progressBar4.TabIndex = 13;
+            // 
+            // label20
+            // 
+            label20.AutoSize = true;
+            label20.Location = new Point(15, 49);
+            label20.Name = "label20";
+            label20.Size = new Size(34, 17);
+            label20.TabIndex = 13;
+            label20.Text = "속도";
+            // 
+            // label21
+            // 
+            label21.AutoSize = true;
+            label21.Location = new Point(65, 48);
+            label21.Name = "label21";
+            label21.Size = new Size(43, 17);
+            label21.TabIndex = 14;
+            label21.Text = "label8";
+            // 
+            // progressBar5
+            // 
+            progressBar5.Location = new Point(109, 26);
+            progressBar5.Name = "progressBar5";
+            progressBar5.Size = new Size(97, 10);
+            progressBar5.TabIndex = 2;
+            // 
+            // label22
+            // 
+            label22.AutoSize = true;
+            label22.Location = new Point(64, 22);
+            label22.Name = "label22";
+            label22.Size = new Size(43, 17);
+            label22.TabIndex = 1;
+            label22.Text = "label6";
+            // 
+            // label23
+            // 
+            label23.AutoSize = true;
+            label23.Location = new Point(14, 22);
+            label23.Name = "label23";
+            label23.Size = new Size(34, 17);
+            label23.TabIndex = 0;
+            label23.Text = "방향";
+            // 
+            // label9
+            // 
+            label9.AutoSize = true;
+            label9.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            label9.Location = new Point(232, 48);
+            label9.Name = "label9";
+            label9.Size = new Size(34, 17);
+            label9.TabIndex = 43;
+            label9.Text = "경로";
+            // 
+            // button6
+            // 
+            button6.Location = new Point(13, 42);
+            button6.Name = "button6";
+            button6.Size = new Size(213, 29);
+            button6.TabIndex = 42;
+            button6.Text = "학습한 AI 모델 데이터 불러오기";
+            button6.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -1571,6 +1571,10 @@
             tabControl1.ResumeLayout(false);
             tabPage1.ResumeLayout(false);
             tabPage1.PerformLayout();
+            groupBox13.ResumeLayout(false);
+            groupBox13.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar4).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
             groupBox5.ResumeLayout(false);
             groupBox5.PerformLayout();
             groupBox4.ResumeLayout(false);
@@ -1592,6 +1596,16 @@
             groupBox6.ResumeLayout(false);
             groupBox6.PerformLayout();
             tabPage3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
+            panel6.ResumeLayout(false);
+            groupBox11.ResumeLayout(false);
+            groupBox11.PerformLayout();
+            groupBox8.ResumeLayout(false);
+            groupBox8.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
+            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
+            groupBox7.ResumeLayout(false);
+            groupBox7.PerformLayout();
             splitContainer1.Panel1.ResumeLayout(false);
             splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)splitContainer1).EndInit();
@@ -1602,26 +1616,12 @@
             panel5.PerformLayout();
             groupBox9.ResumeLayout(false);
             groupBox9.PerformLayout();
+            panel3.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel1.ResumeLayout(false);
             panel1.PerformLayout();
             groupBox10.ResumeLayout(false);
             groupBox10.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
-            panel3.ResumeLayout(false);
-            groupBox8.ResumeLayout(false);
-            groupBox8.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar1).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar2).EndInit();
-            groupBox7.ResumeLayout(false);
-            groupBox7.PerformLayout();
-            panel6.ResumeLayout(false);
-            groupBox11.ResumeLayout(false);
-            groupBox11.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar3).EndInit();
-            groupBox13.ResumeLayout(false);
-            groupBox13.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)trackBar4).EndInit();
-            ((System.ComponentModel.ISupportInitialize)trackBar5).EndInit();
             ResumeLayout(false);
         }
 
