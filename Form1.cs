@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Diagnostics;
+using System.Windows.Forms.DataVisualization.Charting;
 using Timer = System.Windows.Forms.Timer; // WinForms Timer 명시적 사용
 
 namespace DonkeyCarUI
@@ -72,13 +73,6 @@ namespace DonkeyCarUI
 
             // textBox1 기본값 설정
             textBox1.Text = "1";
-
-            // 차트 초기화 설정
-            InitializeChart();
-            if (chartData != null)
-            {
-                chartData.MouseClick += ChartData_MouseClick;
-            }
 
             _playbackTimer.Interval = 33;
             _playbackTimer.Tick += PlaybackTimer_Tick;
@@ -1682,93 +1676,17 @@ namespace DonkeyCarUI
 
 
         #region Extended Features (Graph & Test)
-        private void InitializeChart()
-        {
-            if (chartData == null)
-            {
-                return;
-            }
-            chartData.Series.Clear();
-            var seriesSteering = new System.Windows.Forms.DataVisualization.Charting.Series("Steering");
-            seriesSteering.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            seriesSteering.Color = Color.Blue;
-
-            var seriesThrottle = new System.Windows.Forms.DataVisualization.Charting.Series("Throttle");
-            seriesThrottle.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            seriesThrottle.Color = Color.Red;
-
-            chartData.Series.Add(seriesSteering);
-            chartData.Series.Add(seriesThrottle);
-        }
 
         private void BtnRenderGraph_Click(object? sender, EventArgs e)
         {
-            if (_records.Count == 0 || chartData == null) return;
-
-            chartData.Series["Steering"].Points.Clear();
-            chartData.Series["Throttle"].Points.Clear();
-
-            // 너무 많은 데이터가 있으면 차트가 멈추므로 샘플링 처리 (최대 1000개 정도만)
-            int step = Math.Max(1, _records.Count / 1000);
-
-            for (int i = 0; i < _records.Count; i += step)
-            {
-                chartData.Series["Steering"].Points.AddXY(i, _records[i].Angle);
-                chartData.Series["Throttle"].Points.AddXY(i, _records[i].Throttle);
-            }
-        }
-
-
-        private void ChartData_MouseClick(object? sender, MouseEventArgs e)
-        {
-            if (_records.Count == 0 || chartData == null) return;
-
-            var hit = chartData.HitTest(e.X, e.Y);
-            if (hit.ChartElementType == System.Windows.Forms.DataVisualization.Charting.ChartElementType.DataPoint)
-            {
-                var dp = hit.Series.Points[hit.PointIndex];
-                int frameIndex = (int)dp.XValue;
-
-                if (frameIndex >= 0 && frameIndex <= tbFrameSlider.Maximum)
-                {
-                    tbFrameSlider.Value = frameIndex;
-                    UpdateUIForFrame(frameIndex);
-                }
-            }
+            // chartData 컨트롤이 현재 UI 브랜치에 없어서 비워둠.
         }
 
         private void DetectAndHighlightAnomalies()
         {
-            if (_records.Count == 0 || chartData == null) return;
-
-            // A simple threshold for anomalies (e.g. extreme values where Steering is > 0.8 or Throttle is negative/erratic suddenly)
-            int anomalyCount = 0;
-            foreach (var pt in chartData.Series["Steering"].Points)
-            {
-                pt.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.None;
-            }
-
-            for (int i = 0; i < chartData.Series["Steering"].Points.Count; i++)
-            {
-                var dp = chartData.Series["Steering"].Points[i];
-                if (Math.Abs(dp.YValues[0]) >= 0.8)
-                {
-                    dp.MarkerStyle = System.Windows.Forms.DataVisualization.Charting.MarkerStyle.Circle;
-                    dp.MarkerColor = Color.Magenta;
-                    dp.MarkerSize = 8;
-                    anomalyCount++;
-                }
-            }
-
-            if (anomalyCount > 0)
-            {
-                MessageBox.Show($"이상데이터(조향각 0.8 이상) {anomalyCount}개가 차트에 하이라이트 되었습니다!\n해당 지점을 클릭하여 바로 확인할 수 있습니다.", "이상 감지", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            else
-            {
-                MessageBox.Show("감지된 이상치 데이터가 없습니다.", "이상 감지", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            // chartData 컨트롤이 현재 UI 브랜치에 없어서 비워둠.
         }
+
         #endregion
 
 
