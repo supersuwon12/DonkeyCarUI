@@ -170,6 +170,10 @@ namespace DonkeyCarUI
             label23 = new Label();
             label9 = new Label();
             button6 = new Button();
+            button12 = new Button();
+            button13 = new Button();
+            label44 = new Label();
+            label45 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox13.SuspendLayout();
@@ -250,9 +254,9 @@ namespace DonkeyCarUI
             // 
             // lstViewLog
             // 
-            lstViewLog.Location = new Point(17, 307);
+            lstViewLog.Location = new Point(279, 501);
             lstViewLog.Name = "lstViewLog";
-            lstViewLog.Size = new Size(238, 121);
+            lstViewLog.Size = new Size(913, 102);
             lstViewLog.TabIndex = 53;
             lstViewLog.UseCompatibleStateImageBehavior = false;
             // 
@@ -404,9 +408,9 @@ namespace DonkeyCarUI
             // listView1
             // 
             listView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            listView1.Location = new Point(277, 504);
+            listView1.Location = new Point(17, 307);
             listView1.Name = "listView1";
-            listView1.Size = new Size(915, 97);
+            listView1.Size = new Size(244, 121);
             listView1.TabIndex = 49;
             listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -833,6 +837,7 @@ namespace DonkeyCarUI
             // 
             // groupBox12
             // 
+            groupBox12.Controls.Add(label38);
             groupBox12.Controls.Add(label37);
             groupBox12.Controls.Add(textBox8);
             groupBox12.Controls.Add(textBox7);
@@ -934,7 +939,10 @@ namespace DonkeyCarUI
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(label38);
+            groupBox6.Controls.Add(label45);
+            groupBox6.Controls.Add(label44);
+            groupBox6.Controls.Add(button13);
+            groupBox6.Controls.Add(button12);
             groupBox6.Controls.Add(comboBox5);
             groupBox6.Controls.Add(label34);
             groupBox6.Controls.Add(label32);
@@ -956,7 +964,7 @@ namespace DonkeyCarUI
             // label38
             // 
             label38.AutoSize = true;
-            label38.Location = new Point(319, 101);
+            label38.Location = new Point(9, 126);
             label38.Name = "label38";
             label38.Size = new Size(360, 17);
             label38.TabIndex = 52;
@@ -1602,6 +1610,42 @@ namespace DonkeyCarUI
             button6.Text = "학습한 AI 모델 데이터 불러오기";
             button6.UseVisualStyleBackColor = true;
             // 
+            // button12
+            // 
+            button12.Location = new Point(319, 94);
+            button12.Name = "button12";
+            button12.Size = new Size(75, 23);
+            button12.TabIndex = 52;
+            button12.Text = "저장 경로";
+            button12.UseVisualStyleBackColor = true;
+            // 
+            // button13
+            // 
+            button13.Location = new Point(319, 122);
+            button13.Name = "button13";
+            button13.Size = new Size(149, 23);
+            button13.TabIndex = 53;
+            button13.Text = "동키카 프로젝트 경로";
+            button13.UseVisualStyleBackColor = true;
+            // 
+            // label44
+            // 
+            label44.AutoSize = true;
+            label44.Location = new Point(400, 97);
+            label44.Name = "label44";
+            label44.Size = new Size(34, 17);
+            label44.TabIndex = 54;
+            label44.Text = "경로";
+            // 
+            // label45
+            // 
+            label45.AutoSize = true;
+            label45.Location = new Point(474, 125);
+            label45.Name = "label45";
+            label45.Size = new Size(34, 17);
+            label45.TabIndex = 55;
+            label45.Text = "경로";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1811,5 +1855,9 @@ namespace DonkeyCarUI
         private Label label43;
         private Label label42;
         private ListView lstViewLog;
+        private Label label45;
+        private Label label44;
+        private Button button13;
+        private Button button12;
     }
 }
