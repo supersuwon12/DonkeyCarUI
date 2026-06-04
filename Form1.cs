@@ -62,7 +62,6 @@ namespace DonkeyCarUI
             btnDelete.Click += BtnDelete_Click;
             btnRestore.Click += BtnRestore_Click;
             btnFilter.Click += BtnFilter_Click;
-            btnTestModel.Click += BtnTestModel_Click;
             button1.Click += (_, __) => ResetSelection(); // 선택 취소 버튼
 
             // 데이터 리스트 클릭 → 해당 프레임으로 이동
@@ -1719,12 +1718,6 @@ namespace DonkeyCarUI
             }
         }
 
-        private void BtnTestModel_Click(object? sender, EventArgs e)
-        {
-            MessageBox.Show("모델 테스트 기능 (5단계) - Python 연동 (예: drive.py 실행 등)\n향후 환경에 맞게 명령어 연동이 필요합니다.");
-            // Example process call:
-            // Process.Start("python", "manage.py drive --model models/mypilot.h5");
-        }
 
         private void ChartData_MouseClick(object? sender, MouseEventArgs e)
         {

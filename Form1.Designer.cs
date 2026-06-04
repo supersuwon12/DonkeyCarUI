@@ -51,7 +51,6 @@
             comboBox1 = new ComboBox();
             btnFilter = new Button();
             txtFilter = new TextBox();
-            btnTestModel = new Button();
             groupBox3 = new GroupBox();
             lstDataList = new ListBox();
             groupBox2 = new GroupBox();
@@ -227,7 +226,6 @@
             tabPage1.Controls.Add(groupBox5);
             tabPage1.Controls.Add(listView1);
             tabPage1.Controls.Add(groupBox4);
-            tabPage1.Controls.Add(btnTestModel);
             tabPage1.Controls.Add(groupBox3);
             tabPage1.Controls.Add(groupBox2);
             tabPage1.Controls.Add(lblTitle);
@@ -459,15 +457,6 @@
             txtFilter.Size = new Size(105, 23);
             txtFilter.TabIndex = 23;
             txtFilter.Text = "0.1";
-            // 
-            // btnTestModel
-            // 
-            btnTestModel.Location = new Point(17, 316);
-            btnTestModel.Name = "btnTestModel";
-            btnTestModel.Size = new Size(101, 31);
-            btnTestModel.TabIndex = 47;
-            btnTestModel.Text = "데이터 저장";
-            btnTestModel.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -1680,7 +1669,6 @@
         private ComboBox comboBox1;
         private Button btnFilter;
         private TextBox txtFilter;
-        private Button btnTestModel;
         private GroupBox groupBox3;
         private ListBox lstDataList;
         private Label lblRange;
