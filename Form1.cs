@@ -1367,8 +1367,8 @@ namespace DonkeyCarUI
             label33.Text = "대기 중";
 
             // 경로 표시 초기화
-            label42.Text = "모델 저장 경로 미선택";
-            label43.Text = "DonkeyCar 프로젝트 경로 미선택";
+            label44.Text = "모델 저장 경로 미선택";
+            label45.Text = "DonkeyCar 프로젝트 경로 미선택";
 
             // 버튼 이벤트 연결
             button3.Click += BtnStartTraining_Click;              // 학습 시작
@@ -1405,7 +1405,7 @@ namespace DonkeyCarUI
             _wslProjectPath = "/home/geonho0927/mysim";
             _donkeyProjectPath = _wslProjectPath;
 
-            label43.Text = _wslProjectPath;
+            label45.Text = _wslProjectPath;
             AddLog($"WSL DonkeyCar 프로젝트 경로 설정: {_wslProjectPath}", Color.SteelBlue);
 
             MessageBox.Show(
@@ -1423,7 +1423,7 @@ namespace DonkeyCarUI
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 _modelSaveDirectory = fbd.SelectedPath;
-                label42.Text = _modelSaveDirectory;
+                label44.Text = _modelSaveDirectory;
                 AddLog($"모델 저장 경로 설정: {_modelSaveDirectory}", Color.SteelBlue);
             }
         }

@@ -90,6 +90,7 @@
             groupBox12 = new GroupBox();
             label37 = new Label();
             textBox8 = new TextBox();
+            label38 = new Label();
             textBox7 = new TextBox();
             label36 = new Label();
             label35 = new Label();
@@ -99,7 +100,10 @@
             progressBar1 = new ProgressBar();
             button3 = new Button();
             groupBox6 = new GroupBox();
-            label38 = new Label();
+            label45 = new Label();
+            label44 = new Label();
+            button13 = new Button();
+            button12 = new Button();
             comboBox5 = new ComboBox();
             label34 = new Label();
             label32 = new Label();
@@ -165,10 +169,6 @@
             label23 = new Label();
             label9 = new Label();
             button6 = new Button();
-            button12 = new Button();
-            label42 = new Label();
-            button13 = new Button();
-            label43 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox13.SuspendLayout();
@@ -830,6 +830,15 @@
             textBox8.Size = new Size(333, 25);
             textBox8.TabIndex = 50;
             // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Location = new Point(6, 131);
+            label38.Name = "label38";
+            label38.Size = new Size(360, 17);
+            label38.TabIndex = 52;
+            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
+            // 
             // textBox7
             // 
             textBox7.Location = new Point(89, 67);
@@ -901,8 +910,8 @@
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(label43);
-            groupBox6.Controls.Add(label42);
+            groupBox6.Controls.Add(label45);
+            groupBox6.Controls.Add(label44);
             groupBox6.Controls.Add(button13);
             groupBox6.Controls.Add(button12);
             groupBox6.Controls.Add(comboBox5);
@@ -923,14 +932,41 @@
             groupBox6.TabStop = false;
             groupBox6.Text = "모델 설정";
             // 
-            // label38
+            // label45
             // 
-            label38.AutoSize = true;
-            label38.Location = new Point(6, 131);
-            label38.Name = "label38";
-            label38.Size = new Size(360, 17);
-            label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
+            label45.AutoSize = true;
+            label45.Location = new Point(475, 126);
+            label45.Name = "label45";
+            label45.Size = new Size(34, 17);
+            label45.TabIndex = 54;
+            label45.Text = "경로";
+            // 
+            // label44
+            // 
+            label44.AutoSize = true;
+            label44.Location = new Point(400, 97);
+            label44.Name = "label44";
+            label44.Size = new Size(34, 17);
+            label44.TabIndex = 54;
+            label44.Text = "경로";
+            // 
+            // button13
+            // 
+            button13.Location = new Point(319, 121);
+            button13.Name = "button13";
+            button13.Size = new Size(150, 27);
+            button13.TabIndex = 53;
+            button13.Text = "동키카 프로젝트 경로";
+            button13.UseVisualStyleBackColor = true;
+            // 
+            // button12
+            // 
+            button12.Location = new Point(319, 92);
+            button12.Name = "button12";
+            button12.Size = new Size(75, 27);
+            button12.TabIndex = 53;
+            button12.Text = "저장 경로";
+            button12.UseVisualStyleBackColor = true;
             // 
             // comboBox5
             // 
@@ -1568,42 +1604,6 @@
             button6.Text = "학습한 AI 모델 데이터 불러오기";
             button6.UseVisualStyleBackColor = true;
             // 
-            // button12
-            // 
-            button12.Location = new Point(319, 92);
-            button12.Name = "button12";
-            button12.Size = new Size(75, 27);
-            button12.TabIndex = 53;
-            button12.Text = "저장 경로";
-            button12.UseVisualStyleBackColor = true;
-            // 
-            // label42
-            // 
-            label42.AutoSize = true;
-            label42.Location = new Point(400, 97);
-            label42.Name = "label42";
-            label42.Size = new Size(34, 17);
-            label42.TabIndex = 54;
-            label42.Text = "경로";
-            // 
-            // button13
-            // 
-            button13.Location = new Point(319, 121);
-            button13.Name = "button13";
-            button13.Size = new Size(150, 27);
-            button13.TabIndex = 53;
-            button13.Text = "동키카 프로젝트 경로";
-            button13.UseVisualStyleBackColor = true;
-            // 
-            // label43
-            // 
-            label43.AutoSize = true;
-            label43.Location = new Point(475, 126);
-            label43.Name = "label43";
-            label43.Size = new Size(34, 17);
-            label43.TabIndex = 54;
-            label43.Text = "경로";
-            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1809,8 +1809,8 @@
         private TrackBar trackBar4;
         private TrackBar trackBar5;
         private Button button12;
-        private Label label43;
-        private Label label42;
+        private Label label45;
+        private Label label44;
         private Button button13;
     }
 }
