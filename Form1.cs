@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Diagnostics;
+using System.Windows.Forms.DataVisualization.Charting;
 using Timer = System.Windows.Forms.Timer; // WinForms Timer 명시적 사용
 
 namespace DonkeyCarUI
@@ -41,7 +42,6 @@ namespace DonkeyCarUI
             btnDelete.Click += BtnDelete_Click;
             btnRestore.Click += BtnRestore_Click;
             btnFilter.Click += BtnFilter_Click;
-            btnTestModel.Click += BtnTestModel_Click;
 
            
 

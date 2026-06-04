@@ -1,4 +1,6 @@
-﻿namespace DonkeyCarUI
+﻿using System.Windows.Forms.DataVisualization.Charting;
+
+namespace DonkeyCarUI
 {
     partial class Form1
     {
@@ -30,6 +32,7 @@
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
+            lstViewLog = new ListView();
             groupBox13 = new GroupBox();
             checkBox2 = new CheckBox();
             label39 = new Label();
@@ -51,7 +54,6 @@
             comboBox1 = new ComboBox();
             btnFilter = new Button();
             txtFilter = new TextBox();
-            btnTestModel = new Button();
             groupBox3 = new GroupBox();
             lstDataList = new ListBox();
             groupBox2 = new GroupBox();
@@ -78,6 +80,9 @@
             btnLoadData = new Button();
             tabPage2 = new TabPage();
             panel8 = new Panel();
+            panel2 = new Panel();
+            label43 = new Label();
+            label42 = new Label();
             label30 = new Label();
             listView2 = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -179,6 +184,7 @@
             ((System.ComponentModel.ISupportInitialize)pbCameraView).BeginInit();
             tabPage2.SuspendLayout();
             panel8.SuspendLayout();
+            panel2.SuspendLayout();
             panel7.SuspendLayout();
             groupBox12.SuspendLayout();
             groupBox6.SuspendLayout();
@@ -211,19 +217,20 @@
             tabControl1.Controls.Add(tabPage3);
             tabControl1.Dock = DockStyle.Fill;
             tabControl1.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
+            tabControl1.ItemSize = new Size(113, 40);
             tabControl1.Location = new Point(0, 0);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1388, 650);
+            tabControl1.Size = new Size(1388, 671);
             tabControl1.TabIndex = 32;
             // 
             // tabPage1
             // 
+            tabPage1.Controls.Add(lstViewLog);
             tabPage1.Controls.Add(groupBox13);
             tabPage1.Controls.Add(groupBox5);
             tabPage1.Controls.Add(listView1);
             tabPage1.Controls.Add(groupBox4);
-            tabPage1.Controls.Add(btnTestModel);
             tabPage1.Controls.Add(groupBox3);
             tabPage1.Controls.Add(groupBox2);
             tabPage1.Controls.Add(lblTitle);
@@ -233,13 +240,21 @@
             tabPage1.Controls.Add(lblPath);
             tabPage1.Controls.Add(btnLoadData);
             tabPage1.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            tabPage1.Location = new Point(4, 26);
+            tabPage1.Location = new Point(4, 44);
             tabPage1.Name = "tabPage1";
             tabPage1.Padding = new Padding(3);
-            tabPage1.Size = new Size(1380, 620);
+            tabPage1.Size = new Size(1380, 623);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "주행 데이터 관리";
             tabPage1.UseVisualStyleBackColor = true;
+            // 
+            // lstViewLog
+            // 
+            lstViewLog.Location = new Point(17, 307);
+            lstViewLog.Name = "lstViewLog";
+            lstViewLog.Size = new Size(238, 121);
+            lstViewLog.TabIndex = 53;
+            lstViewLog.UseCompatibleStateImageBehavior = false;
             // 
             // groupBox13
             // 
@@ -456,15 +471,6 @@
             txtFilter.TabIndex = 23;
             txtFilter.Text = "0.1";
             // 
-            // btnTestModel
-            // 
-            btnTestModel.Location = new Point(17, 316);
-            btnTestModel.Name = "btnTestModel";
-            btnTestModel.Size = new Size(101, 31);
-            btnTestModel.TabIndex = 47;
-            btnTestModel.Text = "데이터 저장";
-            btnTestModel.UseVisualStyleBackColor = true;
-            // 
             // groupBox3
             // 
             groupBox3.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -675,7 +681,7 @@
             pbCameraView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbCameraView.Location = new Point(279, 39);
             pbCameraView.Name = "pbCameraView";
-            pbCameraView.Size = new Size(689, 399);
+            pbCameraView.Size = new Size(689, 402);
             pbCameraView.SizeMode = PictureBoxSizeMode.Zoom;
             pbCameraView.TabIndex = 34;
             pbCameraView.TabStop = false;
@@ -705,10 +711,10 @@
             tabPage2.Controls.Add(panel8);
             tabPage2.Controls.Add(panel7);
             tabPage2.ForeColor = SystemColors.ControlText;
-            tabPage2.Location = new Point(4, 26);
+            tabPage2.Location = new Point(4, 44);
             tabPage2.Name = "tabPage2";
             tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(1380, 620);
+            tabPage2.Size = new Size(1380, 623);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "데이터 학습";
             tabPage2.UseVisualStyleBackColor = true;
@@ -716,12 +722,43 @@
             // panel8
             // 
             panel8.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel8.Controls.Add(panel2);
             panel8.Controls.Add(label30);
             panel8.Controls.Add(listView2);
             panel8.Location = new Point(3, 296);
             panel8.Name = "panel8";
-            panel8.Size = new Size(1374, 321);
+            panel8.Size = new Size(1374, 324);
             panel8.TabIndex = 49;
+            // 
+            // panel2
+            // 
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            panel2.Controls.Add(label43);
+            panel2.Controls.Add(label42);
+            panel2.Location = new Point(778, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(596, 324);
+            panel2.TabIndex = 48;
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Font = new Font("함초롬돋움", 12F);
+            label43.Location = new Point(19, 40);
+            label43.Name = "label43";
+            label43.Size = new Size(82, 21);
+            label43.TabIndex = 1;
+            label43.Text = "손실값 : 0";
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Font = new Font("함초롬돋움", 12F);
+            label42.Location = new Point(19, 13);
+            label42.Name = "label42";
+            label42.Size = new Size(121, 21);
+            label42.TabIndex = 0;
+            label42.Text = "모델 점수 : 100";
             // 
             // label30
             // 
@@ -744,7 +781,7 @@
             listView2.GridLines = true;
             listView2.Location = new Point(31, 60);
             listView2.Name = "listView2";
-            listView2.Size = new Size(719, 241);
+            listView2.Size = new Size(719, 244);
             listView2.TabIndex = 46;
             listView2.UseCompatibleStateImageBehavior = false;
             listView2.View = View.Details;
@@ -807,7 +844,7 @@
             groupBox12.Size = new Size(443, 151);
             groupBox12.TabIndex = 54;
             groupBox12.TabStop = false;
-            groupBox12.Text = "전이 학습 설정";
+            groupBox12.Text = "추가 학습 설정";
             // 
             // label37
             // 
@@ -868,7 +905,7 @@
             label33.Name = "label33";
             label33.Size = new Size(78, 17);
             label33.TabIndex = 53;
-            label33.Text = "진행도 : 0%";
+            label33.Text = "학습률 : 0%";
             // 
             // button11
             // 
@@ -923,7 +960,7 @@
             label38.Name = "label38";
             label38.Size = new Size(360, 17);
             label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
+            label38.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // comboBox5
             // 
@@ -1038,10 +1075,10 @@
             tabPage3.Controls.Add(trackBar3);
             tabPage3.Controls.Add(panel6);
             tabPage3.Controls.Add(splitContainer1);
-            tabPage3.Location = new Point(4, 26);
+            tabPage3.Location = new Point(4, 44);
             tabPage3.Name = "tabPage3";
             tabPage3.Padding = new Padding(3);
-            tabPage3.Size = new Size(1380, 620);
+            tabPage3.Size = new Size(1380, 623);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "학습 미리보기";
             tabPage3.UseVisualStyleBackColor = true;
@@ -1072,7 +1109,7 @@
             groupBox11.Controls.Add(progressBar7);
             groupBox11.Controls.Add(label26);
             groupBox11.Controls.Add(label27);
-            groupBox11.Location = new Point(730, 6);
+            groupBox11.Location = new Point(748, 3);
             groupBox11.Name = "groupBox11";
             groupBox11.Size = new Size(244, 121);
             groupBox11.TabIndex = 40;
@@ -1211,14 +1248,14 @@
             groupBox7.Controls.Add(label12);
             groupBox7.Location = new Point(296, 6);
             groupBox7.Name = "groupBox7";
-            groupBox7.Size = new Size(429, 126);
+            groupBox7.Size = new Size(446, 153);
             groupBox7.TabIndex = 37;
             groupBox7.TabStop = false;
             groupBox7.Text = "재생 설정";
             // 
             // button7
             // 
-            button7.Location = new Point(214, 61);
+            button7.Location = new Point(218, 88);
             button7.Name = "button7";
             button7.Size = new Size(205, 35);
             button7.TabIndex = 33;
@@ -1264,16 +1301,16 @@
             // button8
             // 
             button8.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button8.Location = new Point(12, 414);
+            button8.Location = new Point(12, 441);
             button8.Name = "button8";
-            button8.Size = new Size(445, 45);
+            button8.Size = new Size(462, 45);
             button8.TabIndex = 11;
             button8.Text = "▶";
             button8.UseVisualStyleBackColor = true;
             // 
             // button9
             // 
-            button9.Location = new Point(214, 21);
+            button9.Location = new Point(217, 39);
             button9.Name = "button9";
             button9.Size = new Size(98, 30);
             button9.TabIndex = 11;
@@ -1282,7 +1319,7 @@
             // 
             // button10
             // 
-            button10.Location = new Point(318, 21);
+            button10.Location = new Point(322, 39);
             button10.Name = "button10";
             button10.Size = new Size(101, 30);
             button10.TabIndex = 12;
@@ -1293,7 +1330,7 @@
             // 
             label12.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             label12.AutoSize = true;
-            label12.Location = new Point(16, 27);
+            label12.Location = new Point(16, 28);
             label12.Name = "label12";
             label12.Size = new Size(176, 17);
             label12.TabIndex = 0;
@@ -1569,7 +1606,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1388, 650);
+            ClientSize = new Size(1388, 671);
             Controls.Add(tabControl1);
             Name = "Form1";
             Text = "데이터 관리 및 모델 학습 프로그램";
@@ -1594,6 +1631,8 @@
             tabPage2.ResumeLayout(false);
             panel8.ResumeLayout(false);
             panel8.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             panel7.ResumeLayout(false);
             panel7.PerformLayout();
             groupBox12.ResumeLayout(false);
@@ -1641,7 +1680,6 @@
         private ComboBox comboBox1;
         private Button btnFilter;
         private TextBox txtFilter;
-        private Button btnTestModel;
         private GroupBox groupBox3;
         private ListBox lstDataList;
         private Label lblRange;
@@ -1769,5 +1807,9 @@
         private Label label41;
         private TrackBar trackBar4;
         private TrackBar trackBar5;
+        private Panel panel2;
+        private Label label43;
+        private Label label42;
+        private ListView lstViewLog;
     }
 }
