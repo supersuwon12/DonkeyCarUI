@@ -95,6 +95,7 @@ namespace DonkeyCarUI
             groupBox12 = new GroupBox();
             label37 = new Label();
             textBox8 = new TextBox();
+            label38 = new Label();
             textBox7 = new TextBox();
             label36 = new Label();
             label35 = new Label();
@@ -104,7 +105,6 @@ namespace DonkeyCarUI
             progressBar1 = new ProgressBar();
             button3 = new Button();
             groupBox6 = new GroupBox();
-            label38 = new Label();
             comboBox5 = new ComboBox();
             label34 = new Label();
             label32 = new Label();
@@ -406,7 +406,7 @@ namespace DonkeyCarUI
             listView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             listView1.Location = new Point(277, 504);
             listView1.Name = "listView1";
-            listView1.Size = new Size(915, 97);
+            listView1.Size = new Size(704, 97);
             listView1.TabIndex = 49;
             listView1.UseCompatibleStateImageBehavior = false;
             // 
@@ -744,7 +744,7 @@ namespace DonkeyCarUI
             // 
             label43.AutoSize = true;
             label43.Font = new Font("함초롬돋움", 12F);
-            label43.Location = new Point(19, 40);
+            label43.Location = new Point(18, 39);
             label43.Name = "label43";
             label43.Size = new Size(82, 21);
             label43.TabIndex = 1;
@@ -754,7 +754,7 @@ namespace DonkeyCarUI
             // 
             label42.AutoSize = true;
             label42.Font = new Font("함초롬돋움", 12F);
-            label42.Location = new Point(19, 13);
+            label42.Location = new Point(18, 12);
             label42.Name = "label42";
             label42.Size = new Size(121, 21);
             label42.TabIndex = 0;
@@ -835,6 +835,7 @@ namespace DonkeyCarUI
             // 
             groupBox12.Controls.Add(label37);
             groupBox12.Controls.Add(textBox8);
+            groupBox12.Controls.Add(label38);
             groupBox12.Controls.Add(textBox7);
             groupBox12.Controls.Add(label36);
             groupBox12.Controls.Add(label35);
@@ -862,6 +863,15 @@ namespace DonkeyCarUI
             textBox8.Name = "textBox8";
             textBox8.Size = new Size(333, 25);
             textBox8.TabIndex = 50;
+            // 
+            // label38
+            // 
+            label38.AutoSize = true;
+            label38.Location = new Point(9, 126);
+            label38.Name = "label38";
+            label38.Size = new Size(360, 17);
+            label38.TabIndex = 52;
+            label38.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // textBox7
             // 
@@ -934,7 +944,6 @@ namespace DonkeyCarUI
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(label38);
             groupBox6.Controls.Add(comboBox5);
             groupBox6.Controls.Add(label34);
             groupBox6.Controls.Add(label32);
@@ -952,15 +961,6 @@ namespace DonkeyCarUI
             groupBox6.TabIndex = 49;
             groupBox6.TabStop = false;
             groupBox6.Text = "모델 설정";
-            // 
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Location = new Point(319, 101);
-            label38.Name = "label38";
-            label38.Size = new Size(360, 17);
-            label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // comboBox5
             // 
