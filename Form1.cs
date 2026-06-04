@@ -31,6 +31,14 @@ namespace DonkeyCarUI
         private bool _invertColors = false;
         private readonly object _imageLock = new object();
 
+        // 학습 관련 변수
+        private Process? _trainProcess;
+        private string _donkeyProjectPath = string.Empty;
+        private string _modelSaveDirectory = string.Empty;
+        private string _transferModelPath = string.Empty;
+        private string _wslProjectPath = "/home/geonho0927/mysim";
+        private string _condaEnvName = "e2e_env";
+
         public Form1()
         {
             InitializeComponent();
@@ -92,6 +100,7 @@ namespace DonkeyCarUI
             this.KeyDown += Form1_KeyDown;
 
             ConfigureUiMappings();
+            InitializeTrainingTab();
         }
 
         private void DeleteSelectedRange()
@@ -662,28 +671,6 @@ namespace DonkeyCarUI
 
             lblSteeringValue.Text = avgAngle.ToString("F2");
             lblThrottleValue.Text = avgThrottle.ToString("F2");
-
-            if (listView2 != null)
-            {
-                listView2.Items.Clear();
-                var buckets = new int[5];
-                foreach (var r in _records)
-                {
-                    int idx = Math.Clamp((int)((r.Angle + 1) / 0.4), 0, 4);
-                    buckets[idx]++;
-                }
-
-                for (int i = 0; i < buckets.Length; i++)
-                {
-                    double rangeStart = -1 + i * 0.4;
-                    double rangeEnd = rangeStart + 0.4;
-                    listView2.Items.Add(new ListViewItem(new[]
-                    {
-                        $"{rangeStart:F1}~{rangeEnd:F1}",
-                        buckets[i].ToString()
-                    }));
-                }
-            }
         }
 
         // ── lstDataList 관련 ──────────────────────────────────────────────────────
@@ -1342,82 +1329,358 @@ namespace DonkeyCarUI
         #endregion
 
         #region Train (Python Interop)
-        private void BtnTrain_Click(object? sender, EventArgs e)
+        private string ConvertWindowsPathToWslPath(string windowsPath)
+        {
+            if (string.IsNullOrWhiteSpace(windowsPath))
+                return string.Empty;
+
+            string fullPath = Path.GetFullPath(windowsPath);
+            string driveLetter = fullPath.Substring(0, 1).ToLower();
+            string pathWithoutDrive = fullPath.Substring(2).Replace("\\", "/");
+
+            return $"/mnt/{driveLetter}{pathWithoutDrive}";
+        }
+        private void InitializeTrainingTab()
+        {
+            // 모델 종류
+            comboBox3.Items.Clear();
+            comboBox3.Items.AddRange(new object[] { "Linear", "Behavioral" });
+            comboBox3.SelectedIndex = 0;
+
+            // 동시처리데이터수
+            comboBox5.Items.Clear();
+            comboBox5.Items.AddRange(new object[] { "1", "16", "32", "64", "128" });
+            comboBox5.SelectedIndex = 2; // 기본 32
+
+            // 반복학습횟수 기본값
+            if (string.IsNullOrWhiteSpace(textBox5.Text))
+                textBox5.Text = "10";
+
+            // 모델 이름 기본값
+            if (string.IsNullOrWhiteSpace(textBox6.Text))
+                textBox6.Text = $"model_{DateTime.Now:yyyyMMdd_HHmm}";
+
+            // 진행도 초기화
+            progressBar1.Minimum = 0;
+            progressBar1.Maximum = 100;
+            progressBar1.Value = 0;
+            label33.Text = "대기 중";
+
+            // 경로 표시 초기화
+            label42.Text = "모델 저장 경로 미선택";
+            label43.Text = "DonkeyCar 프로젝트 경로 미선택";
+
+            // 버튼 이벤트 연결
+            button3.Click += BtnStartTraining_Click;              // 학습 시작
+            button11.Click += BtnStopTraining_Click;              // 학습 중지
+            button12.Click += BtnSelectModelSavePath_Click;       // 저장 경로 선택
+            button13.Click += BtnSelectDonkeyProjectPath_Click;   // 프로젝트 경로 선택
+            button4.Click += BtnLoadTransferModel_Click;          // 전이학습 모델 불러오기
+
+            button11.Enabled = false;
+
+            SetupModelListView();
+        }
+
+        private void SetupModelListView()
+        {
+            if (listView2 == null) return;
+
+            listView2.View = View.Details;
+            listView2.FullRowSelect = true;
+            listView2.GridLines = true;
+            listView2.Columns.Clear();
+            listView2.Items.Clear();
+
+            listView2.Columns.Add("모델이름", 130);
+            listView2.Columns.Add("모델종류", 90);
+            listView2.Columns.Add("사용한 데이터", 180);
+            listView2.Columns.Add("수정한 날짜", 140);
+            listView2.Columns.Add("주석", 220);
+            listView2.Columns.Add("전이학습", 150);
+        }
+
+        private void BtnSelectDonkeyProjectPath_Click(object? sender, EventArgs e)
+        {
+            _wslProjectPath = "/home/geonho0927/mysim";
+            _donkeyProjectPath = _wslProjectPath;
+
+            label43.Text = _wslProjectPath;
+            AddLog($"WSL DonkeyCar 프로젝트 경로 설정: {_wslProjectPath}", Color.SteelBlue);
+
+            MessageBox.Show(
+                $"WSL DonkeyCar 프로젝트 경로가 설정되었습니다.\n{_wslProjectPath}",
+                "프로젝트 경로 설정",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
+        }
+
+        private void BtnSelectModelSavePath_Click(object? sender, EventArgs e)
+        {
+            using var fbd = new FolderBrowserDialog();
+            fbd.Description = "학습된 모델을 저장할 폴더를 선택하세요.";
+
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                _modelSaveDirectory = fbd.SelectedPath;
+                label42.Text = _modelSaveDirectory;
+                AddLog($"모델 저장 경로 설정: {_modelSaveDirectory}", Color.SteelBlue);
+            }
+        }
+
+        private void BtnLoadTransferModel_Click(object? sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog();
+            ofd.Title = "전이학습에 사용할 기존 모델을 선택하세요.";
+            ofd.Filter = "Model Files (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                _transferModelPath = ofd.FileName;
+
+                textBox7.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
+                textBox8.Text = ofd.FileName;
+
+                AddLog($"전이학습 모델 선택: {_transferModelPath}", Color.SteelBlue);
+            }
+        }
+
+        private void BtnStartTraining_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_baseDirectory))
             {
-                MessageBox.Show("먼저 데이터 폴더를 불러오세요.");
+                MessageBox.Show("먼저 학습에 사용할 데이터 폴더를 불러오세요.");
                 return;
             }
 
-            //txtLog.Text = "학습 중...\r\n";
-            //btnTrain.Enabled = false;
+            if(string.IsNullOrEmpty(_wslProjectPath))
+{
+                MessageBox.Show("DonkeyCar 프로젝트 경로를 먼저 설정하세요.");
+                return;
+            }
 
-            // Python 프로세스 비동기 실행
-            Task.Run(() =>
+            if (string.IsNullOrEmpty(_modelSaveDirectory))
             {
-                try
+                MessageBox.Show("모델 저장 경로를 먼저 선택하세요.");
+                return;
+            }
+
+            string modelName = textBox6.Text.Trim();
+            if (string.IsNullOrEmpty(modelName))
+                modelName = $"model_{DateTime.Now:yyyyMMdd_HHmmss}";
+
+            string modelKind = comboBox3.SelectedItem?.ToString() ?? "Linear";
+
+            // DonkeyCar 학습 타입 변환
+            string donkeyType = modelKind == "Behavioral" ? "categorical" : "linear";
+
+            if (!int.TryParse(textBox5.Text.Trim(), out int epochs) || epochs <= 0)
+                epochs = 10;
+
+            if (!int.TryParse(comboBox5.SelectedItem?.ToString() ?? "32", out int batchSize))
+                batchSize = 32;
+
+            Directory.CreateDirectory(_modelSaveDirectory);
+
+            string modelPath = Path.Combine(_modelSaveDirectory, modelName + ".h5");
+
+            string wslTubPath = ConvertWindowsPathToWslPath(_baseDirectory);
+            string wslModelPath = ConvertWindowsPathToWslPath(modelPath);
+
+            // DonkeyCar v5.3.0 기준: train.py + --tubs 사용
+            string wslCommand =
+                $"source ~/miniconda3/etc/profile.d/conda.sh && " +
+                $"conda activate {_condaEnvName} && " +
+                $"cd \"{_wslProjectPath}\" && " +
+                $"python train.py " +
+                $"--tubs \"{wslTubPath}\" " +
+                $"--model \"{wslModelPath}\" " +
+                $"--type linear";
+
+            // 전이학습은 현재 DonkeyCar v5.3.0 train.py 옵션 확인 후 연결 필요
+            if (!string.IsNullOrEmpty(_transferModelPath))
+            {
+                AddLog("전이학습 모델은 선택되었지만 현재 train.py 명령에는 자동 반영하지 않습니다.", Color.DarkOrange);
+            }
+
+            progressBar1.Value = 0;
+            label33.Text = "학습 준비 중...";
+
+            button3.Enabled = false;
+            button11.Enabled = true;
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = "wsl",
+                Arguments = $"bash -lc \"{wslCommand}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            _trainProcess = new Process();
+            _trainProcess.StartInfo = psi;
+            _trainProcess.EnableRaisingEvents = true;
+
+            _trainProcess.OutputDataReceived += (s, ev) =>
+            {
+                if (!string.IsNullOrEmpty(ev.Data))
+                    HandleTrainingOutput(ev.Data);
+            };
+
+            _trainProcess.ErrorDataReceived += (s, ev) =>
+            {
+                if (!string.IsNullOrEmpty(ev.Data))
+                    HandleTrainingOutput(ev.Data);
+            };
+
+            _trainProcess.Exited += (s, ev) =>
+            {
+                BeginInvoke(new Action(() =>
                 {
-                    var psi = new ProcessStartInfo
+                    button3.Enabled = true;
+                    button11.Enabled = false;
+
+                    if (_trainProcess != null && _trainProcess.ExitCode == 0)
                     {
-                        FileName = "python",
-                        // 실제 환경에 맞게 manage.py 경로 지정 필요 (여기선 가정)
-                        Arguments = $"manage.py train --tub \"{_baseDirectory}\" --model models/mypilot.h5",
-                        RedirectStandardOutput = true,
-                        RedirectStandardError = true,
-                        UseShellExecute = false,
-                        CreateNoWindow = true,
-                        // 작업 폴더를 baseDirectory의 상위 등 적절한 곳으로 지정해야 함 (manage.py 위치)
-                        // WorkingDirectory = Path.GetDirectoryName(_baseDirectory) 
-                    };
+                        progressBar1.Value = 100;
+                        label33.Text = "학습 완료";
 
-                    using (Process process = Process.Start(psi)!)
+                        AddTrainedModelToList(
+                            modelName,
+                            modelKind,
+                            _baseDirectory,
+                            textBox3.Text.Trim(),
+                            string.IsNullOrEmpty(_transferModelPath)
+                                ? "없음"
+                                : Path.GetFileName(_transferModelPath));
+
+                        AddLog($"✅ 학습 완료: {modelName}", Color.ForestGreen);
+                        MessageBox.Show("학습이 완료되었습니다.");
+                    }
+                    else
                     {
-                        process.OutputDataReceived += (s, ev) =>
+                        int exitCode = _trainProcess?.ExitCode ?? -999;
+                        label33.Text = $"학습 종료됨 (ExitCode: {exitCode})";
+                        AddLog($"❌ 학습 비정상 종료 - ExitCode: {exitCode}", Color.OrangeRed);
+                        AddLog("명령어, DonkeyCar 경로, Python 환경, 옵션 인식 여부를 확인하세요.", Color.OrangeRed);
+                    }
+                }));
+            };
+
+            try
+            {
+                AddLog($"학습 시작(WSL): {wslCommand}", Color.SteelBlue);
+
+                _trainProcess.Start();
+                _trainProcess.BeginOutputReadLine();
+                _trainProcess.BeginErrorReadLine();
+
+                label33.Text = "학습 중...";
+            }
+            catch (Exception ex)
+            {
+                button3.Enabled = true;
+                button11.Enabled = false;
+                label33.Text = "실행 실패";
+
+                MessageBox.Show(
+                    $"학습 실행 실패:\n{ex.Message}",
+                    "오류",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void BtnStopTraining_Click(object? sender, EventArgs e)
+        {
+            try
+            {
+                if (_trainProcess != null && !_trainProcess.HasExited)
+                {
+                    _trainProcess.Kill(true);
+                    label33.Text = "학습 중지됨";
+                    AddLog("학습 프로세스 중지", Color.OrangeRed);
+                }
+
+                button3.Enabled = true;
+                button11.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    $"학습 중지 실패:\n{ex.Message}",
+                    "오류",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+            }
+        }
+
+        private void HandleTrainingOutput(string line)
+        {
+            BeginInvoke(new Action(() =>
+            {
+                AddLog(line, Color.DimGray);
+
+                // 예: Epoch 3/10 형태 감지
+                if (line.Contains("Epoch") && line.Contains("/"))
+                {
+                    string[] parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+                    foreach (var part in parts)
+                    {
+                        if (!part.Contains("/")) continue;
+
+                        var nums = part.Split('/');
+                        if (nums.Length != 2) continue;
+
+                        if (int.TryParse(nums[0], out int current) &&
+                            int.TryParse(nums[1], out int total) &&
+                            total > 0)
                         {
-                            if (!string.IsNullOrEmpty(ev.Data))
-                                AppendLog(ev.Data);
-                        };
-                        process.ErrorDataReceived += (s, ev) =>
-                        {
-                            if (!string.IsNullOrEmpty(ev.Data))
-                                AppendLog($"ERROR: {ev.Data}");
-                        };
-
-                        process.BeginOutputReadLine();
-                        process.BeginErrorReadLine();
-
-                        process.WaitForExit();
-
-                        AppendLog($"\r\n학습 완료 (Exit Code: {process.ExitCode})");
+                            int percent = Math.Max(0, Math.Min(100, current * 100 / total));
+                            progressBar1.Value = percent;
+                            label33.Text = $"학습 중... {percent}% ({current}/{total})";
+                            return;
+                        }
                     }
                 }
-                catch (Exception ex)
+
+                if (progressBar1.Value == 0)
                 {
-                    AppendLog($"\r\n파이썬 실행 중 오류 발생:\r\n{ex.Message}");
-                    AppendLog("Python이 시스템 경로(PATH)에 등록되어 있는지 확인하세요.");
+                    progressBar1.Value = 5;
+                    label33.Text = "학습 중...";
                 }
-                finally
-                {
-                    //this.Invoke((MethodInvoker)delegate { btnTrain.Enabled = true; });
-                }
-            });
+            }));
+        }
+
+        private void AddTrainedModelToList(
+            string modelName,
+            string modelKind,
+            string dataPath,
+            string memo,
+            string transferModel)
+        {
+            if (listView2 == null) return;
+
+            var item = new ListViewItem(modelName);
+            item.SubItems.Add(modelKind);
+            item.SubItems.Add(Path.GetFileName(dataPath));
+            item.SubItems.Add(DateTime.Now.ToString("yyyy-MM-dd HH:mm"));
+            item.SubItems.Add(memo);
+            item.SubItems.Add(transferModel);
+
+            listView2.Items.Add(item);
         }
 
         private void AppendLog(string message)
         {
-            if (this.InvokeRequired)
-            {
-                this.Invoke(new Action<string>(AppendLog), message);
-                return;
-            }
-
-            //txtLog.AppendText(message + "\r\n");
-            // 텍스트 박스 맨 아래로 스크롤
-            //txtLog.SelectionStart = txtLog.Text.Length;
-            //txtLog.ScrollToCaret();
+            AddLog(message, Color.DimGray);
         }
+
         #endregion
+
 
         #region Extended Features (Graph & Test)
         private void InitializeChart()
