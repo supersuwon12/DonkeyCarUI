@@ -165,6 +165,10 @@
             label23 = new Label();
             label9 = new Label();
             button6 = new Button();
+            button12 = new Button();
+            label42 = new Label();
+            button13 = new Button();
+            label43 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox13.SuspendLayout();
@@ -797,6 +801,7 @@
             // 
             groupBox12.Controls.Add(label37);
             groupBox12.Controls.Add(textBox8);
+            groupBox12.Controls.Add(label38);
             groupBox12.Controls.Add(textBox7);
             groupBox12.Controls.Add(label36);
             groupBox12.Controls.Add(label35);
@@ -896,7 +901,10 @@
             // 
             // groupBox6
             // 
-            groupBox6.Controls.Add(label38);
+            groupBox6.Controls.Add(label43);
+            groupBox6.Controls.Add(label42);
+            groupBox6.Controls.Add(button13);
+            groupBox6.Controls.Add(button12);
             groupBox6.Controls.Add(comboBox5);
             groupBox6.Controls.Add(label34);
             groupBox6.Controls.Add(label32);
@@ -918,7 +926,7 @@
             // label38
             // 
             label38.AutoSize = true;
-            label38.Location = new Point(319, 101);
+            label38.Location = new Point(6, 131);
             label38.Name = "label38";
             label38.Size = new Size(360, 17);
             label38.TabIndex = 52;
@@ -1560,6 +1568,42 @@
             button6.Text = "학습한 AI 모델 데이터 불러오기";
             button6.UseVisualStyleBackColor = true;
             // 
+            // button12
+            // 
+            button12.Location = new Point(319, 92);
+            button12.Name = "button12";
+            button12.Size = new Size(75, 27);
+            button12.TabIndex = 53;
+            button12.Text = "저장 경로";
+            button12.UseVisualStyleBackColor = true;
+            // 
+            // label42
+            // 
+            label42.AutoSize = true;
+            label42.Location = new Point(400, 97);
+            label42.Name = "label42";
+            label42.Size = new Size(34, 17);
+            label42.TabIndex = 54;
+            label42.Text = "경로";
+            // 
+            // button13
+            // 
+            button13.Location = new Point(319, 121);
+            button13.Name = "button13";
+            button13.Size = new Size(150, 27);
+            button13.TabIndex = 53;
+            button13.Text = "동키카 프로젝트 경로";
+            button13.UseVisualStyleBackColor = true;
+            // 
+            // label43
+            // 
+            label43.AutoSize = true;
+            label43.Location = new Point(475, 126);
+            label43.Name = "label43";
+            label43.Size = new Size(34, 17);
+            label43.TabIndex = 54;
+            label43.Text = "경로";
+            // 
             // Form1
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -1764,5 +1808,9 @@
         private Label label41;
         private TrackBar trackBar4;
         private TrackBar trackBar5;
+        private Button button12;
+        private Label label43;
+        private Label label42;
+        private Button button13;
     }
 }
