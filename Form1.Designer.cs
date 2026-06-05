@@ -32,7 +32,7 @@ namespace DonkeyCarUI
         {
             tabControl1 = new TabControl();
             tabPage1 = new TabPage();
-            lstViewLog = new ListView();
+            panelTimeline = new Panel();
             groupBox13 = new GroupBox();
             checkBox2 = new CheckBox();
             label39 = new Label();
@@ -95,6 +95,7 @@ namespace DonkeyCarUI
             groupBox12 = new GroupBox();
             label37 = new Label();
             textBox8 = new TextBox();
+            label38 = new Label();
             textBox7 = new TextBox();
             label36 = new Label();
             label35 = new Label();
@@ -104,7 +105,10 @@ namespace DonkeyCarUI
             progressBar1 = new ProgressBar();
             button3 = new Button();
             groupBox6 = new GroupBox();
-            label38 = new Label();
+            label45 = new Label();
+            label44 = new Label();
+            button13 = new Button();
+            button12 = new Button();
             comboBox5 = new ComboBox();
             label34 = new Label();
             label32 = new Label();
@@ -170,10 +174,6 @@ namespace DonkeyCarUI
             label23 = new Label();
             label9 = new Label();
             button6 = new Button();
-            button12 = new Button();
-            button13 = new Button();
-            label44 = new Label();
-            label45 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             groupBox13.SuspendLayout();
@@ -230,7 +230,7 @@ namespace DonkeyCarUI
             // 
             // tabPage1
             // 
-            tabPage1.Controls.Add(lstViewLog);
+            tabPage1.Controls.Add(panelTimeline);
             tabPage1.Controls.Add(groupBox13);
             tabPage1.Controls.Add(groupBox5);
             tabPage1.Controls.Add(listView1);
@@ -252,13 +252,14 @@ namespace DonkeyCarUI
             tabPage1.Text = "주행 데이터 관리";
             tabPage1.UseVisualStyleBackColor = true;
             // 
-            // lstViewLog
+            // panelTimeline
             // 
-            lstViewLog.Location = new Point(279, 501);
-            lstViewLog.Name = "lstViewLog";
-            lstViewLog.Size = new Size(913, 102);
-            lstViewLog.TabIndex = 53;
-            lstViewLog.UseCompatibleStateImageBehavior = false;
+            panelTimeline.BackColor = Color.Black;
+            panelTimeline.BorderStyle = BorderStyle.FixedSingle;
+            panelTimeline.Location = new Point(279, 501);
+            panelTimeline.Name = "panelTimeline";
+            panelTimeline.Size = new Size(911, 102);
+            panelTimeline.TabIndex = 53;
             // 
             // groupBox13
             // 
@@ -410,7 +411,6 @@ namespace DonkeyCarUI
             listView1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             listView1.Location = new Point(17, 307);
             listView1.Name = "listView1";
-            listView1.Size = new Size(704, 97);
             listView1.Size = new Size(244, 121);
             listView1.TabIndex = 49;
             listView1.UseCompatibleStateImageBehavior = false;
@@ -684,9 +684,9 @@ namespace DonkeyCarUI
             // pbCameraView
             // 
             pbCameraView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pbCameraView.Location = new Point(279, 39);
+            pbCameraView.Location = new Point(279, 38);
             pbCameraView.Name = "pbCameraView";
-            pbCameraView.Size = new Size(689, 402);
+            pbCameraView.Size = new Size(701, 402);
             pbCameraView.SizeMode = PictureBoxSizeMode.Zoom;
             pbCameraView.TabIndex = 34;
             pbCameraView.TabStop = false;
@@ -838,7 +838,6 @@ namespace DonkeyCarUI
             // 
             // groupBox12
             // 
-            groupBox12.Controls.Add(label38);
             groupBox12.Controls.Add(label37);
             groupBox12.Controls.Add(textBox8);
             groupBox12.Controls.Add(label38);
@@ -873,11 +872,11 @@ namespace DonkeyCarUI
             // label38
             // 
             label38.AutoSize = true;
-            label38.Location = new Point(6, 131);
+            label38.Location = new Point(9, 126);
             label38.Name = "label38";
             label38.Size = new Size(360, 17);
             label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 전이 학습 설정에서 진행하세요.";
+            label38.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // textBox7
             // 
@@ -1007,14 +1006,6 @@ namespace DonkeyCarUI
             button12.TabIndex = 53;
             button12.Text = "저장 경로";
             button12.UseVisualStyleBackColor = true;
-            // label38
-            // 
-            label38.AutoSize = true;
-            label38.Location = new Point(9, 126);
-            label38.Name = "label38";
-            label38.Size = new Size(360, 17);
-            label38.TabIndex = 52;
-            label38.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // comboBox5
             // 
@@ -1163,7 +1154,6 @@ namespace DonkeyCarUI
             groupBox11.Controls.Add(progressBar7);
             groupBox11.Controls.Add(label26);
             groupBox11.Controls.Add(label27);
-            groupBox11.Location = new Point(730, 6);
             groupBox11.Location = new Point(748, 3);
             groupBox11.Name = "groupBox11";
             groupBox11.Size = new Size(244, 121);
@@ -1412,8 +1402,6 @@ namespace DonkeyCarUI
             // 
             // panel4
             // 
-            panel4.Controls.Add(pictureBox2);
-            panel4.Dock = DockStyle.Fill;
             panel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel4.Controls.Add(pictureBox2);
             panel4.Location = new Point(0, 86);
@@ -1424,8 +1412,6 @@ namespace DonkeyCarUI
             // 
             // pictureBox2
             // 
-            pictureBox2.BackColor = Color.Linen;
-            pictureBox2.Dock = DockStyle.Fill;
             pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox2.BackColor = Color.Linen;
             pictureBox2.Location = new Point(10, 10);
@@ -1436,7 +1422,6 @@ namespace DonkeyCarUI
             // 
             // panel5
             // 
-            panel5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel5.Controls.Add(groupBox9);
             panel5.Controls.Add(label8);
             panel5.Controls.Add(button5);
@@ -1449,7 +1434,6 @@ namespace DonkeyCarUI
             // 
             // groupBox9
             // 
-            groupBox9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             groupBox9.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox9.Controls.Add(progressBar2);
             groupBox9.Controls.Add(label16);
@@ -1547,8 +1531,6 @@ namespace DonkeyCarUI
             // 
             // panel3
             // 
-            panel3.Controls.Add(pictureBox1);
-            panel3.Dock = DockStyle.Fill;
             panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel3.Controls.Add(pictureBox1);
             panel3.Location = new Point(0, 86);
@@ -1559,8 +1541,6 @@ namespace DonkeyCarUI
             // 
             // pictureBox1
             // 
-            pictureBox1.BackColor = Color.Linen;
-            pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackColor = Color.Linen;
             pictureBox1.Location = new Point(10, 10);
@@ -1571,10 +1551,6 @@ namespace DonkeyCarUI
             // 
             // panel1
             // 
-            panel1.Controls.Add(groupBox10);
-            panel1.Controls.Add(label9);
-            panel1.Controls.Add(button6);
-            panel1.Dock = DockStyle.Top;
             panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.Controls.Add(groupBox10);
             panel1.Controls.Add(label9);
@@ -1586,7 +1562,6 @@ namespace DonkeyCarUI
             // 
             // groupBox10
             // 
-            groupBox10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             groupBox10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             groupBox10.Controls.Add(progressBar4);
             groupBox10.Controls.Add(label20);
@@ -1884,6 +1859,6 @@ namespace DonkeyCarUI
         private Panel panel2;
         private Label label43;
         private Label label42;
-        private ListView lstViewLog;
+        private Panel panelTimeline;
     }
 }

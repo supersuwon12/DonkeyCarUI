@@ -40,6 +40,9 @@ namespace DonkeyCarUI
         private string _wslProjectPath = "/home/geonho0927/mysim";
         private string _condaEnvName = "e2e_env";
 
+        private readonly Dictionary<int, Image> _timelineThumbCache = new Dictionary<int, Image>();
+
+        private string _catalogBackupDirectory = string.Empty;
         public Form1()
         {
             InitializeComponent();
@@ -93,9 +96,146 @@ namespace DonkeyCarUI
             this.KeyDown += Form1_KeyDown;
 
             ConfigureUiMappings();
+            SetupTimelinePanel();
             InitializeTrainingTab();
         }
+        private void EnableDoubleBuffer(Control control)
+        {
+            typeof(Control).GetProperty(
+                "DoubleBuffered",
+                System.Reflection.BindingFlags.NonPublic |
+                System.Reflection.BindingFlags.Instance
+            )?.SetValue(control, true, null);
+        }
+        private void SetupTimelinePanel()
+        {
+            if (panelTimeline == null) return;
 
+            EnableDoubleBuffer(panelTimeline);
+
+            panelTimeline.Paint += PanelTimeline_Paint;
+            panelTimeline.MouseClick += PanelTimeline_MouseClick;
+            panelTimeline.Resize += (_, __) => panelTimeline.Invalidate();
+        }
+        private void PanelTimeline_Paint(object? sender, PaintEventArgs e)
+        {
+            if (_records.Count == 0) return;
+
+            int width = panelTimeline.Width;
+            int height = panelTimeline.Height;
+
+            if (width <= 0 || height <= 0) return;
+
+            int thumbCount = Math.Max(1, width / 80);
+            int thumbWidth = width / thumbCount;
+            int thumbHeight = height;
+
+            for (int slot = 0; slot < thumbCount; slot++)
+            {
+                int recordIndex = (int)Math.Round((double)slot / Math.Max(1, thumbCount - 1) * Math.Max(0, _records.Count - 1));
+                recordIndex = Math.Clamp(recordIndex, 0, _records.Count - 1);
+
+                Rectangle rect = new Rectangle(slot * thumbWidth, 0, thumbWidth, thumbHeight);
+
+                Image? img = GetTimelineThumbnail(recordIndex, thumbWidth, thumbHeight);
+                if (img != null)
+                {
+                    e.Graphics.DrawImage(img, rect);
+                }
+                else
+                {
+                    e.Graphics.FillRectangle(Brushes.DimGray, rect);
+                }
+            }
+            if (_startIndex != -1 && _endIndex != -1)
+            {
+                int start = Math.Min(_startIndex, _endIndex);
+                int end = Math.Max(_startIndex, _endIndex);
+
+                int startX = (int)Math.Round((double)start / Math.Max(1, _records.Count - 1) * (width - 1));
+                int endX = (int)Math.Round((double)end / Math.Max(1, _records.Count - 1) * (width - 1));
+
+                using var brush = new SolidBrush(Color.FromArgb(90, Color.Yellow));
+                e.Graphics.FillRectangle(
+                    brush,
+                    startX,
+                    0,
+                    Math.Max(1, endX - startX),
+                    height
+                );
+            }
+            int currentX = (int)Math.Round((double)tbFrameSlider.Value / Math.Max(1, _records.Count - 1) * (width - 1));
+
+            using (var pen = new Pen(Color.Red, 3))
+            {
+                e.Graphics.DrawLine(pen, currentX, 0, currentX, height);
+            }
+        }
+        private Image? GetTimelineThumbnail(int recordIndex, int width, int height)
+        {
+            if (_timelineThumbCache.TryGetValue(recordIndex, out var cached))
+                return cached;
+
+            string imgPath = GetImageFullPath(_records[recordIndex]);
+            if (!File.Exists(imgPath)) return null;
+
+            try
+            {
+                using var fs = new FileStream(imgPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                using var original = Image.FromStream(fs);
+
+                Bitmap thumb = new Bitmap(width, height);
+                using (Graphics g = Graphics.FromImage(thumb))
+                {
+                    g.DrawImage(original, new Rectangle(0, 0, width, height));
+                }
+
+                _timelineThumbCache[recordIndex] = thumb;
+                return thumb;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+        private void PanelTimeline_MouseClick(object? sender, MouseEventArgs e)
+        {
+            if (_records.Count == 0) return;
+
+            double ratio = (double)e.X / panelTimeline.Width;
+            int index = (int)(ratio * _records.Count);
+            index = Math.Clamp(index, 0, _records.Count - 1);
+
+            tbFrameSlider.Value = index;
+            UpdateUIForFrame(index);
+            panelTimeline.Invalidate();
+        }
+        private string GetImageFullPath(FrameData record)
+        {
+            if (string.IsNullOrEmpty(record.ImagePath)) return string.Empty;
+
+            string imgRelPath = record.ImagePath;
+
+            if (imgRelPath.StartsWith("images/") || imgRelPath.StartsWith("images\\"))
+                imgRelPath = imgRelPath.Substring(7);
+
+            string imgPath = Path.Combine(_baseDirectory, "images", imgRelPath);
+
+            if (!File.Exists(imgPath))
+                imgPath = Path.Combine(_baseDirectory, record.ImagePath);
+
+            return imgPath;
+        }
+        private string GetImageNumberText(string imagePath)
+        {
+            if (string.IsNullOrEmpty(imagePath)) return "-";
+
+            string fileNameOnly = Path.GetFileNameWithoutExtension(imagePath);
+
+            string digits = new string(fileNameOnly.Where(char.IsDigit).ToArray());
+
+            return string.IsNullOrEmpty(digits) ? fileNameOnly : digits;
+        }
         private void DeleteSelectedRange()
         {
             if (_startIndex == -1 || _endIndex == -1) return;
@@ -341,6 +481,8 @@ namespace DonkeyCarUI
 
             _trashDirectory = Path.Combine(_baseDirectory, ".trash");
             Directory.CreateDirectory(_trashDirectory);
+            _catalogBackupDirectory = Path.Combine(_trashDirectory, "catalog_backup");
+            Directory.CreateDirectory(_catalogBackupDirectory);
 
             // catalog_0.catalog 우선 탐색, 없으면 .catalog 파일 전체 수집
             string defaultCatalog = Path.Combine(_baseDirectory, "catalog_0.catalog");
@@ -395,6 +537,8 @@ namespace DonkeyCarUI
                 UpdateDataListText();
                 ResetSelection();
                 UpdateListBox();
+                _timelineThumbCache.Clear();
+                panelTimeline.Invalidate();
                 AddLog($"데이터 로드 완료: {_records.Count}장 (catalog {allCatalogFiles.Length}개)", Color.ForestGreen);
             }
             catch (Exception ex)
@@ -403,7 +547,31 @@ namespace DonkeyCarUI
                 AddLog($"데이터 로딩 실패: {ex.Message}", Color.OrangeRed);
             }
         }
+        private async Task BackupCatalogFilesAsync(string reason)
+        {
+            if (string.IsNullOrEmpty(_baseDirectory)) return;
 
+            await Task.Run(() =>
+            {
+                Directory.CreateDirectory(_catalogBackupDirectory);
+
+                string stamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+                string backupDir = Path.Combine(_catalogBackupDirectory, $"{stamp}_{reason}");
+                Directory.CreateDirectory(backupDir);
+
+                foreach (var file in Directory.GetFiles(_baseDirectory, "*.catalog"))
+                {
+                    string dest = Path.Combine(backupDir, Path.GetFileName(file));
+                    File.Copy(file, dest, true);
+                }
+
+                foreach (var file in Directory.GetFiles(_baseDirectory, "*.manifest"))
+                {
+                    string dest = Path.Combine(backupDir, Path.GetFileName(file));
+                    File.Copy(file, dest, true);
+                }
+            });
+        }
         private void TbFrameSlider_Scroll(object? sender, EventArgs e)
         {
             UpdateUIForFrame(tbFrameSlider.Value);
@@ -465,6 +633,7 @@ namespace DonkeyCarUI
                     catch { /* Handle image load error silently for smooth sliding */ }
                 }
             }
+            panelTimeline?.Invalidate();
         }
 
         private Bitmap ApplyImageAdjustments(Bitmap source)
@@ -685,13 +854,7 @@ namespace DonkeyCarUI
                 var r = _records[i];
                 string fileName = Path.GetFileName(r.ImagePath);
 
-                string imageNumber = new string(
-                    Path.GetFileNameWithoutExtension(r.ImagePath)
-                        .TakeWhile(char.IsDigit)
-                        .ToArray());
-
-                if (string.IsNullOrEmpty(imageNumber))
-                    imageNumber = Path.GetFileNameWithoutExtension(r.ImagePath);
+                string imageNumber = GetImageNumberText(r.ImagePath);
 
                 lstDataList.Items.Add($"{imageNumber}  A:{r.Angle:+0.00;-0.00;0.00}  T:{r.Throttle:+0.00;-0.00;0.00}  {fileName}");
             }
@@ -832,6 +995,7 @@ namespace DonkeyCarUI
             _startIndex = -1;
             _endIndex = -1;
             UpdateRangeLabel();
+            panelTimeline?.Invalidate();
         }
 
         private void UpdateRangeLabel()
@@ -986,6 +1150,7 @@ namespace DonkeyCarUI
             UpdateRangeLabel();
             lstDataList?.Invalidate(); // 범위 강조 즉시 반영
             AddLog($"시작 지점 선택: {_startIndex + 1}", Color.Gray);
+            panelTimeline?.Invalidate();
         }
 
         private void BtnSetPoint2_Click(object? sender, EventArgs e)
@@ -995,6 +1160,7 @@ namespace DonkeyCarUI
             UpdateRangeLabel();
             lstDataList?.Invalidate(); // 범위 강조 즉시 반영
             AddLog($"끝 지점 선택: {_endIndex + 1}", Color.Gray);
+            panelTimeline?.Invalidate();
         }
 
         private void BtnDelete_Click(object? sender, EventArgs e)
@@ -1029,6 +1195,7 @@ namespace DonkeyCarUI
             {
                 try
                 {
+                    await BackupCatalogFilesAsync($"delete_{start + 1}_{end + 1}");
                     // 1) 이미지 → .trash 이동
                     var deletedFiles = await MoveFilesToTrashAsync(toRemove);
 
@@ -1049,7 +1216,7 @@ namespace DonkeyCarUI
 
                         // 4) UI 갱신
                         tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider.Value = Math.Min(tbFrameSlider.Value, tbFrameSlider.Maximum);
+                        tbFrameSlider.Value = Math.Min(start, tbFrameSlider.Maximum);
                         UpdateDataListText();
                         ResetSelection();
                         if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider.Value);
@@ -1184,6 +1351,7 @@ namespace DonkeyCarUI
             {
                 try
                 {
+                    await BackupCatalogFilesAsync("filter");
                     var deletedFiles = await MoveFilesToTrashAsync(removed);
 
                     BeginInvoke(new Action(() =>
