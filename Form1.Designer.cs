@@ -1159,13 +1159,13 @@ namespace DonkeyCarUI
             groupBox11.Size = new Size(244, 121);
             groupBox11.TabIndex = 40;
             groupBox11.TabStop = false;
-            groupBox11.Text = "주행 데이터";
+            groupBox11.Text = "원본 주행 데이터";
             // 
             // progressBar6
             // 
-            progressBar6.Location = new Point(115, 90);
+            progressBar6.Location = new Point(97, 90);
             progressBar6.Name = "progressBar6";
-            progressBar6.Size = new Size(97, 10);
+            progressBar6.Size = new Size(115, 10);
             progressBar6.TabIndex = 13;
             // 
             // label24
@@ -1180,7 +1180,7 @@ namespace DonkeyCarUI
             // label25
             // 
             label25.AutoSize = true;
-            label25.Location = new Point(70, 87);
+            label25.Location = new Point(47, 85);
             label25.Name = "label25";
             label25.Size = new Size(43, 17);
             label25.TabIndex = 14;
@@ -1188,15 +1188,15 @@ namespace DonkeyCarUI
             // 
             // progressBar7
             // 
-            progressBar7.Location = new Point(114, 42);
+            progressBar7.Location = new Point(96, 42);
             progressBar7.Name = "progressBar7";
-            progressBar7.Size = new Size(97, 10);
+            progressBar7.Size = new Size(115, 10);
             progressBar7.TabIndex = 2;
             // 
             // label26
             // 
             label26.AutoSize = true;
-            label26.Location = new Point(69, 38);
+            label26.Location = new Point(47, 38);
             label26.Name = "label26";
             label26.Size = new Size(43, 17);
             label26.TabIndex = 1;
@@ -1441,9 +1441,9 @@ namespace DonkeyCarUI
             groupBox9.Controls.Add(progressBar3);
             groupBox9.Controls.Add(label18);
             groupBox9.Controls.Add(label19);
-            groupBox9.Location = new Point(449, 7);
+            groupBox9.Location = new Point(410, 7);
             groupBox9.Name = "groupBox9";
-            groupBox9.Size = new Size(213, 72);
+            groupBox9.Size = new Size(252, 72);
             groupBox9.TabIndex = 39;
             groupBox9.TabStop = false;
             groupBox9.Text = "AI모델 주행 데이터";
@@ -1451,15 +1451,15 @@ namespace DonkeyCarUI
             // progressBar2
             // 
             progressBar2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar2.Location = new Point(110, 51);
+            progressBar2.Location = new Point(97, 51);
             progressBar2.Name = "progressBar2";
-            progressBar2.Size = new Size(97, 10);
+            progressBar2.Size = new Size(149, 10);
             progressBar2.TabIndex = 13;
             // 
             // label16
             // 
             label16.AutoSize = true;
-            label16.Location = new Point(15, 49);
+            label16.Location = new Point(6, 48);
             label16.Name = "label16";
             label16.Size = new Size(34, 17);
             label16.TabIndex = 13;
@@ -1468,7 +1468,7 @@ namespace DonkeyCarUI
             // label17
             // 
             label17.AutoSize = true;
-            label17.Location = new Point(65, 48);
+            label17.Location = new Point(47, 48);
             label17.Name = "label17";
             label17.Size = new Size(43, 17);
             label17.TabIndex = 14;
@@ -1477,15 +1477,15 @@ namespace DonkeyCarUI
             // progressBar3
             // 
             progressBar3.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar3.Location = new Point(109, 26);
+            progressBar3.Location = new Point(96, 26);
             progressBar3.Name = "progressBar3";
-            progressBar3.Size = new Size(97, 10);
+            progressBar3.Size = new Size(149, 10);
             progressBar3.TabIndex = 2;
             // 
             // label18
             // 
             label18.AutoSize = true;
-            label18.Location = new Point(64, 22);
+            label18.Location = new Point(47, 21);
             label18.Name = "label18";
             label18.Size = new Size(43, 17);
             label18.TabIndex = 1;
@@ -1494,7 +1494,7 @@ namespace DonkeyCarUI
             // label19
             // 
             label19.AutoSize = true;
-            label19.Location = new Point(14, 22);
+            label19.Location = new Point(6, 22);
             label19.Name = "label19";
             label19.Size = new Size(34, 17);
             label19.TabIndex = 0;
@@ -1504,7 +1504,7 @@ namespace DonkeyCarUI
             // 
             label8.AutoSize = true;
             label8.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label8.Location = new Point(222, 48);
+            label8.Location = new Point(205, 48);
             label8.Name = "label8";
             label8.Size = new Size(34, 17);
             label8.TabIndex = 41;
@@ -1514,9 +1514,9 @@ namespace DonkeyCarUI
             // 
             button5.Location = new Point(5, 42);
             button5.Name = "button5";
-            button5.Size = new Size(211, 29);
+            button5.Size = new Size(184, 29);
             button5.TabIndex = 40;
-            button5.Text = "학습한 AI 모델 데이터 불러오기";
+            button5.Text = "원본 주행 데이터 불러오기";
             button5.UseVisualStyleBackColor = true;
             // 
             // label4
@@ -1569,9 +1569,9 @@ namespace DonkeyCarUI
             groupBox10.Controls.Add(progressBar5);
             groupBox10.Controls.Add(label22);
             groupBox10.Controls.Add(label23);
-            groupBox10.Location = new Point(450, 7);
+            groupBox10.Location = new Point(411, 7);
             groupBox10.Name = "groupBox10";
-            groupBox10.Size = new Size(213, 72);
+            groupBox10.Size = new Size(252, 72);
             groupBox10.TabIndex = 44;
             groupBox10.TabStop = false;
             groupBox10.Text = "AI모델 주행 데이터";
@@ -1579,15 +1579,15 @@ namespace DonkeyCarUI
             // progressBar4
             // 
             progressBar4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar4.Location = new Point(110, 51);
+            progressBar4.Location = new Point(96, 51);
             progressBar4.Name = "progressBar4";
-            progressBar4.Size = new Size(97, 10);
+            progressBar4.Size = new Size(150, 10);
             progressBar4.TabIndex = 13;
             // 
             // label20
             // 
             label20.AutoSize = true;
-            label20.Location = new Point(15, 49);
+            label20.Location = new Point(6, 48);
             label20.Name = "label20";
             label20.Size = new Size(34, 17);
             label20.TabIndex = 13;
@@ -1596,7 +1596,7 @@ namespace DonkeyCarUI
             // label21
             // 
             label21.AutoSize = true;
-            label21.Location = new Point(65, 48);
+            label21.Location = new Point(46, 48);
             label21.Name = "label21";
             label21.Size = new Size(43, 17);
             label21.TabIndex = 14;
@@ -1605,15 +1605,15 @@ namespace DonkeyCarUI
             // progressBar5
             // 
             progressBar5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar5.Location = new Point(109, 26);
+            progressBar5.Location = new Point(95, 26);
             progressBar5.Name = "progressBar5";
-            progressBar5.Size = new Size(97, 10);
+            progressBar5.Size = new Size(150, 10);
             progressBar5.TabIndex = 2;
             // 
             // label22
             // 
             label22.AutoSize = true;
-            label22.Location = new Point(64, 22);
+            label22.Location = new Point(46, 22);
             label22.Name = "label22";
             label22.Size = new Size(43, 17);
             label22.TabIndex = 1;
@@ -1622,7 +1622,7 @@ namespace DonkeyCarUI
             // label23
             // 
             label23.AutoSize = true;
-            label23.Location = new Point(14, 22);
+            label23.Location = new Point(6, 22);
             label23.Name = "label23";
             label23.Size = new Size(34, 17);
             label23.TabIndex = 0;
@@ -1632,7 +1632,7 @@ namespace DonkeyCarUI
             // 
             label9.AutoSize = true;
             label9.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            label9.Location = new Point(232, 48);
+            label9.Location = new Point(175, 48);
             label9.Name = "label9";
             label9.Size = new Size(34, 17);
             label9.TabIndex = 43;
@@ -1642,9 +1642,9 @@ namespace DonkeyCarUI
             // 
             button6.Location = new Point(13, 42);
             button6.Name = "button6";
-            button6.Size = new Size(213, 29);
+            button6.Size = new Size(156, 29);
             button6.TabIndex = 42;
-            button6.Text = "학습한 AI 모델 데이터 불러오기";
+            button6.Text = "학습 모델 불러오기";
             button6.UseVisualStyleBackColor = true;
             // 
             // Form1

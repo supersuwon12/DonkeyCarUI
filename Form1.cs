@@ -1,6 +1,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 using System.Windows.Forms.DataVisualization.Charting;
 using Timer = System.Windows.Forms.Timer; // WinForms Timer 명시적 사용
 
@@ -40,9 +41,52 @@ namespace DonkeyCarUI
         private string _wslProjectPath = "/home/geonho0927/mysim";
         private string _condaEnvName = "e2e_env";
 
+        // 학습 결과 그래프/지표
+        private Chart? chartTrainingLoss;
+        private int _currentEpoch = 0;
+        private int _totalEpochs = 0;
+        private double _lastLoss = double.NaN;
+        private double _lastValLoss = double.NaN;
+        private double _bestLoss = double.MaxValue;
+        private int _bestEpoch = 0;
+
+        // 학습 미리보기 탭
+        private readonly List<FrameData> _previewRecords = new List<FrameData>();
+        private string _previewBaseDirectory = string.Empty;
+        private string _previewModelPath = string.Empty;
+        private readonly Timer _previewTimer = new Timer();
+        private bool _isPreviewPlaying = false;
+        private int _previewPlaybackSpeed = 1;
+        private double _previewBrightness = 0;
+        private double _previewBlurAmount = 0;
+        private bool _previewInvertColors = false;
+
         private readonly Dictionary<int, Image> _timelineThumbCache = new Dictionary<int, Image>();
 
         private string _catalogBackupDirectory = string.Empty;
+
+        private double _actualSteering = 0;
+        private double _actualThrottle = 0;
+        private double _predictedSteering = 0;
+        private double _predictedThrottle = 0;
+
+        private string _leftModelPath = string.Empty;
+        private string _rightModelPath = string.Empty;
+
+        private double _originalSteering = 0;
+        private double _originalThrottle = 0;
+
+        private double _leftPredictedSteering = 0;
+        private double _leftPredictedThrottle = 0;
+
+        private double _rightPredictedSteering = 0;
+        private double _rightPredictedThrottle = 0;
+
+        private bool _leftPredictionReady = false;
+        private bool _rightPredictionReady = false;
+
+        private readonly Dictionary<int, (double steering, double throttle)> _leftPredictionCache = new();
+        private readonly Dictionary<int, (double steering, double throttle)> _rightPredictionCache = new();
         public Form1()
         {
             InitializeComponent();
@@ -95,9 +139,15 @@ namespace DonkeyCarUI
             this.KeyPreview = true;
             this.KeyDown += Form1_KeyDown;
 
+            pictureBox2.Paint += PictureBox2_Paint;
+            pictureBox1.Paint += PictureBox1_Paint;
+            button5.Click += BtnLoadLeftModel_Click;
+            button6.Click += BtnLoadRightModel_Click;
+
             ConfigureUiMappings();
             SetupTimelinePanel();
             InitializeTrainingTab();
+            SetupPreviewTab();
         }
         private void EnableDoubleBuffer(Control control)
         {
@@ -212,17 +262,22 @@ namespace DonkeyCarUI
         }
         private string GetImageFullPath(FrameData record)
         {
-            if (string.IsNullOrEmpty(record.ImagePath)) return string.Empty;
+            return GetImageFullPath(record, _baseDirectory);
+        }
+
+        private string GetImageFullPath(FrameData record, string baseDirectory)
+        {
+            if (string.IsNullOrEmpty(record.ImagePath) || string.IsNullOrEmpty(baseDirectory)) return string.Empty;
 
             string imgRelPath = record.ImagePath;
 
             if (imgRelPath.StartsWith("images/") || imgRelPath.StartsWith("images\\"))
                 imgRelPath = imgRelPath.Substring(7);
 
-            string imgPath = Path.Combine(_baseDirectory, "images", imgRelPath);
+            string imgPath = Path.Combine(baseDirectory, "images", imgRelPath);
 
             if (!File.Exists(imgPath))
-                imgPath = Path.Combine(_baseDirectory, record.ImagePath);
+                imgPath = Path.Combine(baseDirectory, record.ImagePath);
 
             return imgPath;
         }
@@ -354,8 +409,10 @@ namespace DonkeyCarUI
             {
                 listView1.View = View.Details;
                 listView1.Columns.Clear();
-                listView1.Columns.Add("타임라인", -2, HorizontalAlignment.Left);
+                listView1.Columns.Add("타임라인", 3000, HorizontalAlignment.Left);
                 listView1.FullRowSelect = true;
+                listView1.GridLines = false;
+                listView1.Scrollable = true;
             }
 
             if (trackBar4 != null)
@@ -528,10 +585,18 @@ namespace DonkeyCarUI
 
                 if (_records.Count > 0)
                 {
+                    // 주행 데이터 관리 탭
                     tbFrameSlider.Minimum = 0;
                     tbFrameSlider.Maximum = _records.Count - 1;
                     tbFrameSlider.Value = 0;
                     UpdateUIForFrame(0);
+
+                    // 학습 미리보기 탭
+                    trackBar3.Minimum = 0;
+                    trackBar3.Maximum = _records.Count - 1;
+                    trackBar3.Value = 0;
+
+                    UpdatePreviewFrame(0);
                 }
 
                 UpdateDataListText();
@@ -947,6 +1012,21 @@ namespace DonkeyCarUI
                 ForeColor = color
             };
             listView1.Items.Insert(0, item);
+
+            // 로그 파일 저장
+            try
+            {
+                string logPath = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "training_log.txt");
+
+                File.AppendAllText(
+                    logPath,
+                    $"[{DateTime.Now:HH:mm:ss}] {message}{Environment.NewLine}");
+            }
+            catch
+            {
+            }
         }
 
         private void ResetHistory()
@@ -1541,6 +1621,166 @@ namespace DonkeyCarUI
             button11.Enabled = false;
 
             SetupModelListView();
+            SetupTrainingLossChart();
+            ResetTrainingMetrics();
+        }
+
+        private void SetupTrainingLossChart()
+        {
+            if (panel2 == null) return;
+
+            if (chartTrainingLoss != null)
+            {
+                panel2.Controls.Remove(chartTrainingLoss);
+                chartTrainingLoss.Dispose();
+            }
+
+            chartTrainingLoss = new Chart
+            {
+                Name = "chartTrainingLoss",
+                Location = new Point(12, 72),
+                Size = new Size(Math.Max(250, panel2.Width - 24), Math.Max(180, panel2.Height - 84)),
+                Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
+                BackColor = Color.White
+            };
+
+            var chartArea = new ChartArea("LossArea");
+            chartArea.AxisX.Title = "Epoch";
+            chartArea.AxisX.Minimum = 0;
+            chartArea.AxisX.Interval = 1;
+            chartArea.AxisY.Title = "Loss";
+            chartArea.AxisY.Minimum = 0;
+            chartArea.AxisX.MajorGrid.LineColor = Color.Gainsboro;
+            chartArea.AxisY.MajorGrid.LineColor = Color.Gainsboro;
+            chartTrainingLoss.ChartAreas.Add(chartArea);
+
+            var lossSeries = new Series("loss")
+            {
+                ChartType = SeriesChartType.Line,
+                BorderWidth = 2,
+                ChartArea = "LossArea",
+                XValueType = ChartValueType.Int32,
+                YValueType = ChartValueType.Double
+            };
+
+            var valLossSeries = new Series("val_loss")
+            {
+                ChartType = SeriesChartType.Line,
+                BorderWidth = 2,
+                ChartArea = "LossArea",
+                XValueType = ChartValueType.Int32,
+                YValueType = ChartValueType.Double
+            };
+
+            chartTrainingLoss.Series.Add(lossSeries);
+            chartTrainingLoss.Series.Add(valLossSeries);
+            chartTrainingLoss.Legends.Add(new Legend("Legend")
+            {
+                Docking = Docking.Top,
+                Alignment = StringAlignment.Center
+            });
+
+            panel2.Controls.Add(chartTrainingLoss);
+            chartTrainingLoss.BringToFront();
+        }
+
+        private void ResetTrainingMetrics()
+        {
+            _currentEpoch = 0;
+            _totalEpochs = 0;
+            _lastLoss = double.NaN;
+            _lastValLoss = double.NaN;
+            _bestLoss = double.MaxValue;
+            _bestEpoch = 0;
+
+            label42.Text = "모델 점수 : -";
+            label43.Text = "손실값 : -";
+
+            if (chartTrainingLoss != null)
+            {
+                chartTrainingLoss.Series["loss"].Points.Clear();
+                chartTrainingLoss.Series["val_loss"].Points.Clear();
+            }
+        }
+
+        private void UpdateTrainingChartPoint(int epoch, double? loss, double? valLoss)
+        {
+            if (chartTrainingLoss == null || epoch <= 0) return;
+
+            if (loss.HasValue && !double.IsNaN(loss.Value))
+            {
+                AddOrUpdateChartPoint(chartTrainingLoss.Series["loss"], epoch, loss.Value);
+            }
+
+            if (valLoss.HasValue && !double.IsNaN(valLoss.Value))
+            {
+                AddOrUpdateChartPoint(chartTrainingLoss.Series["val_loss"], epoch, valLoss.Value);
+            }
+
+            chartTrainingLoss.ChartAreas["LossArea"].RecalculateAxesScale();
+        }
+
+        private void AddOrUpdateChartPoint(Series series, int epoch, double value)
+        {
+            foreach (var point in series.Points)
+            {
+                if ((int)point.XValue == epoch)
+                {
+                    point.YValues[0] = value;
+                    return;
+                }
+            }
+
+            series.Points.AddXY(epoch, value);
+        }
+
+        private void UpdateTrainingMetricLabels()
+        {
+            double scoreSource = !double.IsNaN(_lastValLoss) ? _lastValLoss : _lastLoss;
+            if (!double.IsNaN(scoreSource))
+            {
+                double score = Math.Max(0, Math.Min(100, (1.0 - scoreSource) * 100.0));
+                label42.Text = $"모델 점수 : {score:F1}%";
+            }
+            else
+            {
+                label42.Text = "모델 점수 : -";
+            }
+
+            if (!double.IsNaN(_lastLoss))
+                label43.Text = $"손실값 : {_lastLoss:F4}";
+            else
+                label43.Text = "손실값 : -";
+        }
+
+        private double? ExtractMetric(string line, string metricName)
+        {
+            var match = Regex.Match(line, $@"(?:^|\s){Regex.Escape(metricName)}:\s*([-+]?\d*\.?\d+(?:[eE][-+]?\d+)?)");
+            if (!match.Success) return null;
+
+            if (double.TryParse(match.Groups[1].Value,
+                    System.Globalization.NumberStyles.Float,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double value))
+            {
+                return value;
+            }
+
+            return null;
+        }
+
+        private (int current, int total)? ExtractEpochInfo(string line)
+        {
+            var match = Regex.Match(line, @"Epoch\s+(\d+)\s*/\s*(\d+)");
+            if (!match.Success) return null;
+
+            if (int.TryParse(match.Groups[1].Value, out int current) &&
+                int.TryParse(match.Groups[2].Value, out int total))
+            {
+                return (current, total);
+            }
+
+            return null;
         }
 
         private void SetupModelListView()
@@ -1614,8 +1854,8 @@ namespace DonkeyCarUI
                 return;
             }
 
-            if(string.IsNullOrEmpty(_wslProjectPath))
-{
+            if (string.IsNullOrEmpty(_wslProjectPath))
+            {
                 MessageBox.Show("DonkeyCar 프로젝트 경로를 먼저 설정하세요.");
                 return;
             }
@@ -1656,7 +1896,7 @@ namespace DonkeyCarUI
                 $"python train.py " +
                 $"--tubs \"{wslTubPath}\" " +
                 $"--model \"{wslModelPath}\" " +
-                $"--type linear";
+                $"--type {donkeyType} ";
 
             // 전이학습은 현재 DonkeyCar v5.3.0 train.py 옵션 확인 후 연결 필요
             if (!string.IsNullOrEmpty(_transferModelPath))
@@ -1666,6 +1906,7 @@ namespace DonkeyCarUI
 
             progressBar1.Value = 0;
             label33.Text = "학습 준비 중...";
+            ResetTrainingMetrics();
 
             button3.Enabled = false;
             button11.Enabled = true;
@@ -1706,13 +1947,17 @@ namespace DonkeyCarUI
                     if (_trainProcess != null && _trainProcess.ExitCode == 0)
                     {
                         progressBar1.Value = 100;
-                        label33.Text = "학습 완료";
+                        label33.Text = _bestEpoch > 0
+                            ? $"학습 완료 (Best Epoch: {_bestEpoch}, Best Loss: {_bestLoss:F4})"
+                            : "학습 완료";
 
                         AddTrainedModelToList(
                             modelName,
                             modelKind,
                             _baseDirectory,
-                            textBox3.Text.Trim(),
+                            string.IsNullOrWhiteSpace(textBox3.Text)
+                                ? (_bestEpoch > 0 ? $"Best Epoch {_bestEpoch}, Best Loss {_bestLoss:F4}" : string.Empty)
+                                : textBox3.Text.Trim(),
                             string.IsNullOrEmpty(_transferModelPath)
                                 ? "없음"
                                 : Path.GetFileName(_transferModelPath));
@@ -1784,29 +2029,37 @@ namespace DonkeyCarUI
             {
                 AddLog(line, Color.DimGray);
 
-                // 예: Epoch 3/10 형태 감지
-                if (line.Contains("Epoch") && line.Contains("/"))
+                var epochInfo = ExtractEpochInfo(line);
+                if (epochInfo.HasValue)
                 {
-                    string[] parts = line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+                    _currentEpoch = epochInfo.Value.current;
+                    _totalEpochs = epochInfo.Value.total;
 
-                    foreach (var part in parts)
-                    {
-                        if (!part.Contains("/")) continue;
-
-                        var nums = part.Split('/');
-                        if (nums.Length != 2) continue;
-
-                        if (int.TryParse(nums[0], out int current) &&
-                            int.TryParse(nums[1], out int total) &&
-                            total > 0)
-                        {
-                            int percent = Math.Max(0, Math.Min(100, current * 100 / total));
-                            progressBar1.Value = percent;
-                            label33.Text = $"학습 중... {percent}% ({current}/{total})";
-                            return;
-                        }
-                    }
+                    int percent = Math.Max(0, Math.Min(100, _currentEpoch * 100 / Math.Max(1, _totalEpochs)));
+                    progressBar1.Value = percent;
+                    label33.Text = $"학습 중... {percent}% ({_currentEpoch}/{_totalEpochs})";
                 }
+
+                double? loss = ExtractMetric(line, "loss");
+                double? valLoss = ExtractMetric(line, "val_loss");
+
+                if (loss.HasValue)
+                    _lastLoss = loss.Value;
+
+                if (valLoss.HasValue)
+                    _lastValLoss = valLoss.Value;
+
+                double? bestCandidate = valLoss ?? loss;
+                if (bestCandidate.HasValue && bestCandidate.Value < _bestLoss)
+                {
+                    _bestLoss = bestCandidate.Value;
+                    _bestEpoch = _currentEpoch;
+                }
+
+                if ((loss.HasValue || valLoss.HasValue) && _currentEpoch > 0)
+                    UpdateTrainingChartPoint(_currentEpoch, loss, valLoss);
+
+                UpdateTrainingMetricLabels();
 
                 if (progressBar1.Value == 0)
                 {
@@ -1840,6 +2093,302 @@ namespace DonkeyCarUI
             AddLog(message, Color.DimGray);
         }
 
+
+        private void SetupPreviewTab()
+        {
+            // 학습 미리보기 탭: 좌측은 실제 데이터, 우측은 선택한 모델 비교 영역으로 사용
+            button7.Click += BtnPreviewPlay_Click;
+            button9.Click += BtnPreviewPrev_Click;
+            button10.Click += BtnPreviewNext_Click;
+            trackBar3.ValueChanged += TrackBar3_ValueChanged;
+
+            trackBar1.Minimum = -100;
+            trackBar1.Maximum = 100;
+            trackBar1.Value = 0;
+            trackBar1.ValueChanged += (_, __) =>
+            {
+                _previewBrightness = trackBar1.Value / 100.0;
+                UpdatePreviewFrame(trackBar3.Value);
+            };
+
+            trackBar2.Minimum = 0;
+            trackBar2.Maximum = 100;
+            trackBar2.Value = 0;
+            trackBar2.ValueChanged += (_, __) =>
+            {
+                _previewBlurAmount = trackBar2.Value / 100.0;
+                UpdatePreviewFrame(trackBar3.Value);
+            };
+
+            checkBox1.CheckedChanged += (_, __) =>
+            {
+                _previewInvertColors = checkBox1.Checked;
+                UpdatePreviewFrame(trackBar3.Value);
+            };
+
+            comboBox4.Items.Clear();
+            comboBox4.Items.AddRange(new object[] { "0.5", "1.0", "1.5", "2.0", "3.0" });
+            comboBox4.SelectedIndex = 1;
+            comboBox4.SelectedIndexChanged += (_, __) => UpdatePreviewSpeed();
+
+            if (string.IsNullOrWhiteSpace(textBox4.Text))
+                textBox4.Text = "1";
+
+            _previewTimer.Interval = 33;
+            _previewTimer.Tick += PreviewTimer_Tick;
+
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
+            pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
+
+            label8.Text = "경로";
+            label9.Text = "경로";
+            label12.Text = "해당 프레임    :        00000";
+            label17.Text = "0.00";
+            label18.Text = "0.00";
+            label21.Text = "-";
+            label22.Text = "-";
+        }
+
+        private void BtnLoadPreviewData_Click(object? sender, EventArgs e)
+        {
+            using var fbd = new FolderBrowserDialog();
+            fbd.Description = "미리보기할 Donkeycar 데이터 폴더를 선택하세요.";
+
+            if (fbd.ShowDialog() != DialogResult.OK) return;
+
+            _previewBaseDirectory = fbd.SelectedPath;
+            label8.Text = _previewBaseDirectory;
+
+            bool isMultiJsonFormat = false;
+            string[] multiJsonFiles = Array.Empty<string>();
+
+            if (!Directory.GetFiles(_previewBaseDirectory, "*.catalog").Any())
+            {
+                multiJsonFiles = Directory.GetFiles(_previewBaseDirectory, "*.json");
+                isMultiJsonFormat = multiJsonFiles.Length > 0;
+            }
+
+            _previewRecords.Clear();
+            _previewRecords.AddRange(LoadRecords(_previewBaseDirectory, isMultiJsonFormat, multiJsonFiles));
+
+            if (_previewRecords.Count == 0)
+            {
+                MessageBox.Show("미리보기용 데이터를 찾을 수 없습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return;
+            }
+
+            trackBar3.Minimum = 0;
+            trackBar3.Maximum = _previewRecords.Count - 1;
+            trackBar3.Value = 0;
+            UpdatePreviewFrame(0);
+            AddLog($"미리보기 데이터 로드: {_previewRecords.Count}장", Color.SteelBlue);
+        }
+
+        private void BtnLoadPreviewModel_Click(object? sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog();
+            ofd.Title = "비교할 학습 모델을 선택하세요.";
+            ofd.Filter = "Model Files (*.h5;*.keras;*.tflite)|*.h5;*.keras;*.tflite|All Files (*.*)|*.*";
+
+            if (ofd.ShowDialog() != DialogResult.OK) return;
+
+            _previewModelPath = ofd.FileName;
+            label9.Text = _previewModelPath;
+            AddLog($"미리보기 모델 선택: {_previewModelPath}", Color.SteelBlue);
+            UpdatePreviewFrame(trackBar3.Value);
+        }
+
+        private void TrackBar3_ValueChanged(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0) return;
+
+            UpdatePreviewFrame(trackBar3.Value);
+        }
+
+        private async void UpdatePreviewFrame(int index)
+        {
+            if (_records.Count == 0)
+            {
+                label12.Text = "주행 데이터 없음";
+                return;
+            }
+
+            if (index < 0 || index >= _records.Count) return;
+
+            var record = _records[index];
+
+            label12.Text = $"해당 프레임    :        {index + 1} / {_records.Count}";
+
+            _originalSteering = record.Angle;
+            _originalThrottle = record.Throttle;
+
+            label26.Text = _originalSteering.ToString("F2");
+            label25.Text = _originalThrottle.ToString("F2");
+            progressBar7.Value = Math.Max(0, Math.Min(100, (int)((_originalSteering + 1) * 50)));
+            progressBar6.Value = Math.Max(0, Math.Min(100, (int)((_originalThrottle + 1) * 50)));
+
+            string imgPath = GetImageFullPath(record, _baseDirectory);
+
+            // 1. 이미지 먼저 표시
+            if (File.Exists(imgPath))
+            {
+                try
+                {
+                    using var fs = new FileStream(imgPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using var img = Image.FromStream(fs);
+                    using var previewImage = ApplyPreviewImageAdjustments(new Bitmap(img));
+
+                    var oldLeft = pictureBox2.Image;
+                    pictureBox2.Image = new Bitmap(previewImage);
+                    oldLeft?.Dispose();
+
+                    var oldRight = pictureBox1.Image;
+                    pictureBox1.Image = new Bitmap(previewImage);
+                    oldRight?.Dispose();
+                }
+                catch
+                {
+                }
+            }
+
+            pictureBox2.Invalidate();
+            pictureBox1.Invalidate();
+
+            // 왼쪽 모델 예측값은 캐시에서 가져오기
+            if (_leftPredictionCache.TryGetValue(index, out var leftPred))
+            {
+                _leftPredictedSteering = leftPred.steering;
+                _leftPredictedThrottle = leftPred.throttle;
+                _leftPredictionReady = true;
+            }
+            else
+            {
+                _leftPredictionReady = false;
+            }
+
+            // 오른쪽 모델 예측값은 캐시에서 가져오기
+            if (_rightPredictionCache.TryGetValue(index, out var rightPred))
+            {
+                _rightPredictedSteering = rightPred.steering;
+                _rightPredictedThrottle = rightPred.throttle;
+                _rightPredictionReady = true;
+            }
+            else
+            {
+                _rightPredictionReady = false;
+            }
+
+            // 5. 예측값 표시
+            label18.Text = _leftPredictionReady ? _leftPredictedSteering.ToString("F2") : "-";
+            label17.Text = _leftPredictionReady ? _leftPredictedThrottle.ToString("F2") : "-";
+            progressBar3.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedSteering + 1) * 50)));
+            progressBar2.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedThrottle + 1) * 50)));
+
+            label22.Text = _rightPredictionReady ? _rightPredictedSteering.ToString("F2") : "-";
+            label21.Text = _rightPredictionReady ? _rightPredictedThrottle.ToString("F2") : "-";
+            progressBar5.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedSteering + 1) * 50)));
+            progressBar4.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedThrottle + 1) * 50)));
+
+            pictureBox2.Invalidate();
+            pictureBox1.Invalidate();
+        }
+
+        private Bitmap ApplyPreviewImageAdjustments(Bitmap source)
+        {
+            double oldBrightness = _brightness;
+            double oldBlur = _blurAmount;
+            bool oldInvert = _invertColors;
+
+            try
+            {
+                _brightness = _previewBrightness;
+                _blurAmount = _previewBlurAmount;
+                _invertColors = _previewInvertColors;
+                return ApplyImageAdjustments(source);
+            }
+            finally
+            {
+                _brightness = oldBrightness;
+                _blurAmount = oldBlur;
+                _invertColors = oldInvert;
+            }
+        }
+
+        private int GetPreviewFrameStep()
+        {
+            if (int.TryParse(textBox4.Text.Trim(), out int step) && step > 0)
+                return step;
+            return 1;
+        }
+
+        private void UpdatePreviewSpeed()
+        {
+            string text = comboBox4.SelectedItem?.ToString() ?? "1.0";
+            if (double.TryParse(text,
+                    System.Globalization.NumberStyles.Any,
+                    System.Globalization.CultureInfo.InvariantCulture,
+                    out double speed))
+            {
+                _previewPlaybackSpeed = Math.Max(1, (int)Math.Round(speed));
+                _previewTimer.Interval = Math.Max(8, (int)(33.0 / Math.Max(0.1, speed)));
+            }
+        }
+
+        private void BtnPreviewPlay_Click(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0) return;
+
+            if (_isPreviewPlaying)
+            {
+                StopPreviewPlayback();
+                return;
+            }
+
+            if (trackBar3.Value == trackBar3.Maximum)
+                trackBar3.Value = 0;
+
+            _isPreviewPlaying = true;
+            button7.Text = "⏸";
+            _previewTimer.Start();
+        }
+
+        private void StopPreviewPlayback()
+        {
+            _isPreviewPlaying = false;
+            button7.Text = "▶";
+            _previewTimer.Stop();
+        }
+
+        private void PreviewTimer_Tick(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0)
+            {
+                StopPreviewPlayback();
+                return;
+            }
+
+            if (trackBar3.Value >= trackBar3.Maximum)
+            {
+                StopPreviewPlayback();
+                return;
+            }
+
+            int next = Math.Min(trackBar3.Maximum, trackBar3.Value + _previewPlaybackSpeed);
+            trackBar3.Value = next;
+        }
+
+        private void BtnPreviewPrev_Click(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0) return;
+            trackBar3.Value = Math.Max(trackBar3.Minimum, trackBar3.Value - GetPreviewFrameStep());
+        }
+
+        private void BtnPreviewNext_Click(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0) return;
+            trackBar3.Value = Math.Min(trackBar3.Maximum, trackBar3.Value + GetPreviewFrameStep());
+        }
+
         #endregion
 
 
@@ -1857,8 +2406,233 @@ namespace DonkeyCarUI
 
         #endregion
 
+        private void PictureBox2_Paint(object? sender, PaintEventArgs e)
+        {
+            DrawSteeringArrow(e.Graphics, pictureBox2.ClientRectangle, _originalSteering, Color.Black);
 
+            if (_leftPredictionReady)
+                DrawSteeringArrow(e.Graphics, pictureBox2.ClientRectangle, _leftPredictedSteering, Color.Blue);
+        }
 
+        private void PictureBox1_Paint(object? sender, PaintEventArgs e)
+        {
+            DrawSteeringArrow(e.Graphics, pictureBox1.ClientRectangle, _originalSteering, Color.Black);
 
+            if (_rightPredictionReady)
+                DrawSteeringArrow(e.Graphics, pictureBox1.ClientRectangle, _rightPredictedSteering, Color.Red);
+        }
+
+        private void DrawSteeringArrow(Graphics g, Rectangle area, double steering, Color color)
+        {
+            int centerX = area.Width / 2;
+            int centerY = area.Height - 40;
+            int length = 120;
+
+            double angle = -90 + steering * 45;
+            double rad = angle * Math.PI / 180.0;
+
+            int endX = centerX + (int)(Math.Cos(rad) * length);
+            int endY = centerY + (int)(Math.Sin(rad) * length);
+
+            using Pen pen = new Pen(color, 4);
+            pen.EndCap = System.Drawing.Drawing2D.LineCap.ArrowAnchor;
+
+            g.DrawLine(pen, centerX, centerY, endX, endY);
+        }
+        private async void BtnLoadLeftModel_Click(object? sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog();
+            ofd.Title = "왼쪽 비교 모델을 선택하세요.";
+            ofd.Filter = "Keras Model (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                _leftModelPath = ofd.FileName;
+                label8.Text = _leftModelPath;
+
+                label18.Text = "전체 예측 중";
+                label17.Text = "전체 예측 중";
+
+                button5.Enabled = false;
+                await PredictAllFramesAsync(_leftModelPath, _leftPredictionCache);
+                button5.Enabled = true;
+
+                UpdatePreviewFrame(trackBar3.Value);
+            }
+        }
+
+        private async void BtnLoadRightModel_Click(object? sender, EventArgs e)
+        {
+            using var ofd = new OpenFileDialog();
+            ofd.Title = "오른쪽 비교 모델을 선택하세요.";
+            ofd.Filter = "Keras Model (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
+
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                _rightModelPath = ofd.FileName;
+                label9.Text = _rightModelPath;
+
+                label22.Text = "전체 예측 중";
+                label21.Text = "전체 예측 중";
+
+                button6.Enabled = false;
+                await PredictAllFramesAsync(_rightModelPath, _rightPredictionCache);
+                button6.Enabled = true;
+
+                UpdatePreviewFrame(trackBar3.Value);
+            }
+        }
+        private sealed class PredictionResult
+        {
+            public double steering { get; set; }
+            public double throttle { get; set; }
+        }
+        private sealed class PredictionItem
+        {
+            public double steering { get; set; }
+            public double throttle { get; set; }
+        }
+        private async Task<(double steering, double throttle)?> PredictWithModelAsync(string modelPath, string imagePath)
+        {
+            if (string.IsNullOrEmpty(modelPath) || !File.Exists(modelPath)) return null;
+            if (string.IsNullOrEmpty(imagePath) || !File.Exists(imagePath)) return null;
+
+            string wslModelPath = ConvertWindowsPathToWslPath(modelPath);
+            string wslImagePath = ConvertWindowsPathToWslPath(imagePath);
+
+            string command =
+                $"source ~/miniconda3/etc/profile.d/conda.sh && " +
+                $"conda activate {_condaEnvName} && " +
+                $"cd \"{_wslProjectPath}\" && " +
+                $"python predict_one.py " +
+                $"--model \"{wslModelPath}\" " +
+                $"--image \"{wslImagePath}\"";
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = "wsl",
+                Arguments = $"bash -lc \"{command}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = Process.Start(psi);
+            if (process == null) return null;
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
+
+            await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                AddLog($"예측 실패: {error}", Color.OrangeRed);
+                return null;
+            }
+
+            var result = JsonSerializer.Deserialize<PredictionResult>(output.Trim());
+
+            if (result == null) return null;
+
+            return (result.steering, result.throttle);
+        }
+        private async Task PredictAllFramesAsync(
+    string modelPath,
+    Dictionary<int, (double steering, double throttle)> cache)
+        {
+            if (_records.Count == 0) return;
+            if (string.IsNullOrEmpty(modelPath) || !File.Exists(modelPath)) return;
+
+            cache.Clear();
+
+            string tempJsonPath = Path.Combine(
+                Path.GetTempPath(),
+                $"donkey_preview_images_{Guid.NewGuid():N}.json");
+
+            var imageList = new List<object>();
+
+            for (int i = 0; i < _records.Count; i++)
+            {
+                string imgPath = GetImageFullPath(_records[i], _baseDirectory);
+
+                if (File.Exists(imgPath))
+                {
+                    imageList.Add(new
+                    {
+                        index = i,
+                        path = ConvertWindowsPathToWslPath(imgPath)
+                    });
+                }
+            }
+
+            await File.WriteAllTextAsync(
+                tempJsonPath,
+                JsonSerializer.Serialize(imageList));
+
+            string wslModelPath = ConvertWindowsPathToWslPath(modelPath);
+            string wslImagesJsonPath = ConvertWindowsPathToWslPath(tempJsonPath);
+
+            string command =
+                $"source ~/miniconda3/etc/profile.d/conda.sh && " +
+                $"conda activate {_condaEnvName} && " +
+                $"cd \"{_wslProjectPath}\" && " +
+                $"python predict_all.py " +
+                $"--model \"{wslModelPath}\" " +
+                $"--images \"{wslImagesJsonPath}\"";
+
+            var psi = new ProcessStartInfo
+            {
+                FileName = "wsl",
+                Arguments = $"bash -lc \"{command}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            AddLog("전체 예측 시작...", Color.SteelBlue);
+
+            using var process = Process.Start(psi);
+            if (process == null) return;
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
+
+            await process.WaitForExitAsync();
+
+            try
+            {
+                File.Delete(tempJsonPath);
+            }
+            catch
+            {
+            }
+
+            if (process.ExitCode != 0)
+            {
+                AddLog($"전체 예측 실패: {error}", Color.OrangeRed);
+                return;
+            }
+
+            var result = JsonSerializer.Deserialize<Dictionary<string, PredictionItem>>(output.Trim());
+
+            if (result == null)
+            {
+                AddLog("전체 예측 결과 파싱 실패", Color.OrangeRed);
+                return;
+            }
+
+            foreach (var pair in result)
+            {
+                if (int.TryParse(pair.Key, out int index))
+                {
+                    cache[index] = (pair.Value.steering, pair.Value.throttle);
+                }
+            }
+
+            AddLog($"전체 예측 완료: {cache.Count}/{_records.Count}", Color.ForestGreen);
+        }
     }
 }
