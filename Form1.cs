@@ -7,7 +7,7 @@ using Timer = System.Windows.Forms.Timer; // WinForms Timer 명시적 사용
 
 namespace DonkeyCarUI
 {
-    public partial class Form1 : Form
+    public partial class DataManager : Form
     {
         private List<FrameData> _records = new List<FrameData>();
         private string _baseDirectory = string.Empty;
@@ -87,22 +87,22 @@ namespace DonkeyCarUI
 
         private readonly Dictionary<int, (double steering, double throttle)> _leftPredictionCache = new();
         private readonly Dictionary<int, (double steering, double throttle)> _rightPredictionCache = new();
-        public Form1()
+        public DataManager()
         {
             InitializeComponent();
 
             // Setup Event Handlers
             btnLoadData.Click += BtnLoadData_Click;
-            tbFrameSlider.Scroll += TbFrameSlider_Scroll;
-            tbFrameSlider.ValueChanged += TbFrameSlider_ValueChanged;
+            tbFrameSlider1.Scroll += TbFrameSlider_Scroll;
+            tbFrameSlider1.ValueChanged += TbFrameSlider_ValueChanged;
 
             // 재생 컨트롤 이벤트 연결
             btnPlay.Click += BtnPlay_Click;
-            button2.Click += BtnPlay_Click;           // button2도 재생/일시정지
-            btnPrevFrame.Click += BtnPrevFrame_Click;
-            btnNextFrame.Click += BtnNextFrame_Click;
-            cmbSpeed.SelectedIndexChanged += CmbSpeed_SelectedIndexChanged;
-            cmbSpeed.SelectedIndex = 0; // 기본 1.0x
+            btnRun1.Click += BtnPlay_Click;           // button2도 재생/일시정지
+            btnPrevFrame1.Click += BtnPrevFrame_Click;
+            btnNextFrame1.Click += BtnNextFrame_Click;
+            cmbSpeed1.SelectedIndexChanged += CmbSpeed_SelectedIndexChanged;
+            cmbSpeed1.SelectedIndex = 0; // 기본 1.0x
 
             // 지점 설정, 필터, 삭제, 학습 이벤트 연결
             btnSetPoint1.Click += BtnSetPoint1_Click;
@@ -110,7 +110,7 @@ namespace DonkeyCarUI
             btnDelete.Click += BtnDelete_Click;
             btnRestore.Click += BtnRestore_Click;
             btnFilter.Click += BtnFilter_Click;
-            button1.Click += (_, __) => ResetSelection(); // 선택 취소 버튼
+            btnCancel.Click += (_, __) => ResetSelection(); // 선택 취소 버튼
 
             // 데이터 리스트 클릭 → 해당 프레임으로 이동
             lstDataList.SelectedIndexChanged += LstDataList_SelectedIndexChanged;
@@ -119,7 +119,7 @@ namespace DonkeyCarUI
             lstDataList.ItemHeight = 18;
 
             // textBox1 기본값 설정
-            textBox1.Text = "1";
+            txtFrmMvm1.Text = "1";
 
             _playbackTimer.Interval = 33;
             _playbackTimer.Tick += PlaybackTimer_Tick;
@@ -141,8 +141,8 @@ namespace DonkeyCarUI
 
             pictureBox2.Paint += PictureBox2_Paint;
             pictureBox1.Paint += PictureBox1_Paint;
-            button5.Click += BtnLoadLeftModel_Click;
-            button6.Click += BtnLoadRightModel_Click;
+            btnRawData.Click += BtnLoadLeftModel_Click;
+            btn.Click += BtnLoadRightModel_Click;
 
             ConfigureUiMappings();
             SetupTimelinePanel();
@@ -214,7 +214,7 @@ namespace DonkeyCarUI
                     height
                 );
             }
-            int currentX = (int)Math.Round((double)tbFrameSlider.Value / Math.Max(1, _records.Count - 1) * (width - 1));
+            int currentX = (int)Math.Round((double)tbFrameSlider1.Value / Math.Max(1, _records.Count - 1) * (width - 1));
 
             using (var pen = new Pen(Color.Red, 3))
             {
@@ -256,7 +256,7 @@ namespace DonkeyCarUI
             int index = (int)(ratio * _records.Count);
             index = Math.Clamp(index, 0, _records.Count - 1);
 
-            tbFrameSlider.Value = index;
+            tbFrameSlider1.Value = index;
             UpdateUIForFrame(index);
             panelTimeline.Invalidate();
         }
@@ -308,11 +308,11 @@ namespace DonkeyCarUI
             await RestoreDeletedFilesAsync(current.DeletedFiles);
             await SyncCatalogAsync(_records);
 
-            tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-            tbFrameSlider.Value = 0;
+            tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+            tbFrameSlider1.Value = 0;
             UpdateDataListText();
             ResetSelection();
-            if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider.Value);
+            if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider1.Value);
             AddLog($"Undo: {current.Reason}", Color.DarkOrange);
         }
 
@@ -325,11 +325,11 @@ namespace DonkeyCarUI
             await SyncCatalogAsync(_records);
             _undoStack.Push(redo);
 
-            tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-            tbFrameSlider.Value = 0;
+            tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+            tbFrameSlider1.Value = 0;
             UpdateDataListText();
             ResetSelection();
-            if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider.Value);
+            if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider1.Value);
             AddLog($"Redo: {redo.Reason}", Color.SlateBlue);
         }
 
@@ -405,46 +405,46 @@ namespace DonkeyCarUI
                 ? string.Empty
                 : Path.Combine(_baseDirectory, ".trash");
 
-            if (listView1 != null)
+            if (lstProcess != null)
             {
-                listView1.View = View.Details;
-                listView1.Columns.Clear();
-                listView1.Columns.Add("타임라인", 3000, HorizontalAlignment.Left);
-                listView1.FullRowSelect = true;
-                listView1.GridLines = false;
-                listView1.Scrollable = true;
+                lstProcess.View = View.Details;
+                lstProcess.Columns.Clear();
+                lstProcess.Columns.Add("타임라인", 3000, HorizontalAlignment.Left);
+                lstProcess.FullRowSelect = true;
+                lstProcess.GridLines = false;
+                lstProcess.Scrollable = true;
             }
 
-            if (trackBar4 != null)
+            if (tbBright != null)
             {
-                trackBar4.Minimum = -100;
-                trackBar4.Maximum = 100;
-                trackBar4.Value = 0;
-                trackBar4.ValueChanged += (_, __) =>
+                tbBright.Minimum = -100;
+                tbBright.Maximum = 100;
+                tbBright.Value = 0;
+                tbBright.ValueChanged += (_, __) =>
                 {
-                    _brightness = trackBar4.Value / 100.0;
-                    UpdateUIForFrame(tbFrameSlider.Value);
+                    _brightness = tbBright.Value / 100.0;
+                    UpdateUIForFrame(tbFrameSlider1.Value);
                 };
             }
 
-            if (trackBar5 != null)
+            if (tbBlur != null)
             {
-                trackBar5.Minimum = 0;
-                trackBar5.Maximum = 100;
-                trackBar5.Value = 0;
-                trackBar5.ValueChanged += (_, __) =>
+                tbBlur.Minimum = 0;
+                tbBlur.Maximum = 100;
+                tbBlur.Value = 0;
+                tbBlur.ValueChanged += (_, __) =>
                 {
-                    _blurAmount = trackBar5.Value / 100.0;
-                    UpdateUIForFrame(tbFrameSlider.Value);
+                    _blurAmount = tbBlur.Value / 100.0;
+                    UpdateUIForFrame(tbFrameSlider1.Value);
                 };
             }
 
-            if (checkBox2 != null)
+            if (chkActBW != null)
             {
-                checkBox2.CheckedChanged += (_, __) =>
+                chkActBW.CheckedChanged += (_, __) =>
                 {
-                    _invertColors = checkBox2.Checked;
-                    UpdateUIForFrame(tbFrameSlider.Value);
+                    _invertColors = chkActBW.Checked;
+                    UpdateUIForFrame(tbFrameSlider1.Value);
                 };
             }
         }
@@ -477,13 +477,13 @@ namespace DonkeyCarUI
             // Page Up/Down: 10 프레임 이동
             else if (e.KeyCode == Keys.PageUp)
             {
-                tbFrameSlider.Value = Math.Max(tbFrameSlider.Minimum, tbFrameSlider.Value - 10);
+                tbFrameSlider1.Value = Math.Max(tbFrameSlider1.Minimum, tbFrameSlider1.Value - 10);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
             else if (e.KeyCode == Keys.PageDown)
             {
-                tbFrameSlider.Value = Math.Min(tbFrameSlider.Maximum, tbFrameSlider.Value + 10);
+                tbFrameSlider1.Value = Math.Min(tbFrameSlider1.Maximum, tbFrameSlider1.Value + 10);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
@@ -586,15 +586,15 @@ namespace DonkeyCarUI
                 if (_records.Count > 0)
                 {
                     // 주행 데이터 관리 탭
-                    tbFrameSlider.Minimum = 0;
-                    tbFrameSlider.Maximum = _records.Count - 1;
-                    tbFrameSlider.Value = 0;
+                    tbFrameSlider1.Minimum = 0;
+                    tbFrameSlider1.Maximum = _records.Count - 1;
+                    tbFrameSlider1.Value = 0;
                     UpdateUIForFrame(0);
 
                     // 학습 미리보기 탭
-                    trackBar3.Minimum = 0;
-                    trackBar3.Maximum = _records.Count - 1;
-                    trackBar3.Value = 0;
+                    tbFrameSlider2.Minimum = 0;
+                    tbFrameSlider2.Maximum = _records.Count - 1;
+                    tbFrameSlider2.Value = 0;
 
                     UpdatePreviewFrame(0);
                 }
@@ -639,12 +639,12 @@ namespace DonkeyCarUI
         }
         private void TbFrameSlider_Scroll(object? sender, EventArgs e)
         {
-            UpdateUIForFrame(tbFrameSlider.Value);
+            UpdateUIForFrame(tbFrameSlider1.Value);
         }
 
         private void TbFrameSlider_ValueChanged(object? sender, EventArgs e)
         {
-            UpdateUIForFrame(tbFrameSlider.Value);
+            UpdateUIForFrame(tbFrameSlider1.Value);
         }
 
         private void UpdateUIForFrame(int index)
@@ -652,7 +652,7 @@ namespace DonkeyCarUI
             if (index < 0 || index >= _records.Count) return;
 
             var record = _records[index];
-            lblFrameIndex.Text = $"{index + 1} / {_records.Count}";
+            lblFrmInx1.Text = $"{index + 1} / {_records.Count}";
 
             // Update Labels
             lblSteeringValue.Text = record.Angle.ToString("F2");
@@ -782,16 +782,16 @@ namespace DonkeyCarUI
         #region Playback Controls
         private void PlaybackTimer_Tick(object? sender, EventArgs e)
         {
-            if (tbFrameSlider.Value < tbFrameSlider.Maximum)
+            if (tbFrameSlider1.Value < tbFrameSlider1.Maximum)
             {
                 // 배속에 맞춰 프레임 인덱스 증가
-                int nextFrame = tbFrameSlider.Value + _playbackSpeed;
-                if (nextFrame > tbFrameSlider.Maximum)
-                    nextFrame = tbFrameSlider.Maximum;
+                int nextFrame = tbFrameSlider1.Value + _playbackSpeed;
+                if (nextFrame > tbFrameSlider1.Maximum)
+                    nextFrame = tbFrameSlider1.Maximum;
 
-                tbFrameSlider.Value = nextFrame;
+                tbFrameSlider1.Value = nextFrame;
 
-                if (tbFrameSlider.Value == tbFrameSlider.Maximum)
+                if (tbFrameSlider1.Value == tbFrameSlider1.Maximum)
                 {
                     StopPlayback();
                 }
@@ -804,7 +804,7 @@ namespace DonkeyCarUI
 
         private int GetFrameStep()
         {
-            if (int.TryParse(textBox1.Text.Trim(), out int step) && step > 0)
+            if (int.TryParse(txtFrmMvm1.Text.Trim(), out int step) && step > 0)
                 return step;
             return 1;
         }
@@ -819,12 +819,12 @@ namespace DonkeyCarUI
             }
             else
             {
-                if (tbFrameSlider.Value == tbFrameSlider.Maximum)
-                    tbFrameSlider.Value = 0;
+                if (tbFrameSlider1.Value == tbFrameSlider1.Maximum)
+                    tbFrameSlider1.Value = 0;
 
                 _isPlaying = true;
                 btnPlay.Text = "⏸";
-                button2.Text = "⏸";
+                btnRun1.Text = "⏸";
                 _playbackTimer.Start();
             }
         }
@@ -833,26 +833,26 @@ namespace DonkeyCarUI
         {
             _isPlaying = false;
             btnPlay.Text = "▶";
-            button2.Text = "▶";
+            btnRun1.Text = "▶";
             _playbackTimer.Stop();
         }
 
         private void BtnPrevFrame_Click(object? sender, EventArgs e)
         {
             int step = GetFrameStep();
-            tbFrameSlider.Value = Math.Max(tbFrameSlider.Minimum, tbFrameSlider.Value - step);
+            tbFrameSlider1.Value = Math.Max(tbFrameSlider1.Minimum, tbFrameSlider1.Value - step);
         }
 
         private void BtnNextFrame_Click(object? sender, EventArgs e)
         {
             int step = GetFrameStep();
-            tbFrameSlider.Value = Math.Min(tbFrameSlider.Maximum, tbFrameSlider.Value + step);
+            tbFrameSlider1.Value = Math.Min(tbFrameSlider1.Maximum, tbFrameSlider1.Value + step);
         }
 
         private void CmbSpeed_SelectedIndexChanged(object? sender, EventArgs e)
         {
             // cmbSpeed items: "1.0", "1.5", "2.0", "2.5", "3.0"
-            string text = cmbSpeed.SelectedItem?.ToString() ?? "1.0";
+            string text = cmbSpeed1.SelectedItem?.ToString() ?? "1.0";
             if (double.TryParse(text, System.Globalization.NumberStyles.Any,
                 System.Globalization.CultureInfo.InvariantCulture, out double speed))
             {
@@ -868,17 +868,17 @@ namespace DonkeyCarUI
         {
             // 기존 토글 방식 유지 (직접 호출될 경우 대비)
             _playbackSpeed = _playbackSpeed == 1 ? 2 : (_playbackSpeed == 2 ? 4 : 1);
-            cmbSpeed.Text = $"{_playbackSpeed}.0x";
+            cmbSpeed1.Text = $"{_playbackSpeed}.0x";
         }
 
         private void BtnRewind_Click(object? sender, EventArgs e)
         {
-            tbFrameSlider.Value = tbFrameSlider.Minimum;
+            tbFrameSlider1.Value = tbFrameSlider1.Minimum;
         }
 
         private void BtnFastForward_Click(object? sender, EventArgs e)
         {
-            tbFrameSlider.Value = tbFrameSlider.Maximum;
+            tbFrameSlider1.Value = tbFrameSlider1.Maximum;
         }
         #endregion
 
@@ -928,7 +928,7 @@ namespace DonkeyCarUI
             _listSyncInProgress = false;
 
             // 현재 슬라이더 위치로 선택 동기화
-            SyncListSelectionToSlider(tbFrameSlider.Value);
+            SyncListSelectionToSlider(tbFrameSlider1.Value);
         }
 
         /// <summary>슬라이더 값에 맞춰 리스트 선택 항목을 스크롤 없이 부드럽게 이동.</summary>
@@ -951,7 +951,7 @@ namespace DonkeyCarUI
             if (idx < 0 || idx >= _records.Count) return;
 
             _listSyncInProgress = true;
-            tbFrameSlider.Value = idx;
+            tbFrameSlider1.Value = idx;
             _listSyncInProgress = false;
 
             UpdateUIForFrame(idx);
@@ -999,11 +999,11 @@ namespace DonkeyCarUI
 
         private void AddLog(string message, Color color)
         {
-            if (listView1 == null) return;
+            if (lstProcess == null) return;
 
-            if (listView1.InvokeRequired)
+            if (lstProcess.InvokeRequired)
             {
-                listView1.Invoke(new Action(() => AddLog(message, color)));
+                lstProcess.Invoke(new Action(() => AddLog(message, color)));
                 return;
             }
 
@@ -1011,7 +1011,7 @@ namespace DonkeyCarUI
             {
                 ForeColor = color
             };
-            listView1.Items.Insert(0, item);
+            lstProcess.Items.Insert(0, item);
 
             // 로그 파일 저장
             try
@@ -1226,7 +1226,7 @@ namespace DonkeyCarUI
         private void BtnSetPoint1_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
-            _startIndex = tbFrameSlider.Value;
+            _startIndex = tbFrameSlider1.Value;
             UpdateRangeLabel();
             lstDataList?.Invalidate(); // 범위 강조 즉시 반영
             AddLog($"시작 지점 선택: {_startIndex + 1}", Color.Gray);
@@ -1236,7 +1236,7 @@ namespace DonkeyCarUI
         private void BtnSetPoint2_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
-            _endIndex = tbFrameSlider.Value;
+            _endIndex = tbFrameSlider1.Value;
             UpdateRangeLabel();
             lstDataList?.Invalidate(); // 범위 강조 즉시 반영
             AddLog($"끝 지점 선택: {_endIndex + 1}", Color.Gray);
@@ -1295,11 +1295,11 @@ namespace DonkeyCarUI
                         _redoStack.Clear();
 
                         // 4) UI 갱신
-                        tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider.Value = Math.Min(start, tbFrameSlider.Maximum);
+                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+                        tbFrameSlider1.Value = Math.Min(start, tbFrameSlider1.Maximum);
                         UpdateDataListText();
                         ResetSelection();
-                        if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider.Value);
+                        if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider1.Value);
                         btnDelete.Enabled = true;
                         AddLog($"✅ 삭제 완료: {count}개 제거 → 남은 프레임 {_records.Count}장", Color.IndianRed);
                     }));
@@ -1355,8 +1355,8 @@ namespace DonkeyCarUI
 
                     BeginInvoke(new Action(() =>
                     {
-                        tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider.Value = 0;
+                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+                        tbFrameSlider1.Value = 0;
 
                         UpdateDataListText();
                         ResetSelection();
@@ -1385,7 +1385,7 @@ namespace DonkeyCarUI
         {
             if (_records.Count == 0) return;
 
-            if (!double.TryParse(textBox2.Text,
+            if (!double.TryParse(tbCriteria.Text,
                     System.Globalization.NumberStyles.Any,
                     System.Globalization.CultureInfo.InvariantCulture,
                     out double threshold))
@@ -1394,8 +1394,8 @@ namespace DonkeyCarUI
                 return;
             }
 
-            var field = comboBox1.SelectedItem?.ToString() ?? comboBox1.Text;
-            var op = comboBox2.SelectedItem?.ToString() ?? comboBox2.Text;
+            var field = cmbDirSpeed.SelectedItem?.ToString() ?? cmbDirSpeed.Text;
+            var op = cmbRange.SelectedItem?.ToString() ?? cmbRange.Text;
             Func<FrameData, double> selector = field.Contains("속도") ? r => r.Throttle : r => r.Angle;
 
             bool Keep(FrameData r)
@@ -1447,8 +1447,8 @@ namespace DonkeyCarUI
                         _undoStack.Push(history);
                         _redoStack.Clear();
 
-                        tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider.Value = 0;
+                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+                        tbFrameSlider1.Value = 0;
                         UpdateDataListText();
                         UpdateUIForFrame(0);
                         btnFilter.Enabled = true;
@@ -1508,8 +1508,8 @@ namespace DonkeyCarUI
                         _undoStack.Push(history);
                         _redoStack.Clear();
 
-                        tbFrameSlider.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider.Value = 0;
+                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
+                        tbFrameSlider1.Value = 0;
                         UpdateDataListText();
                         UpdateUIForFrame(0);
                         AddLog($"✅ 정지 데이터 {removed.Count}개 제거 완료", Color.IndianRed);
@@ -1555,7 +1555,7 @@ namespace DonkeyCarUI
             }
 
             _records = smoothedRecords;
-            UpdateUIForFrame(tbFrameSlider.Value);
+            UpdateUIForFrame(tbFrameSlider1.Value);
             BtnRenderGraph_Click(null, EventArgs.Empty); // 그래프 반영
             MessageBox.Show("조향각 데이터 스무딩(이동 평균 필터)이 적용되었습니다.\n그래프를 확인해보세요. 센서 노이즈가 제거되어 훨씬 더 매끄러운 커브를 그립니다.", "데이터 최적화", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -1584,41 +1584,41 @@ namespace DonkeyCarUI
         private void InitializeTrainingTab()
         {
             // 모델 종류
-            comboBox3.Items.Clear();
-            comboBox3.Items.AddRange(new object[] { "Linear", "Behavioral" });
-            comboBox3.SelectedIndex = 0;
+            cmbModelSelect.Items.Clear();
+            cmbModelSelect.Items.AddRange(new object[] { "Linear", "Behavioral" });
+            cmbModelSelect.SelectedIndex = 0;
 
             // 동시처리데이터수
-            comboBox5.Items.Clear();
-            comboBox5.Items.AddRange(new object[] { "1", "16", "32", "64", "128" });
-            comboBox5.SelectedIndex = 2; // 기본 32
+            cmbMulti.Items.Clear();
+            cmbMulti.Items.AddRange(new object[] { "1", "16", "32", "64", "128" });
+            cmbMulti.SelectedIndex = 2; // 기본 32
 
             // 반복학습횟수 기본값
-            if (string.IsNullOrWhiteSpace(textBox5.Text))
-                textBox5.Text = "10";
+            if (string.IsNullOrWhiteSpace(txtEpoch.Text))
+                txtEpoch.Text = "10";
 
             // 모델 이름 기본값
-            if (string.IsNullOrWhiteSpace(textBox6.Text))
-                textBox6.Text = $"model_{DateTime.Now:yyyyMMdd_HHmm}";
+            if (string.IsNullOrWhiteSpace(txtModelName.Text))
+                txtModelName.Text = $"model_{DateTime.Now:yyyyMMdd_HHmm}";
 
             // 진행도 초기화
-            progressBar1.Minimum = 0;
-            progressBar1.Maximum = 100;
-            progressBar1.Value = 0;
-            label33.Text = "대기 중";
+            pbLearning.Minimum = 0;
+            pbLearning.Maximum = 100;
+            pbLearning.Value = 0;
+            lbLearningRate.Text = "대기 중";
 
             // 경로 표시 초기화
-            label44.Text = "모델 저장 경로 미선택";
-            label45.Text = "DonkeyCar 프로젝트 경로 미선택";
+            lbSavePath.Text = "모델 저장 경로 미선택";
+            lbDonkeyPath.Text = "DonkeyCar 프로젝트 경로 미선택";
 
             // 버튼 이벤트 연결
-            button3.Click += BtnStartTraining_Click;              // 학습 시작
-            button11.Click += BtnStopTraining_Click;              // 학습 중지
-            button12.Click += BtnSelectModelSavePath_Click;       // 저장 경로 선택
-            button13.Click += BtnSelectDonkeyProjectPath_Click;   // 프로젝트 경로 선택
-            button4.Click += BtnLoadTransferModel_Click;          // 전이학습 모델 불러오기
+            btnLearningStart.Click += BtnStartTraining_Click;              // 학습 시작
+            btnLearningStop.Click += BtnStopTraining_Click;              // 학습 중지
+            btnSavePath.Click += BtnSelectModelSavePath_Click;       // 저장 경로 선택
+            btnDonkeyPath.Click += BtnSelectDonkeyProjectPath_Click;   // 프로젝트 경로 선택
+            btnExtraModel.Click += BtnLoadTransferModel_Click;          // 전이학습 모델 불러오기
 
-            button11.Enabled = false;
+            btnLearningStop.Enabled = false;
 
             SetupModelListView();
             SetupTrainingLossChart();
@@ -1627,11 +1627,11 @@ namespace DonkeyCarUI
 
         private void SetupTrainingLossChart()
         {
-            if (panel2 == null) return;
+            if (pnModelScore == null) return;
 
             if (chartTrainingLoss != null)
             {
-                panel2.Controls.Remove(chartTrainingLoss);
+                pnModelScore.Controls.Remove(chartTrainingLoss);
                 chartTrainingLoss.Dispose();
             }
 
@@ -1639,7 +1639,7 @@ namespace DonkeyCarUI
             {
                 Name = "chartTrainingLoss",
                 Location = new Point(12, 72),
-                Size = new Size(Math.Max(250, panel2.Width - 24), Math.Max(180, panel2.Height - 84)),
+                Size = new Size(Math.Max(250, pnModelScore.Width - 24), Math.Max(180, pnModelScore.Height - 84)),
                 Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right,
                 BackColor = Color.White
             };
@@ -1680,7 +1680,7 @@ namespace DonkeyCarUI
                 Alignment = StringAlignment.Center
             });
 
-            panel2.Controls.Add(chartTrainingLoss);
+            pnModelScore.Controls.Add(chartTrainingLoss);
             chartTrainingLoss.BringToFront();
         }
 
@@ -1693,8 +1693,8 @@ namespace DonkeyCarUI
             _bestLoss = double.MaxValue;
             _bestEpoch = 0;
 
-            label42.Text = "모델 점수 : -";
-            label43.Text = "손실값 : -";
+            lbModelScore.Text = "모델 점수 : -";
+            lbLoss.Text = "손실값 : -";
 
             if (chartTrainingLoss != null)
             {
@@ -1740,17 +1740,17 @@ namespace DonkeyCarUI
             if (!double.IsNaN(scoreSource))
             {
                 double score = Math.Max(0, Math.Min(100, (1.0 - scoreSource) * 100.0));
-                label42.Text = $"모델 점수 : {score:F1}%";
+                lbModelScore.Text = $"모델 점수 : {score:F1}%";
             }
             else
             {
-                label42.Text = "모델 점수 : -";
+                lbModelScore.Text = "모델 점수 : -";
             }
 
             if (!double.IsNaN(_lastLoss))
-                label43.Text = $"손실값 : {_lastLoss:F4}";
+                lbLoss.Text = $"손실값 : {_lastLoss:F4}";
             else
-                label43.Text = "손실값 : -";
+                lbLoss.Text = "손실값 : -";
         }
 
         private double? ExtractMetric(string line, string metricName)
@@ -1785,20 +1785,20 @@ namespace DonkeyCarUI
 
         private void SetupModelListView()
         {
-            if (listView2 == null) return;
+            if (lstvModelManage == null) return;
 
-            listView2.View = View.Details;
-            listView2.FullRowSelect = true;
-            listView2.GridLines = true;
-            listView2.Columns.Clear();
-            listView2.Items.Clear();
+            lstvModelManage.View = View.Details;
+            lstvModelManage.FullRowSelect = true;
+            lstvModelManage.GridLines = true;
+            lstvModelManage.Columns.Clear();
+            lstvModelManage.Items.Clear();
 
-            listView2.Columns.Add("모델이름", 130);
-            listView2.Columns.Add("모델종류", 90);
-            listView2.Columns.Add("사용한 데이터", 180);
-            listView2.Columns.Add("수정한 날짜", 140);
-            listView2.Columns.Add("주석", 220);
-            listView2.Columns.Add("전이학습", 150);
+            lstvModelManage.Columns.Add("모델이름", 130);
+            lstvModelManage.Columns.Add("모델종류", 90);
+            lstvModelManage.Columns.Add("사용한 데이터", 180);
+            lstvModelManage.Columns.Add("수정한 날짜", 140);
+            lstvModelManage.Columns.Add("주석", 220);
+            lstvModelManage.Columns.Add("전이학습", 150);
         }
 
         private void BtnSelectDonkeyProjectPath_Click(object? sender, EventArgs e)
@@ -1806,7 +1806,7 @@ namespace DonkeyCarUI
             _wslProjectPath = "/home/geonho0927/mysim";
             _donkeyProjectPath = _wslProjectPath;
 
-            label45.Text = _wslProjectPath;
+            lbDonkeyPath.Text = _wslProjectPath;
             AddLog($"WSL DonkeyCar 프로젝트 경로 설정: {_wslProjectPath}", Color.SteelBlue);
 
             MessageBox.Show(
@@ -1824,7 +1824,7 @@ namespace DonkeyCarUI
             if (fbd.ShowDialog() == DialogResult.OK)
             {
                 _modelSaveDirectory = fbd.SelectedPath;
-                label44.Text = _modelSaveDirectory;
+                lbSavePath.Text = _modelSaveDirectory;
                 AddLog($"모델 저장 경로 설정: {_modelSaveDirectory}", Color.SteelBlue);
             }
         }
@@ -1839,8 +1839,8 @@ namespace DonkeyCarUI
             {
                 _transferModelPath = ofd.FileName;
 
-                textBox7.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
-                textBox8.Text = ofd.FileName;
+                txtExtraModel.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
+                txtExtraExpl.Text = ofd.FileName;
 
                 AddLog($"전이학습 모델 선택: {_transferModelPath}", Color.SteelBlue);
             }
@@ -1866,19 +1866,19 @@ namespace DonkeyCarUI
                 return;
             }
 
-            string modelName = textBox6.Text.Trim();
+            string modelName = txtModelName.Text.Trim();
             if (string.IsNullOrEmpty(modelName))
                 modelName = $"model_{DateTime.Now:yyyyMMdd_HHmmss}";
 
-            string modelKind = comboBox3.SelectedItem?.ToString() ?? "Linear";
+            string modelKind = cmbModelSelect.SelectedItem?.ToString() ?? "Linear";
 
             // DonkeyCar 학습 타입 변환
             string donkeyType = modelKind == "Behavioral" ? "categorical" : "linear";
 
-            if (!int.TryParse(textBox5.Text.Trim(), out int epochs) || epochs <= 0)
+            if (!int.TryParse(txtEpoch.Text.Trim(), out int epochs) || epochs <= 0)
                 epochs = 10;
 
-            if (!int.TryParse(comboBox5.SelectedItem?.ToString() ?? "32", out int batchSize))
+            if (!int.TryParse(cmbMulti.SelectedItem?.ToString() ?? "32", out int batchSize))
                 batchSize = 32;
 
             Directory.CreateDirectory(_modelSaveDirectory);
@@ -1904,12 +1904,12 @@ namespace DonkeyCarUI
                 AddLog("전이학습 모델은 선택되었지만 현재 train.py 명령에는 자동 반영하지 않습니다.", Color.DarkOrange);
             }
 
-            progressBar1.Value = 0;
-            label33.Text = "학습 준비 중...";
+            pbLearning.Value = 0;
+            lbLearningRate.Text = "학습 준비 중...";
             ResetTrainingMetrics();
 
-            button3.Enabled = false;
-            button11.Enabled = true;
+            btnLearningStart.Enabled = false;
+            btnLearningStop.Enabled = true;
 
             var psi = new ProcessStartInfo
             {
@@ -1941,13 +1941,13 @@ namespace DonkeyCarUI
             {
                 BeginInvoke(new Action(() =>
                 {
-                    button3.Enabled = true;
-                    button11.Enabled = false;
+                    btnLearningStart.Enabled = true;
+                    btnLearningStop.Enabled = false;
 
                     if (_trainProcess != null && _trainProcess.ExitCode == 0)
                     {
-                        progressBar1.Value = 100;
-                        label33.Text = _bestEpoch > 0
+                        pbLearning.Value = 100;
+                        lbLearningRate.Text = _bestEpoch > 0
                             ? $"학습 완료 (Best Epoch: {_bestEpoch}, Best Loss: {_bestLoss:F4})"
                             : "학습 완료";
 
@@ -1955,9 +1955,9 @@ namespace DonkeyCarUI
                             modelName,
                             modelKind,
                             _baseDirectory,
-                            string.IsNullOrWhiteSpace(textBox3.Text)
+                            string.IsNullOrWhiteSpace(txtExpl.Text)
                                 ? (_bestEpoch > 0 ? $"Best Epoch {_bestEpoch}, Best Loss {_bestLoss:F4}" : string.Empty)
-                                : textBox3.Text.Trim(),
+                                : txtExpl.Text.Trim(),
                             string.IsNullOrEmpty(_transferModelPath)
                                 ? "없음"
                                 : Path.GetFileName(_transferModelPath));
@@ -1968,7 +1968,7 @@ namespace DonkeyCarUI
                     else
                     {
                         int exitCode = _trainProcess?.ExitCode ?? -999;
-                        label33.Text = $"학습 종료됨 (ExitCode: {exitCode})";
+                        lbLearningRate.Text = $"학습 종료됨 (ExitCode: {exitCode})";
                         AddLog($"❌ 학습 비정상 종료 - ExitCode: {exitCode}", Color.OrangeRed);
                         AddLog("명령어, DonkeyCar 경로, Python 환경, 옵션 인식 여부를 확인하세요.", Color.OrangeRed);
                     }
@@ -1983,13 +1983,13 @@ namespace DonkeyCarUI
                 _trainProcess.BeginOutputReadLine();
                 _trainProcess.BeginErrorReadLine();
 
-                label33.Text = "학습 중...";
+                lbLearningRate.Text = "학습 중...";
             }
             catch (Exception ex)
             {
-                button3.Enabled = true;
-                button11.Enabled = false;
-                label33.Text = "실행 실패";
+                btnLearningStart.Enabled = true;
+                btnLearningStop.Enabled = false;
+                lbLearningRate.Text = "실행 실패";
 
                 MessageBox.Show(
                     $"학습 실행 실패:\n{ex.Message}",
@@ -2006,12 +2006,12 @@ namespace DonkeyCarUI
                 if (_trainProcess != null && !_trainProcess.HasExited)
                 {
                     _trainProcess.Kill(true);
-                    label33.Text = "학습 중지됨";
+                    lbLearningRate.Text = "학습 중지됨";
                     AddLog("학습 프로세스 중지", Color.OrangeRed);
                 }
 
-                button3.Enabled = true;
-                button11.Enabled = false;
+                btnLearningStart.Enabled = true;
+                btnLearningStop.Enabled = false;
             }
             catch (Exception ex)
             {
@@ -2036,8 +2036,8 @@ namespace DonkeyCarUI
                     _totalEpochs = epochInfo.Value.total;
 
                     int percent = Math.Max(0, Math.Min(100, _currentEpoch * 100 / Math.Max(1, _totalEpochs)));
-                    progressBar1.Value = percent;
-                    label33.Text = $"학습 중... {percent}% ({_currentEpoch}/{_totalEpochs})";
+                    pbLearning.Value = percent;
+                    lbLearningRate.Text = $"학습 중... {percent}% ({_currentEpoch}/{_totalEpochs})";
                 }
 
                 double? loss = ExtractMetric(line, "loss");
@@ -2061,10 +2061,10 @@ namespace DonkeyCarUI
 
                 UpdateTrainingMetricLabels();
 
-                if (progressBar1.Value == 0)
+                if (pbLearning.Value == 0)
                 {
-                    progressBar1.Value = 5;
-                    label33.Text = "학습 중...";
+                    pbLearning.Value = 5;
+                    lbLearningRate.Text = "학습 중...";
                 }
             }));
         }
@@ -2076,7 +2076,7 @@ namespace DonkeyCarUI
             string memo,
             string transferModel)
         {
-            if (listView2 == null) return;
+            if (lstvModelManage == null) return;
 
             var item = new ListViewItem(modelName);
             item.SubItems.Add(modelKind);
@@ -2085,7 +2085,7 @@ namespace DonkeyCarUI
             item.SubItems.Add(memo);
             item.SubItems.Add(transferModel);
 
-            listView2.Items.Add(item);
+            lstvModelManage.Items.Add(item);
         }
 
         private void AppendLog(string message)
@@ -2097,42 +2097,42 @@ namespace DonkeyCarUI
         private void SetupPreviewTab()
         {
             // 학습 미리보기 탭: 좌측은 실제 데이터, 우측은 선택한 모델 비교 영역으로 사용
-            button7.Click += BtnPreviewPlay_Click;
-            button9.Click += BtnPreviewPrev_Click;
-            button10.Click += BtnPreviewNext_Click;
-            trackBar3.ValueChanged += TrackBar3_ValueChanged;
+            btnRun2.Click += BtnPreviewPlay_Click;
+            btnPrevFrame2.Click += BtnPreviewPrev_Click;
+            btnNextFrame2.Click += BtnPreviewNext_Click;
+            tbFrameSlider2.ValueChanged += TrackBar3_ValueChanged;
 
-            trackBar1.Minimum = -100;
-            trackBar1.Maximum = 100;
-            trackBar1.Value = 0;
-            trackBar1.ValueChanged += (_, __) =>
+            tbImgBright.Minimum = -100;
+            tbImgBright.Maximum = 100;
+            tbImgBright.Value = 0;
+            tbImgBright.ValueChanged += (_, __) =>
             {
-                _previewBrightness = trackBar1.Value / 100.0;
-                UpdatePreviewFrame(trackBar3.Value);
+                _previewBrightness = tbImgBright.Value / 100.0;
+                UpdatePreviewFrame(tbFrameSlider2.Value);
             };
 
-            trackBar2.Minimum = 0;
-            trackBar2.Maximum = 100;
-            trackBar2.Value = 0;
-            trackBar2.ValueChanged += (_, __) =>
+            tbImgBlur.Minimum = 0;
+            tbImgBlur.Maximum = 100;
+            tbImgBlur.Value = 0;
+            tbImgBlur.ValueChanged += (_, __) =>
             {
-                _previewBlurAmount = trackBar2.Value / 100.0;
-                UpdatePreviewFrame(trackBar3.Value);
+                _previewBlurAmount = tbImgBlur.Value / 100.0;
+                UpdatePreviewFrame(tbFrameSlider2.Value);
             };
 
-            checkBox1.CheckedChanged += (_, __) =>
+            chkImgActBW.CheckedChanged += (_, __) =>
             {
-                _previewInvertColors = checkBox1.Checked;
-                UpdatePreviewFrame(trackBar3.Value);
+                _previewInvertColors = chkImgActBW.Checked;
+                UpdatePreviewFrame(tbFrameSlider2.Value);
             };
 
-            comboBox4.Items.Clear();
-            comboBox4.Items.AddRange(new object[] { "0.5", "1.0", "1.5", "2.0", "3.0" });
-            comboBox4.SelectedIndex = 1;
-            comboBox4.SelectedIndexChanged += (_, __) => UpdatePreviewSpeed();
+            cmbSpeed2.Items.Clear();
+            cmbSpeed2.Items.AddRange(new object[] { "0.5", "1.0", "1.5", "2.0", "3.0" });
+            cmbSpeed2.SelectedIndex = 1;
+            cmbSpeed2.SelectedIndexChanged += (_, __) => UpdatePreviewSpeed();
 
-            if (string.IsNullOrWhiteSpace(textBox4.Text))
-                textBox4.Text = "1";
+            if (string.IsNullOrWhiteSpace(txtFrmMvm2.Text))
+                txtFrmMvm2.Text = "1";
 
             _previewTimer.Interval = 33;
             _previewTimer.Tick += PreviewTimer_Tick;
@@ -2140,11 +2140,11 @@ namespace DonkeyCarUI
             pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
             pictureBox2.SizeMode = PictureBoxSizeMode.Zoom;
 
-            label8.Text = "경로";
+            lbRawDataPath.Text = "경로";
             label9.Text = "경로";
-            label12.Text = "해당 프레임    :        00000";
-            label17.Text = "0.00";
-            label18.Text = "0.00";
+            lblFrmInx2.Text = "해당 프레임    :        00000";
+            lbAISpeed2.Text = "0.00";
+            lbAIDir2.Text = "0.00";
             label21.Text = "-";
             label22.Text = "-";
         }
@@ -2157,7 +2157,7 @@ namespace DonkeyCarUI
             if (fbd.ShowDialog() != DialogResult.OK) return;
 
             _previewBaseDirectory = fbd.SelectedPath;
-            label8.Text = _previewBaseDirectory;
+            lbRawDataPath.Text = _previewBaseDirectory;
 
             bool isMultiJsonFormat = false;
             string[] multiJsonFiles = Array.Empty<string>();
@@ -2177,9 +2177,9 @@ namespace DonkeyCarUI
                 return;
             }
 
-            trackBar3.Minimum = 0;
-            trackBar3.Maximum = _previewRecords.Count - 1;
-            trackBar3.Value = 0;
+            tbFrameSlider2.Minimum = 0;
+            tbFrameSlider2.Maximum = _previewRecords.Count - 1;
+            tbFrameSlider2.Value = 0;
             UpdatePreviewFrame(0);
             AddLog($"미리보기 데이터 로드: {_previewRecords.Count}장", Color.SteelBlue);
         }
@@ -2195,21 +2195,21 @@ namespace DonkeyCarUI
             _previewModelPath = ofd.FileName;
             label9.Text = _previewModelPath;
             AddLog($"미리보기 모델 선택: {_previewModelPath}", Color.SteelBlue);
-            UpdatePreviewFrame(trackBar3.Value);
+            UpdatePreviewFrame(tbFrameSlider2.Value);
         }
 
         private void TrackBar3_ValueChanged(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
 
-            UpdatePreviewFrame(trackBar3.Value);
+            UpdatePreviewFrame(tbFrameSlider2.Value);
         }
 
         private async void UpdatePreviewFrame(int index)
         {
             if (_records.Count == 0)
             {
-                label12.Text = "주행 데이터 없음";
+                lblFrmInx2.Text = "주행 데이터 없음";
                 return;
             }
 
@@ -2217,15 +2217,15 @@ namespace DonkeyCarUI
 
             var record = _records[index];
 
-            label12.Text = $"해당 프레임    :        {index + 1} / {_records.Count}";
+            lblFrmInx2.Text = $"해당 프레임    :        {index + 1} / {_records.Count}";
 
             _originalSteering = record.Angle;
             _originalThrottle = record.Throttle;
 
-            label26.Text = _originalSteering.ToString("F2");
-            label25.Text = _originalThrottle.ToString("F2");
-            progressBar7.Value = Math.Max(0, Math.Min(100, (int)((_originalSteering + 1) * 50)));
-            progressBar6.Value = Math.Max(0, Math.Min(100, (int)((_originalThrottle + 1) * 50)));
+            lbRawDataDir2.Text = _originalSteering.ToString("F2");
+            lbRawDataSpeed2.Text = _originalThrottle.ToString("F2");
+            pbRawDataDir.Value = Math.Max(0, Math.Min(100, (int)((_originalSteering + 1) * 50)));
+            pbRawDataSpeed.Value = Math.Max(0, Math.Min(100, (int)((_originalThrottle + 1) * 50)));
 
             string imgPath = GetImageFullPath(record, _baseDirectory);
 
@@ -2279,10 +2279,10 @@ namespace DonkeyCarUI
             }
 
             // 5. 예측값 표시
-            label18.Text = _leftPredictionReady ? _leftPredictedSteering.ToString("F2") : "-";
-            label17.Text = _leftPredictionReady ? _leftPredictedThrottle.ToString("F2") : "-";
-            progressBar3.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedSteering + 1) * 50)));
-            progressBar2.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedThrottle + 1) * 50)));
+            lbAIDir2.Text = _leftPredictionReady ? _leftPredictedSteering.ToString("F2") : "-";
+            lbAISpeed2.Text = _leftPredictionReady ? _leftPredictedThrottle.ToString("F2") : "-";
+            pbAIDir.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedSteering + 1) * 50)));
+            pbAISpeed.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedThrottle + 1) * 50)));
 
             label22.Text = _rightPredictionReady ? _rightPredictedSteering.ToString("F2") : "-";
             label21.Text = _rightPredictionReady ? _rightPredictedThrottle.ToString("F2") : "-";
@@ -2316,14 +2316,14 @@ namespace DonkeyCarUI
 
         private int GetPreviewFrameStep()
         {
-            if (int.TryParse(textBox4.Text.Trim(), out int step) && step > 0)
+            if (int.TryParse(txtFrmMvm2.Text.Trim(), out int step) && step > 0)
                 return step;
             return 1;
         }
 
         private void UpdatePreviewSpeed()
         {
-            string text = comboBox4.SelectedItem?.ToString() ?? "1.0";
+            string text = cmbSpeed2.SelectedItem?.ToString() ?? "1.0";
             if (double.TryParse(text,
                     System.Globalization.NumberStyles.Any,
                     System.Globalization.CultureInfo.InvariantCulture,
@@ -2344,18 +2344,18 @@ namespace DonkeyCarUI
                 return;
             }
 
-            if (trackBar3.Value == trackBar3.Maximum)
-                trackBar3.Value = 0;
+            if (tbFrameSlider2.Value == tbFrameSlider2.Maximum)
+                tbFrameSlider2.Value = 0;
 
             _isPreviewPlaying = true;
-            button7.Text = "⏸";
+            btnRun2.Text = "⏸";
             _previewTimer.Start();
         }
 
         private void StopPreviewPlayback()
         {
             _isPreviewPlaying = false;
-            button7.Text = "▶";
+            btnRun2.Text = "▶";
             _previewTimer.Stop();
         }
 
@@ -2367,26 +2367,26 @@ namespace DonkeyCarUI
                 return;
             }
 
-            if (trackBar3.Value >= trackBar3.Maximum)
+            if (tbFrameSlider2.Value >= tbFrameSlider2.Maximum)
             {
                 StopPreviewPlayback();
                 return;
             }
 
-            int next = Math.Min(trackBar3.Maximum, trackBar3.Value + _previewPlaybackSpeed);
-            trackBar3.Value = next;
+            int next = Math.Min(tbFrameSlider2.Maximum, tbFrameSlider2.Value + _previewPlaybackSpeed);
+            tbFrameSlider2.Value = next;
         }
 
         private void BtnPreviewPrev_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
-            trackBar3.Value = Math.Max(trackBar3.Minimum, trackBar3.Value - GetPreviewFrameStep());
+            tbFrameSlider2.Value = Math.Max(tbFrameSlider2.Minimum, tbFrameSlider2.Value - GetPreviewFrameStep());
         }
 
         private void BtnPreviewNext_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
-            trackBar3.Value = Math.Min(trackBar3.Maximum, trackBar3.Value + GetPreviewFrameStep());
+            tbFrameSlider2.Value = Math.Min(tbFrameSlider2.Maximum, tbFrameSlider2.Value + GetPreviewFrameStep());
         }
 
         #endregion
@@ -2448,16 +2448,16 @@ namespace DonkeyCarUI
             if (ofd.ShowDialog() == DialogResult.OK)
             {
                 _leftModelPath = ofd.FileName;
-                label8.Text = _leftModelPath;
+                lbRawDataPath.Text = _leftModelPath;
 
-                label18.Text = "전체 예측 중";
-                label17.Text = "전체 예측 중";
+                lbAIDir2.Text = "전체 예측 중";
+                lbAISpeed2.Text = "전체 예측 중";
 
-                button5.Enabled = false;
+                btnRawData.Enabled = false;
                 await PredictAllFramesAsync(_leftModelPath, _leftPredictionCache);
-                button5.Enabled = true;
+                btnRawData.Enabled = true;
 
-                UpdatePreviewFrame(trackBar3.Value);
+                UpdatePreviewFrame(tbFrameSlider2.Value);
             }
         }
 
@@ -2475,11 +2475,11 @@ namespace DonkeyCarUI
                 label22.Text = "전체 예측 중";
                 label21.Text = "전체 예측 중";
 
-                button6.Enabled = false;
+                btn.Enabled = false;
                 await PredictAllFramesAsync(_rightModelPath, _rightPredictionCache);
-                button6.Enabled = true;
+                btn.Enabled = true;
 
-                UpdatePreviewFrame(trackBar3.Value);
+                UpdatePreviewFrame(tbFrameSlider2.Value);
             }
         }
         private sealed class PredictionResult
