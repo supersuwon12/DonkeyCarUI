@@ -1,6 +1,6 @@
+using System.Diagnostics;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 using System.Windows.Forms.DataVisualization.Charting;
 using Timer = System.Windows.Forms.Timer; // WinForms Timer 명시적 사용
@@ -90,6 +90,41 @@ namespace DonkeyCarUI
         public DataManager()
         {
             InitializeComponent();
+
+            // 탭 헤더 색상
+            tabControl1.DrawItem += (sender, e) =>
+            {
+                // [1단계] 첫 번째 탭을 그리는 순간, 상단 헤더 영역 전체(우측 여백 포함)를 Lavender로 싹 청소합니다.
+                if (e.Index == 0)
+                {
+                    Rectangle headerArea = tabControl1.ClientRectangle;
+                    headerArea.Height = tabControl1.DisplayRectangle.Top;
+                    e.Graphics.FillRectangle(Brushes.Lavender, headerArea);
+                }
+
+                // [2단계] 핵심 솔루션: 현재 인덱스 하나만 그리지 말고, 
+                // 어떤 탭이 호출되었든 간에 '모든 탭(0번, 1번, 2번)'을 동시에 강제로 다 그려버립니다.
+                for (int i = 0; i < tabControl1.TabCount; i++)
+                {
+                    Rectangle rect = tabControl1.GetTabRect(i);
+
+                    // 탭 버튼 배경을 Lavender로 도색
+                    e.Graphics.FillRectangle(Brushes.Lavender, rect);
+
+                    // 탭 버튼 텍스트를 MidnightBlue로 그리기
+                    string tabText = tabControl1.TabPages[i].Text;
+                    using (Brush textBrush = new SolidBrush(Color.MidnightBlue))
+                    {
+                        StringFormat sf = new StringFormat
+                        {
+                            Alignment = StringAlignment.Center,
+                            LineAlignment = StringAlignment.Center
+                        };
+                        e.Graphics.DrawString(tabText, e.Font, textBrush, rect, sf);
+                    }
+                }
+            };
+            //탭 헤더 색상
 
             // Setup Event Handlers
             btnLoadData.Click += BtnLoadData_Click;
