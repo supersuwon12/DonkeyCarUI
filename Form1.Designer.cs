@@ -80,9 +80,7 @@ namespace DonkeyCarUI
             btnLoadData = new Button();
             tabPage2 = new TabPage();
             pnModelManage = new Panel();
-            pnModelScore = new Panel();
-            lbLoss = new Label();
-            lbModelScore = new Label();
+            panel2 = new Panel();
             lbModelManage = new Label();
             lstvModelManage = new ListView();
             columnHeader1 = new ColumnHeader();
@@ -91,6 +89,9 @@ namespace DonkeyCarUI
             columnHeader4 = new ColumnHeader();
             columnHeader5 = new ColumnHeader();
             columnHeader6 = new ColumnHeader();
+            pnModelScore = new Panel();
+            lbLoss = new Label();
+            lbModelScore = new Label();
             pnDataLearning = new Panel();
             grbExtraOption = new GroupBox();
             lbExtraExpl = new Label();
@@ -188,6 +189,7 @@ namespace DonkeyCarUI
             ((System.ComponentModel.ISupportInitialize)pbCameraView).BeginInit();
             tabPage2.SuspendLayout();
             pnModelManage.SuspendLayout();
+            panel2.SuspendLayout();
             pnModelScore.SuspendLayout();
             pnDataLearning.SuspendLayout();
             grbExtraOption.SuspendLayout();
@@ -216,10 +218,10 @@ namespace DonkeyCarUI
             // 
             // tabControl1
             // 
+            tabControl1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tabControl1.Controls.Add(tabPage1);
             tabControl1.Controls.Add(tabPage2);
             tabControl1.Controls.Add(tabPage3);
-            tabControl1.Dock = DockStyle.Fill;
             tabControl1.DrawMode = TabDrawMode.OwnerDrawFixed;
             tabControl1.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             tabControl1.ItemSize = new Size(113, 40);
@@ -762,45 +764,22 @@ namespace DonkeyCarUI
             // 
             pnModelManage.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnModelManage.BackColor = Color.AliceBlue;
+            pnModelManage.Controls.Add(panel2);
             pnModelManage.Controls.Add(pnModelScore);
-            pnModelManage.Controls.Add(lbModelManage);
-            pnModelManage.Controls.Add(lstvModelManage);
             pnModelManage.Location = new Point(3, 296);
             pnModelManage.Name = "pnModelManage";
             pnModelManage.Size = new Size(1333, 290);
             pnModelManage.TabIndex = 49;
             // 
-            // pnModelScore
+            // panel2
             // 
-            pnModelScore.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            pnModelScore.Controls.Add(lbLoss);
-            pnModelScore.Controls.Add(lbModelScore);
-            pnModelScore.Location = new Point(737, 0);
-            pnModelScore.Name = "pnModelScore";
-            pnModelScore.Size = new Size(596, 290);
-            pnModelScore.TabIndex = 48;
-            // 
-            // lbLoss
-            // 
-            lbLoss.AutoSize = true;
-            lbLoss.Font = new Font("함초롬돋움", 12F);
-            lbLoss.ForeColor = Color.MidnightBlue;
-            lbLoss.Location = new Point(19, 40);
-            lbLoss.Name = "lbLoss";
-            lbLoss.Size = new Size(82, 21);
-            lbLoss.TabIndex = 1;
-            lbLoss.Text = "손실값 : 0";
-            // 
-            // lbModelScore
-            // 
-            lbModelScore.AutoSize = true;
-            lbModelScore.Font = new Font("함초롬돋움", 12F);
-            lbModelScore.ForeColor = Color.MidnightBlue;
-            lbModelScore.Location = new Point(19, 13);
-            lbModelScore.Name = "lbModelScore";
-            lbModelScore.Size = new Size(121, 21);
-            lbModelScore.TabIndex = 0;
-            lbModelScore.Text = "모델 점수 : 100";
+            panel2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            panel2.Controls.Add(lbModelManage);
+            panel2.Controls.Add(lstvModelManage);
+            panel2.Location = new Point(0, 0);
+            panel2.Name = "panel2";
+            panel2.Size = new Size(731, 290);
+            panel2.TabIndex = 49;
             // 
             // lbModelManage
             // 
@@ -808,7 +787,7 @@ namespace DonkeyCarUI
             lbModelManage.AutoSize = true;
             lbModelManage.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbModelManage.ForeColor = Color.MidnightBlue;
-            lbModelManage.Location = new Point(18, 13);
+            lbModelManage.Location = new Point(21, 23);
             lbModelManage.Name = "lbModelManage";
             lbModelManage.Size = new Size(140, 25);
             lbModelManage.TabIndex = 47;
@@ -816,16 +795,16 @@ namespace DonkeyCarUI
             // 
             // lstvModelManage
             // 
-            lstvModelManage.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
+            lstvModelManage.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lstvModelManage.BorderStyle = BorderStyle.None;
             lstvModelManage.Columns.AddRange(new ColumnHeader[] { columnHeader1, columnHeader2, columnHeader3, columnHeader4, columnHeader5, columnHeader6 });
             lstvModelManage.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lstvModelManage.ForeColor = Color.MidnightBlue;
             lstvModelManage.FullRowSelect = true;
             lstvModelManage.GridLines = true;
-            lstvModelManage.Location = new Point(31, 60);
+            lstvModelManage.Location = new Point(17, 60);
             lstvModelManage.Name = "lstvModelManage";
-            lstvModelManage.Size = new Size(719, 210);
+            lstvModelManage.Size = new Size(700, 210);
             lstvModelManage.TabIndex = 46;
             lstvModelManage.UseCompatibleStateImageBehavior = false;
             lstvModelManage.View = View.Details;
@@ -860,6 +839,38 @@ namespace DonkeyCarUI
             columnHeader6.Text = "전이학습";
             columnHeader6.Width = 120;
             // 
+            // pnModelScore
+            // 
+            pnModelScore.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
+            pnModelScore.Controls.Add(lbLoss);
+            pnModelScore.Controls.Add(lbModelScore);
+            pnModelScore.Location = new Point(737, 0);
+            pnModelScore.Name = "pnModelScore";
+            pnModelScore.Size = new Size(596, 290);
+            pnModelScore.TabIndex = 48;
+            // 
+            // lbLoss
+            // 
+            lbLoss.AutoSize = true;
+            lbLoss.Font = new Font("함초롬돋움", 12F);
+            lbLoss.ForeColor = Color.MidnightBlue;
+            lbLoss.Location = new Point(19, 40);
+            lbLoss.Name = "lbLoss";
+            lbLoss.Size = new Size(82, 21);
+            lbLoss.TabIndex = 1;
+            lbLoss.Text = "손실값 : 0";
+            // 
+            // lbModelScore
+            // 
+            lbModelScore.AutoSize = true;
+            lbModelScore.Font = new Font("함초롬돋움", 12F);
+            lbModelScore.ForeColor = Color.MidnightBlue;
+            lbModelScore.Location = new Point(19, 13);
+            lbModelScore.Name = "lbModelScore";
+            lbModelScore.Size = new Size(121, 21);
+            lbModelScore.TabIndex = 0;
+            lbModelScore.Text = "모델 점수 : 100";
+            // 
             // pnDataLearning
             // 
             pnDataLearning.Controls.Add(grbExtraOption);
@@ -877,6 +888,7 @@ namespace DonkeyCarUI
             // 
             // grbExtraOption
             // 
+            grbExtraOption.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             grbExtraOption.BackColor = Color.AliceBlue;
             grbExtraOption.Controls.Add(lbExtraExpl);
             grbExtraOption.Controls.Add(txtExtraExpl);
@@ -888,7 +900,7 @@ namespace DonkeyCarUI
             grbExtraOption.ForeColor = Color.MidnightBlue;
             grbExtraOption.Location = new Point(896, 51);
             grbExtraOption.Name = "grbExtraOption";
-            grbExtraOption.Size = new Size(436, 151);
+            grbExtraOption.Size = new Size(434, 151);
             grbExtraOption.TabIndex = 54;
             grbExtraOption.TabStop = false;
             grbExtraOption.Text = "추가 학습 설정";
@@ -906,6 +918,7 @@ namespace DonkeyCarUI
             // 
             // txtExtraExpl
             // 
+            txtExtraExpl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtExtraExpl.ForeColor = Color.MidnightBlue;
             txtExtraExpl.Location = new Point(89, 97);
             txtExtraExpl.Name = "txtExtraExpl";
@@ -924,6 +937,7 @@ namespace DonkeyCarUI
             // 
             // txtExtraModel
             // 
+            txtExtraModel.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtExtraModel.ForeColor = Color.MidnightBlue;
             txtExtraModel.Location = new Point(89, 67);
             txtExtraModel.Name = "txtExtraModel";
@@ -983,9 +997,10 @@ namespace DonkeyCarUI
             // 
             // pbLearning
             // 
+            pbLearning.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbLearning.Location = new Point(119, 212);
             pbLearning.Name = "pbLearning";
-            pbLearning.Size = new Size(1213, 32);
+            pbLearning.Size = new Size(1211, 32);
             pbLearning.TabIndex = 51;
             // 
             // btnLearningStart
@@ -1000,6 +1015,7 @@ namespace DonkeyCarUI
             // 
             // grbModelOption
             // 
+            grbModelOption.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             grbModelOption.BackColor = Color.AliceBlue;
             grbModelOption.Controls.Add(lbDonkeyPath);
             grbModelOption.Controls.Add(lbSavePath);
@@ -1107,6 +1123,7 @@ namespace DonkeyCarUI
             // 
             // txtModelName
             // 
+            txtModelName.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtModelName.ForeColor = Color.MidnightBlue;
             txtModelName.Location = new Point(399, 29);
             txtModelName.Name = "txtModelName";
@@ -1166,6 +1183,7 @@ namespace DonkeyCarUI
             // 
             // txtExpl
             // 
+            txtExpl.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             txtExpl.ForeColor = Color.MidnightBlue;
             txtExpl.Location = new Point(399, 59);
             txtExpl.Name = "txtExpl";
@@ -1198,7 +1216,7 @@ namespace DonkeyCarUI
             // 
             // tbFrameSlider2
             // 
-            tbFrameSlider2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            tbFrameSlider2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             tbFrameSlider2.AutoSize = false;
             tbFrameSlider2.Location = new Point(3, 397);
             tbFrameSlider2.Name = "tbFrameSlider2";
@@ -1207,7 +1225,7 @@ namespace DonkeyCarUI
             // 
             // pnOption
             // 
-            pnOption.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            pnOption.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnOption.Controls.Add(grbRawData);
             pnOption.Controls.Add(grbImgCorrection);
             pnOption.Controls.Add(grbPlayOption2);
@@ -1218,7 +1236,7 @@ namespace DonkeyCarUI
             // 
             // grbRawData
             // 
-            grbRawData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grbRawData.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grbRawData.BackColor = Color.AliceBlue;
             grbRawData.Controls.Add(pbRawDataSpeed);
             grbRawData.Controls.Add(lbRawDataSpeed);
@@ -1236,6 +1254,7 @@ namespace DonkeyCarUI
             // 
             // pbRawDataSpeed
             // 
+            pbRawDataSpeed.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbRawDataSpeed.Location = new Point(97, 101);
             pbRawDataSpeed.Name = "pbRawDataSpeed";
             pbRawDataSpeed.Size = new Size(115, 10);
@@ -1263,6 +1282,7 @@ namespace DonkeyCarUI
             // 
             // pbRawDataDir
             // 
+            pbRawDataDir.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pbRawDataDir.Location = new Point(96, 53);
             pbRawDataDir.Name = "pbRawDataDir";
             pbRawDataDir.Size = new Size(115, 10);
@@ -1290,7 +1310,7 @@ namespace DonkeyCarUI
             // 
             // grbImgCorrection
             // 
-            grbImgCorrection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grbImgCorrection.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             grbImgCorrection.BackColor = Color.AliceBlue;
             grbImgCorrection.Controls.Add(chkImgActBW);
             grbImgCorrection.Controls.Add(lbImgBW);
@@ -1366,7 +1386,7 @@ namespace DonkeyCarUI
             // 
             // grbPlayOption2
             // 
-            grbPlayOption2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            grbPlayOption2.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             grbPlayOption2.BackColor = Color.AliceBlue;
             grbPlayOption2.Controls.Add(btnRun2);
             grbPlayOption2.Controls.Add(lbSpeed2);
@@ -1478,7 +1498,7 @@ namespace DonkeyCarUI
             // 
             // splitContainer1
             // 
-            splitContainer1.Dock = DockStyle.Top;
+            splitContainer1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             splitContainer1.Location = new Point(3, 3);
             splitContainer1.Name = "splitContainer1";
             // 
@@ -1507,11 +1527,11 @@ namespace DonkeyCarUI
             // 
             // pictureBox2
             // 
-            pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox2.BackColor = Color.Linen;
+            pictureBox2.Dock = DockStyle.Fill;
             pictureBox2.Location = new Point(10, 10);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(646, 282);
+            pictureBox2.Size = new Size(645, 282);
             pictureBox2.TabIndex = 1;
             pictureBox2.TabStop = false;
             // 
@@ -1635,8 +1655,8 @@ namespace DonkeyCarUI
             // 
             // panel3
             // 
+            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel3.Controls.Add(pictureBox1);
-            panel3.Dock = DockStyle.Bottom;
             panel3.Location = new Point(0, 86);
             panel3.Name = "panel3";
             panel3.Padding = new Padding(10);
@@ -1645,8 +1665,8 @@ namespace DonkeyCarUI
             // 
             // pictureBox1
             // 
-            pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackColor = Color.Linen;
+            pictureBox1.Dock = DockStyle.Fill;
             pictureBox1.Location = new Point(10, 10);
             pictureBox1.Name = "pictureBox1";
             pictureBox1.Size = new Size(644, 282);
@@ -1655,11 +1675,11 @@ namespace DonkeyCarUI
             // 
             // panel1
             // 
+            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.AliceBlue;
             panel1.Controls.Add(groupBox10);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(btn);
-            panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
             panel1.Name = "panel1";
             panel1.Size = new Size(664, 86);
@@ -1789,7 +1809,8 @@ namespace DonkeyCarUI
             ((System.ComponentModel.ISupportInitialize)pbCameraView).EndInit();
             tabPage2.ResumeLayout(false);
             pnModelManage.ResumeLayout(false);
-            pnModelManage.PerformLayout();
+            panel2.ResumeLayout(false);
+            panel2.PerformLayout();
             pnModelScore.ResumeLayout(false);
             pnModelScore.PerformLayout();
             pnDataLearning.ResumeLayout(false);
@@ -1974,5 +1995,6 @@ namespace DonkeyCarUI
         private Label lbLoss;
         private Label lbModelScore;
         private Panel panelTimeline;
+        private Panel panel2;
     }
 }
