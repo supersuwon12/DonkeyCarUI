@@ -224,10 +224,9 @@ namespace DonkeyCarUI
             tabControl1.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             tabControl1.ItemSize = new Size(113, 40);
             tabControl1.Location = new Point(0, 0);
-            tabControl1.Margin = new Padding(4, 5, 4, 5);
             tabControl1.Name = "tabControl1";
             tabControl1.SelectedIndex = 0;
-            tabControl1.Size = new Size(1924, 1062);
+            tabControl1.Size = new Size(1347, 637);
             tabControl1.TabIndex = 32;
             // 
             // tabPage1
@@ -248,26 +247,25 @@ namespace DonkeyCarUI
             tabPage1.Controls.Add(btnLoadData);
             tabPage1.Font = new Font("맑은 고딕", 9F, FontStyle.Regular, GraphicsUnit.Point, 129);
             tabPage1.Location = new Point(4, 44);
-            tabPage1.Margin = new Padding(4, 5, 4, 5);
             tabPage1.Name = "tabPage1";
-            tabPage1.Padding = new Padding(4, 5, 4, 5);
-            tabPage1.Size = new Size(1916, 1014);
+            tabPage1.Padding = new Padding(3);
+            tabPage1.Size = new Size(1339, 589);
             tabPage1.TabIndex = 0;
             tabPage1.Text = "주행 데이터 관리";
             // 
             // panelTimeline
             // 
-            panelTimeline.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            panelTimeline.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panelTimeline.BackColor = Color.Black;
             panelTimeline.BorderStyle = BorderStyle.FixedSingle;
-            panelTimeline.Location = new Point(399, 835);
-            panelTimeline.Margin = new Padding(4, 5, 4, 5);
+            panelTimeline.Location = new Point(279, 501);
             panelTimeline.Name = "panelTimeline";
-            panelTimeline.Size = new Size(1249, 169);
+            panelTimeline.Size = new Size(875, 102);
             panelTimeline.TabIndex = 53;
             // 
             // grbDataCorrection
             // 
+            grbDataCorrection.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             grbDataCorrection.BackColor = Color.AliceBlue;
             grbDataCorrection.Controls.Add(chkActBW);
             grbDataCorrection.Controls.Add(lbBW);
@@ -276,11 +274,9 @@ namespace DonkeyCarUI
             grbDataCorrection.Controls.Add(tbBright);
             grbDataCorrection.Controls.Add(tbBlur);
             grbDataCorrection.ForeColor = Color.MidnightBlue;
-            grbDataCorrection.Location = new Point(24, 723);
-            grbDataCorrection.Margin = new Padding(4, 5, 4, 5);
+            grbDataCorrection.Location = new Point(17, 434);
             grbDataCorrection.Name = "grbDataCorrection";
-            grbDataCorrection.Padding = new Padding(4, 5, 4, 5);
-            grbDataCorrection.Size = new Size(349, 282);
+            grbDataCorrection.Size = new Size(244, 169);
             grbDataCorrection.TabIndex = 52;
             grbDataCorrection.TabStop = false;
             grbDataCorrection.Text = "데이터 보정";
@@ -288,10 +284,9 @@ namespace DonkeyCarUI
             // chkActBW
             // 
             chkActBW.AutoSize = true;
-            chkActBW.Location = new Point(144, 217);
-            chkActBW.Margin = new Padding(4, 5, 4, 5);
+            chkActBW.Location = new Point(101, 130);
             chkActBW.Name = "chkActBW";
-            chkActBW.Size = new Size(92, 29);
+            chkActBW.Size = new Size(62, 19);
             chkActBW.TabIndex = 5;
             chkActBW.Text = "활성화";
             chkActBW.UseVisualStyleBackColor = true;
@@ -300,10 +295,9 @@ namespace DonkeyCarUI
             // 
             lbBW.AutoSize = true;
             lbBW.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
-            lbBW.Location = new Point(21, 217);
-            lbBW.Margin = new Padding(4, 0, 4, 0);
+            lbBW.Location = new Point(15, 130);
             lbBW.Name = "lbBW";
-            lbBW.Size = new Size(99, 28);
+            lbBW.Size = new Size(65, 17);
             lbBW.TabIndex = 4;
             lbBW.Text = "흑백 반전";
             // 
@@ -312,10 +306,9 @@ namespace DonkeyCarUI
             lbBlur.AutoSize = true;
             lbBlur.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbBlur.ForeColor = Color.MidnightBlue;
-            lbBlur.Location = new Point(7, 136);
-            lbBlur.Margin = new Padding(4, 0, 4, 0);
+            lbBlur.Location = new Point(5, 82);
             lbBlur.Name = "lbBlur";
-            lbBlur.Size = new Size(146, 28);
+            lbBlur.Size = new Size(96, 17);
             lbBlur.TabIndex = 3;
             lbBlur.Text = "흐림 효과 조절";
             // 
@@ -324,27 +317,24 @@ namespace DonkeyCarUI
             lbBright.AutoSize = true;
             lbBright.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbBright.ForeColor = Color.MidnightBlue;
-            lbBright.Location = new Point(21, 42);
-            lbBright.Margin = new Padding(4, 0, 4, 0);
+            lbBright.Location = new Point(15, 25);
             lbBright.Name = "lbBright";
-            lbBright.Size = new Size(99, 28);
+            lbBright.Size = new Size(65, 17);
             lbBright.TabIndex = 2;
             lbBright.Text = "밝기 조절";
             // 
             // tbBright
             // 
-            tbBright.Location = new Point(144, 33);
-            tbBright.Margin = new Padding(4, 5, 4, 5);
+            tbBright.Location = new Point(101, 20);
             tbBright.Name = "tbBright";
-            tbBright.Size = new Size(196, 69);
+            tbBright.Size = new Size(137, 45);
             tbBright.TabIndex = 0;
             // 
             // tbBlur
             // 
-            tbBlur.Location = new Point(144, 127);
-            tbBlur.Margin = new Padding(4, 5, 4, 5);
+            tbBlur.Location = new Point(101, 76);
             tbBlur.Name = "tbBlur";
-            tbBlur.Size = new Size(196, 69);
+            tbBlur.Size = new Size(137, 45);
             tbBlur.TabIndex = 1;
             // 
             // grbEditRange
@@ -358,11 +348,9 @@ namespace DonkeyCarUI
             grbEditRange.Controls.Add(btnRestore);
             grbEditRange.Controls.Add(lblRange);
             grbEditRange.ForeColor = Color.MidnightBlue;
-            grbEditRange.Location = new Point(1338, 448);
-            grbEditRange.Margin = new Padding(4, 5, 4, 5);
+            grbEditRange.Location = new Point(937, 269);
             grbEditRange.Name = "grbEditRange";
-            grbEditRange.Padding = new Padding(4, 5, 4, 5);
-            grbEditRange.Size = new Size(307, 308);
+            grbEditRange.Size = new Size(215, 185);
             grbEditRange.TabIndex = 51;
             grbEditRange.TabStop = false;
             grbEditRange.Text = "선택 범위 편집";
@@ -371,10 +359,9 @@ namespace DonkeyCarUI
             // 
             btnSetPoint1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSetPoint1.ForeColor = Color.MidnightBlue;
-            btnSetPoint1.Location = new Point(14, 37);
-            btnSetPoint1.Margin = new Padding(4, 5, 4, 5);
+            btnSetPoint1.Location = new Point(10, 22);
             btnSetPoint1.Name = "btnSetPoint1";
-            btnSetPoint1.Size = new Size(131, 58);
+            btnSetPoint1.Size = new Size(92, 35);
             btnSetPoint1.TabIndex = 41;
             btnSetPoint1.Text = "시작 지점\r\n선택";
             btnSetPoint1.UseVisualStyleBackColor = true;
@@ -382,10 +369,9 @@ namespace DonkeyCarUI
             // btnCancel
             // 
             btnCancel.ForeColor = Color.MidnightBlue;
-            btnCancel.Location = new Point(14, 235);
-            btnCancel.Margin = new Padding(4, 5, 4, 5);
+            btnCancel.Location = new Point(10, 141);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(281, 63);
+            btnCancel.Size = new Size(197, 38);
             btnCancel.TabIndex = 50;
             btnCancel.Text = "선택 취소";
             btnCancel.UseVisualStyleBackColor = true;
@@ -394,10 +380,9 @@ namespace DonkeyCarUI
             // 
             btnDelete.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnDelete.ForeColor = Color.MidnightBlue;
-            btnDelete.Location = new Point(14, 167);
-            btnDelete.Margin = new Padding(4, 5, 4, 5);
+            btnDelete.Location = new Point(10, 100);
             btnDelete.Name = "btnDelete";
-            btnDelete.Size = new Size(131, 58);
+            btnDelete.Size = new Size(92, 35);
             btnDelete.TabIndex = 43;
             btnDelete.Text = "선택 삭제";
             btnDelete.UseVisualStyleBackColor = true;
@@ -406,10 +391,9 @@ namespace DonkeyCarUI
             // 
             btnSetPoint2.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnSetPoint2.ForeColor = Color.MidnightBlue;
-            btnSetPoint2.Location = new Point(161, 37);
-            btnSetPoint2.Margin = new Padding(4, 5, 4, 5);
+            btnSetPoint2.Location = new Point(113, 22);
             btnSetPoint2.Name = "btnSetPoint2";
-            btnSetPoint2.Size = new Size(136, 58);
+            btnSetPoint2.Size = new Size(95, 35);
             btnSetPoint2.TabIndex = 42;
             btnSetPoint2.Text = "끝 지점 선택";
             btnSetPoint2.UseVisualStyleBackColor = true;
@@ -418,10 +402,9 @@ namespace DonkeyCarUI
             // 
             btnRestore.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             btnRestore.ForeColor = Color.MidnightBlue;
-            btnRestore.Location = new Point(161, 167);
-            btnRestore.Margin = new Padding(4, 5, 4, 5);
+            btnRestore.Location = new Point(113, 100);
             btnRestore.Name = "btnRestore";
-            btnRestore.Size = new Size(136, 58);
+            btnRestore.Size = new Size(95, 35);
             btnRestore.TabIndex = 44;
             btnRestore.Text = "삭제 복원";
             btnRestore.UseVisualStyleBackColor = true;
@@ -432,20 +415,19 @@ namespace DonkeyCarUI
             lblRange.AutoSize = true;
             lblRange.Font = new Font("맑은 고딕", 12F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lblRange.ForeColor = Color.MidnightBlue;
-            lblRange.Location = new Point(121, 118);
-            lblRange.Margin = new Padding(4, 0, 4, 0);
+            lblRange.Location = new Point(85, 71);
             lblRange.Name = "lblRange";
-            lblRange.Size = new Size(59, 32);
+            lblRange.Size = new Size(42, 21);
             lblRange.TabIndex = 45;
             lblRange.Text = "[0,0)";
             // 
             // lstProcess
             // 
+            lstProcess.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left;
             lstProcess.BackColor = Color.AliceBlue;
-            lstProcess.Location = new Point(24, 512);
-            lstProcess.Margin = new Padding(4, 5, 4, 5);
+            lstProcess.Location = new Point(17, 307);
             lstProcess.Name = "lstProcess";
-            lstProcess.Size = new Size(347, 199);
+            lstProcess.Size = new Size(244, 121);
             lstProcess.TabIndex = 49;
             lstProcess.UseCompatibleStateImageBehavior = false;
             // 
@@ -458,11 +440,9 @@ namespace DonkeyCarUI
             grbFiltering.Controls.Add(btnFilter);
             grbFiltering.Controls.Add(txtFilter);
             grbFiltering.ForeColor = Color.MidnightBlue;
-            grbFiltering.Location = new Point(24, 268);
-            grbFiltering.Margin = new Padding(4, 5, 4, 5);
+            grbFiltering.Location = new Point(17, 161);
             grbFiltering.Name = "grbFiltering";
-            grbFiltering.Padding = new Padding(4, 5, 4, 5);
-            grbFiltering.Size = new Size(349, 233);
+            grbFiltering.Size = new Size(244, 140);
             grbFiltering.TabIndex = 48;
             grbFiltering.TabStop = false;
             grbFiltering.Text = "범위 필터링";
@@ -470,10 +450,9 @@ namespace DonkeyCarUI
             // tbCriteria
             // 
             tbCriteria.ForeColor = Color.MidnightBlue;
-            tbCriteria.Location = new Point(176, 168);
-            tbCriteria.Margin = new Padding(4, 5, 4, 5);
+            tbCriteria.Location = new Point(123, 101);
             tbCriteria.Name = "tbCriteria";
-            tbCriteria.Size = new Size(148, 31);
+            tbCriteria.Size = new Size(105, 23);
             tbCriteria.TabIndex = 26;
             tbCriteria.Text = "0.0";
             // 
@@ -482,10 +461,9 @@ namespace DonkeyCarUI
             cmbRange.ForeColor = Color.MidnightBlue;
             cmbRange.FormattingEnabled = true;
             cmbRange.Items.AddRange(new object[] { ">", "<", "≥", "≤" });
-            cmbRange.Location = new Point(176, 105);
-            cmbRange.Margin = new Padding(4, 5, 4, 5);
+            cmbRange.Location = new Point(123, 63);
             cmbRange.Name = "cmbRange";
-            cmbRange.Size = new Size(148, 33);
+            cmbRange.Size = new Size(105, 23);
             cmbRange.TabIndex = 25;
             cmbRange.Text = "범위";
             // 
@@ -494,10 +472,9 @@ namespace DonkeyCarUI
             cmbDirSpeed.ForeColor = Color.MidnightBlue;
             cmbDirSpeed.FormattingEnabled = true;
             cmbDirSpeed.Items.AddRange(new object[] { "방향", "속도" });
-            cmbDirSpeed.Location = new Point(176, 42);
-            cmbDirSpeed.Margin = new Padding(4, 5, 4, 5);
+            cmbDirSpeed.Location = new Point(123, 25);
             cmbDirSpeed.Name = "cmbDirSpeed";
-            cmbDirSpeed.Size = new Size(148, 33);
+            cmbDirSpeed.Size = new Size(105, 23);
             cmbDirSpeed.TabIndex = 24;
             cmbDirSpeed.Text = "방향/속도";
             // 
@@ -505,10 +482,9 @@ namespace DonkeyCarUI
             // 
             btnFilter.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
             btnFilter.ForeColor = Color.MidnightBlue;
-            btnFilter.Location = new Point(10, 40);
-            btnFilter.Margin = new Padding(4, 5, 4, 5);
+            btnFilter.Location = new Point(7, 24);
             btnFilter.Name = "btnFilter";
-            btnFilter.Size = new Size(149, 52);
+            btnFilter.Size = new Size(104, 31);
             btnFilter.TabIndex = 22;
             btnFilter.Text = "범위 필터링";
             btnFilter.UseVisualStyleBackColor = true;
@@ -516,22 +492,19 @@ namespace DonkeyCarUI
             // txtFilter
             // 
             txtFilter.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            txtFilter.Location = new Point(176, 232);
-            txtFilter.Margin = new Padding(4, 5, 4, 5);
+            txtFilter.Location = new Point(123, 139);
             txtFilter.Name = "txtFilter";
-            txtFilter.Size = new Size(148, 31);
+            txtFilter.Size = new Size(105, 23);
             txtFilter.TabIndex = 23;
             txtFilter.Text = "0.1";
             // 
             // grbDataList
             // 
-            grbDataList.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            grbDataList.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Right;
             grbDataList.Controls.Add(lstDataList);
-            grbDataList.Location = new Point(1653, 10);
-            grbDataList.Margin = new Padding(4, 5, 4, 5);
+            grbDataList.Location = new Point(1157, 6);
             grbDataList.Name = "grbDataList";
-            grbDataList.Padding = new Padding(4, 5, 4, 5);
-            grbDataList.Size = new Size(251, 1013);
+            grbDataList.Size = new Size(176, 608);
             grbDataList.TabIndex = 46;
             grbDataList.TabStop = false;
             grbDataList.Text = "데이터 리스트";
@@ -540,10 +513,9 @@ namespace DonkeyCarUI
             // 
             lstDataList.Dock = DockStyle.Fill;
             lstDataList.FormattingEnabled = true;
-            lstDataList.Location = new Point(4, 29);
-            lstDataList.Margin = new Padding(4, 5, 4, 5);
+            lstDataList.Location = new Point(3, 19);
             lstDataList.Name = "lstDataList";
-            lstDataList.Size = new Size(243, 979);
+            lstDataList.Size = new Size(170, 586);
             lstDataList.TabIndex = 29;
             // 
             // grbRunningData
@@ -556,68 +528,60 @@ namespace DonkeyCarUI
             grbRunningData.Controls.Add(lblSteeringValue);
             grbRunningData.Controls.Add(lbDataDir);
             grbRunningData.ForeColor = Color.MidnightBlue;
-            grbRunningData.Location = new Point(24, 65);
-            grbRunningData.Margin = new Padding(4, 5, 4, 5);
+            grbRunningData.Location = new Point(17, 39);
             grbRunningData.Name = "grbRunningData";
-            grbRunningData.Padding = new Padding(4, 5, 4, 5);
-            grbRunningData.Size = new Size(349, 193);
+            grbRunningData.Size = new Size(244, 116);
             grbRunningData.TabIndex = 38;
             grbRunningData.TabStop = false;
             grbRunningData.Text = "주행 데이터";
             // 
             // pbThrottle
             // 
-            pbThrottle.Location = new Point(164, 129);
-            pbThrottle.Margin = new Padding(4, 5, 4, 5);
+            pbThrottle.Location = new Point(115, 77);
             pbThrottle.Name = "pbThrottle";
-            pbThrottle.Size = new Size(139, 17);
+            pbThrottle.Size = new Size(97, 10);
             pbThrottle.TabIndex = 13;
             // 
             // lbDataSpeed
             // 
             lbDataSpeed.AutoSize = true;
-            lbDataSpeed.Location = new Point(9, 126);
-            lbDataSpeed.Margin = new Padding(4, 0, 4, 0);
+            lbDataSpeed.Location = new Point(6, 76);
             lbDataSpeed.Name = "lbDataSpeed";
-            lbDataSpeed.Size = new Size(48, 25);
+            lbDataSpeed.Size = new Size(31, 15);
             lbDataSpeed.TabIndex = 13;
             lbDataSpeed.Text = "속도";
             // 
             // lblThrottleValue
             // 
             lblThrottleValue.AutoSize = true;
-            lblThrottleValue.Location = new Point(100, 124);
-            lblThrottleValue.Margin = new Padding(4, 0, 4, 0);
+            lblThrottleValue.Location = new Point(70, 74);
             lblThrottleValue.Name = "lblThrottleValue";
-            lblThrottleValue.Size = new Size(60, 25);
+            lblThrottleValue.Size = new Size(39, 15);
             lblThrottleValue.TabIndex = 14;
             lblThrottleValue.Text = "label8";
             // 
             // pbSteering
             // 
-            pbSteering.Location = new Point(163, 66);
-            pbSteering.Margin = new Padding(4, 5, 4, 5);
+            pbSteering.Location = new Point(114, 40);
             pbSteering.Name = "pbSteering";
-            pbSteering.Size = new Size(139, 17);
+            pbSteering.Size = new Size(97, 10);
             pbSteering.TabIndex = 2;
             // 
             // lblSteeringValue
             // 
             lblSteeringValue.AutoSize = true;
-            lblSteeringValue.Location = new Point(99, 59);
-            lblSteeringValue.Margin = new Padding(4, 0, 4, 0);
+            lblSteeringValue.Location = new Point(69, 35);
             lblSteeringValue.Name = "lblSteeringValue";
-            lblSteeringValue.Size = new Size(60, 25);
+            lblSteeringValue.Size = new Size(39, 15);
             lblSteeringValue.TabIndex = 1;
             lblSteeringValue.Text = "label6";
             // 
             // lbDataDir
             // 
             lbDataDir.AutoSize = true;
-            lbDataDir.Location = new Point(10, 59);
-            lbDataDir.Margin = new Padding(4, 0, 4, 0);
+            lbDataDir.Location = new Point(7, 35);
             lbDataDir.Name = "lbDataDir";
-            lbDataDir.Size = new Size(48, 25);
+            lbDataDir.Size = new Size(31, 15);
             lbDataDir.TabIndex = 0;
             lbDataDir.Text = "방향";
             // 
@@ -626,10 +590,9 @@ namespace DonkeyCarUI
             lblTitle.AutoSize = true;
             lblTitle.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lblTitle.ForeColor = Color.MidnightBlue;
-            lblTitle.Location = new Point(9, 10);
-            lblTitle.Margin = new Padding(4, 0, 4, 0);
+            lblTitle.Location = new Point(6, 6);
             lblTitle.Name = "lblTitle";
-            lblTitle.Size = new Size(240, 40);
+            lblTitle.Size = new Size(159, 25);
             lblTitle.TabIndex = 37;
             lblTitle.Text = "주행 데이터 관리";
             // 
@@ -647,21 +610,18 @@ namespace DonkeyCarUI
             grbPlayOption1.Controls.Add(btnNextFrame1);
             grbPlayOption1.Controls.Add(lblFrmInx1);
             grbPlayOption1.ForeColor = Color.MidnightBlue;
-            grbPlayOption1.Location = new Point(1338, 65);
-            grbPlayOption1.Margin = new Padding(4, 5, 4, 5);
+            grbPlayOption1.Location = new Point(937, 39);
             grbPlayOption1.Name = "grbPlayOption1";
-            grbPlayOption1.Padding = new Padding(4, 5, 4, 5);
-            grbPlayOption1.Size = new Size(307, 370);
+            grbPlayOption1.Size = new Size(215, 222);
             grbPlayOption1.TabIndex = 36;
             grbPlayOption1.TabStop = false;
             grbPlayOption1.Text = "재생 설정";
             // 
             // btnRun1
             // 
-            btnRun1.Location = new Point(14, 280);
-            btnRun1.Margin = new Padding(4, 5, 4, 5);
+            btnRun1.Location = new Point(10, 168);
             btnRun1.Name = "btnRun1";
-            btnRun1.Size = new Size(281, 75);
+            btnRun1.Size = new Size(197, 45);
             btnRun1.TabIndex = 33;
             btnRun1.Text = "▶";
             btnRun1.UseVisualStyleBackColor = true;
@@ -671,10 +631,9 @@ namespace DonkeyCarUI
             lbSpeed1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbSpeed1.AutoSize = true;
             lbSpeed1.ForeColor = Color.MidnightBlue;
-            lbSpeed1.Location = new Point(41, 153);
-            lbSpeed1.Margin = new Padding(4, 0, 4, 0);
+            lbSpeed1.Location = new Point(29, 92);
             lbSpeed1.Name = "lbSpeed1";
-            lbSpeed1.Size = new Size(48, 25);
+            lbSpeed1.Size = new Size(31, 15);
             lbSpeed1.TabIndex = 32;
             lbSpeed1.Text = "배속";
             // 
@@ -683,58 +642,52 @@ namespace DonkeyCarUI
             lbFrmMvm1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbFrmMvm1.AutoSize = true;
             lbFrmMvm1.ForeColor = Color.MidnightBlue;
-            lbFrmMvm1.Location = new Point(23, 93);
-            lbFrmMvm1.Margin = new Padding(4, 0, 4, 0);
+            lbFrmMvm1.Location = new Point(16, 56);
             lbFrmMvm1.Name = "lbFrmMvm1";
-            lbFrmMvm1.Size = new Size(108, 25);
+            lbFrmMvm1.Size = new Size(71, 15);
             lbFrmMvm1.TabIndex = 30;
             lbFrmMvm1.Text = "프레임 이동";
             // 
             // txtFrmMvm1
             // 
-            txtFrmMvm1.Location = new Point(144, 87);
-            txtFrmMvm1.Margin = new Padding(4, 5, 4, 5);
+            txtFrmMvm1.Location = new Point(101, 52);
             txtFrmMvm1.Name = "txtFrmMvm1";
-            txtFrmMvm1.Size = new Size(145, 31);
+            txtFrmMvm1.Size = new Size(103, 23);
             txtFrmMvm1.TabIndex = 29;
             // 
             // cmbSpeed1
             // 
             cmbSpeed1.FormattingEnabled = true;
             cmbSpeed1.Items.AddRange(new object[] { "1.0", "1.5", "2.0", "2.5", "3.0" });
-            cmbSpeed1.Location = new Point(144, 147);
-            cmbSpeed1.Margin = new Padding(4, 5, 4, 5);
+            cmbSpeed1.Location = new Point(101, 88);
             cmbSpeed1.Name = "cmbSpeed1";
-            cmbSpeed1.Size = new Size(145, 33);
+            cmbSpeed1.Size = new Size(103, 23);
             cmbSpeed1.TabIndex = 28;
             // 
             // btnPlay
             // 
             btnPlay.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            btnPlay.Location = new Point(17, 485);
-            btnPlay.Margin = new Padding(4, 5, 4, 5);
+            btnPlay.Location = new Point(12, 291);
             btnPlay.Name = "btnPlay";
-            btnPlay.Size = new Size(287, 75);
+            btnPlay.Size = new Size(201, 45);
             btnPlay.TabIndex = 11;
             btnPlay.Text = "▶";
             btnPlay.UseVisualStyleBackColor = true;
             // 
             // btnPrevFrame1
             // 
-            btnPrevFrame1.Location = new Point(13, 195);
-            btnPrevFrame1.Margin = new Padding(4, 5, 4, 5);
+            btnPrevFrame1.Location = new Point(9, 117);
             btnPrevFrame1.Name = "btnPrevFrame1";
-            btnPrevFrame1.Size = new Size(140, 75);
+            btnPrevFrame1.Size = new Size(98, 45);
             btnPrevFrame1.TabIndex = 11;
             btnPrevFrame1.Text = "<";
             btnPrevFrame1.UseVisualStyleBackColor = true;
             // 
             // btnNextFrame1
             // 
-            btnNextFrame1.Location = new Point(153, 195);
-            btnNextFrame1.Margin = new Padding(4, 5, 4, 5);
+            btnNextFrame1.Location = new Point(107, 117);
             btnNextFrame1.Name = "btnNextFrame1";
-            btnNextFrame1.Size = new Size(144, 75);
+            btnNextFrame1.Size = new Size(101, 45);
             btnNextFrame1.TabIndex = 12;
             btnNextFrame1.Text = ">";
             btnNextFrame1.UseVisualStyleBackColor = true;
@@ -744,30 +697,27 @@ namespace DonkeyCarUI
             lblFrmInx1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblFrmInx1.AutoSize = true;
             lblFrmInx1.ForeColor = Color.MidnightBlue;
-            lblFrmInx1.Location = new Point(23, 45);
-            lblFrmInx1.Margin = new Padding(4, 0, 4, 0);
+            lblFrmInx1.Location = new Point(16, 27);
             lblFrmInx1.Name = "lblFrmInx1";
-            lblFrmInx1.Size = new Size(234, 25);
+            lblFrmInx1.Size = new Size(157, 15);
             lblFrmInx1.TabIndex = 0;
             lblFrmInx1.Text = "해당 프레임    :        00000";
             // 
             // tbFrameSlider1
             // 
-            tbFrameSlider1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            tbFrameSlider1.Location = new Point(399, 766);
-            tbFrameSlider1.Margin = new Padding(4, 5, 4, 5);
+            tbFrameSlider1.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            tbFrameSlider1.Location = new Point(279, 460);
             tbFrameSlider1.Name = "tbFrameSlider1";
-            tbFrameSlider1.Size = new Size(1249, 69);
+            tbFrameSlider1.Size = new Size(874, 45);
             tbFrameSlider1.TabIndex = 35;
             // 
             // pbCameraView
             // 
             pbCameraView.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pbCameraView.BackColor = Color.White;
-            pbCameraView.Location = new Point(396, 63);
-            pbCameraView.Margin = new Padding(4, 5, 4, 5);
+            pbCameraView.Location = new Point(277, 38);
             pbCameraView.Name = "pbCameraView";
-            pbCameraView.Size = new Size(925, 693);
+            pbCameraView.Size = new Size(648, 416);
             pbCameraView.SizeMode = PictureBoxSizeMode.Zoom;
             pbCameraView.TabIndex = 34;
             pbCameraView.TabStop = false;
@@ -777,10 +727,9 @@ namespace DonkeyCarUI
             lblPath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lblPath.AutoSize = true;
             lblPath.ForeColor = Color.MidnightBlue;
-            lblPath.Location = new Point(453, 20);
-            lblPath.Margin = new Padding(4, 0, 4, 0);
+            lblPath.Location = new Point(317, 12);
             lblPath.Name = "lblPath";
-            lblPath.Size = new Size(48, 25);
+            lblPath.Size = new Size(31, 15);
             lblPath.TabIndex = 33;
             lblPath.Text = "경로";
             // 
@@ -789,10 +738,9 @@ namespace DonkeyCarUI
             btnLoadData.BackColor = SystemColors.Control;
             btnLoadData.ForeColor = Color.MidnightBlue;
             btnLoadData.ImageAlign = ContentAlignment.MiddleRight;
-            btnLoadData.Location = new Point(249, 10);
-            btnLoadData.Margin = new Padding(4, 5, 4, 5);
+            btnLoadData.Location = new Point(174, 6);
             btnLoadData.Name = "btnLoadData";
-            btnLoadData.Size = new Size(193, 45);
+            btnLoadData.Size = new Size(135, 27);
             btnLoadData.TabIndex = 32;
             btnLoadData.Text = "주행 데이터 불러오기";
             btnLoadData.UseVisualStyleBackColor = false;
@@ -804,10 +752,9 @@ namespace DonkeyCarUI
             tabPage2.Controls.Add(pnDataLearning);
             tabPage2.ForeColor = SystemColors.ControlText;
             tabPage2.Location = new Point(4, 44);
-            tabPage2.Margin = new Padding(4, 5, 4, 5);
             tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(4, 5, 4, 5);
-            tabPage2.Size = new Size(1916, 1014);
+            tabPage2.Padding = new Padding(3);
+            tabPage2.Size = new Size(1339, 589);
             tabPage2.TabIndex = 1;
             tabPage2.Text = "데이터 학습";
             // 
@@ -818,10 +765,9 @@ namespace DonkeyCarUI
             pnModelManage.Controls.Add(pnModelScore);
             pnModelManage.Controls.Add(lbModelManage);
             pnModelManage.Controls.Add(lstvModelManage);
-            pnModelManage.Location = new Point(4, 493);
-            pnModelManage.Margin = new Padding(4, 5, 4, 5);
+            pnModelManage.Location = new Point(3, 296);
             pnModelManage.Name = "pnModelManage";
-            pnModelManage.Size = new Size(1904, 483);
+            pnModelManage.Size = new Size(1333, 290);
             pnModelManage.TabIndex = 49;
             // 
             // pnModelScore
@@ -829,10 +775,9 @@ namespace DonkeyCarUI
             pnModelScore.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             pnModelScore.Controls.Add(lbLoss);
             pnModelScore.Controls.Add(lbModelScore);
-            pnModelScore.Location = new Point(1053, 0);
-            pnModelScore.Margin = new Padding(4, 5, 4, 5);
+            pnModelScore.Location = new Point(737, 0);
             pnModelScore.Name = "pnModelScore";
-            pnModelScore.Size = new Size(851, 483);
+            pnModelScore.Size = new Size(596, 290);
             pnModelScore.TabIndex = 48;
             // 
             // lbLoss
@@ -840,10 +785,9 @@ namespace DonkeyCarUI
             lbLoss.AutoSize = true;
             lbLoss.Font = new Font("함초롬돋움", 12F);
             lbLoss.ForeColor = Color.MidnightBlue;
-            lbLoss.Location = new Point(27, 67);
-            lbLoss.Margin = new Padding(4, 0, 4, 0);
+            lbLoss.Location = new Point(19, 40);
             lbLoss.Name = "lbLoss";
-            lbLoss.Size = new Size(117, 32);
+            lbLoss.Size = new Size(82, 21);
             lbLoss.TabIndex = 1;
             lbLoss.Text = "손실값 : 0";
             // 
@@ -852,10 +796,9 @@ namespace DonkeyCarUI
             lbModelScore.AutoSize = true;
             lbModelScore.Font = new Font("함초롬돋움", 12F);
             lbModelScore.ForeColor = Color.MidnightBlue;
-            lbModelScore.Location = new Point(27, 22);
-            lbModelScore.Margin = new Padding(4, 0, 4, 0);
+            lbModelScore.Location = new Point(19, 13);
             lbModelScore.Name = "lbModelScore";
-            lbModelScore.Size = new Size(173, 32);
+            lbModelScore.Size = new Size(121, 21);
             lbModelScore.TabIndex = 0;
             lbModelScore.Text = "모델 점수 : 100";
             // 
@@ -865,10 +808,9 @@ namespace DonkeyCarUI
             lbModelManage.AutoSize = true;
             lbModelManage.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbModelManage.ForeColor = Color.MidnightBlue;
-            lbModelManage.Location = new Point(26, 22);
-            lbModelManage.Margin = new Padding(4, 0, 4, 0);
+            lbModelManage.Location = new Point(18, 13);
             lbModelManage.Name = "lbModelManage";
-            lbModelManage.Size = new Size(211, 40);
+            lbModelManage.Size = new Size(140, 25);
             lbModelManage.TabIndex = 47;
             lbModelManage.Text = "학습 모델 관리";
             // 
@@ -881,10 +823,9 @@ namespace DonkeyCarUI
             lstvModelManage.ForeColor = Color.MidnightBlue;
             lstvModelManage.FullRowSelect = true;
             lstvModelManage.GridLines = true;
-            lstvModelManage.Location = new Point(44, 100);
-            lstvModelManage.Margin = new Padding(4, 5, 4, 5);
+            lstvModelManage.Location = new Point(31, 60);
             lstvModelManage.Name = "lstvModelManage";
-            lstvModelManage.Size = new Size(1027, 350);
+            lstvModelManage.Size = new Size(719, 210);
             lstvModelManage.TabIndex = 46;
             lstvModelManage.UseCompatibleStateImageBehavior = false;
             lstvModelManage.View = View.Details;
@@ -929,10 +870,9 @@ namespace DonkeyCarUI
             pnDataLearning.Controls.Add(grbModelOption);
             pnDataLearning.Controls.Add(lbDataLearning);
             pnDataLearning.Dock = DockStyle.Top;
-            pnDataLearning.Location = new Point(4, 5);
-            pnDataLearning.Margin = new Padding(4, 5, 4, 5);
+            pnDataLearning.Location = new Point(3, 3);
             pnDataLearning.Name = "pnDataLearning";
-            pnDataLearning.Size = new Size(1908, 482);
+            pnDataLearning.Size = new Size(1333, 289);
             pnDataLearning.TabIndex = 48;
             // 
             // grbExtraOption
@@ -946,11 +886,9 @@ namespace DonkeyCarUI
             grbExtraOption.Controls.Add(lbExtraModelPath);
             grbExtraOption.Controls.Add(btnExtraModel);
             grbExtraOption.ForeColor = Color.MidnightBlue;
-            grbExtraOption.Location = new Point(1280, 85);
-            grbExtraOption.Margin = new Padding(4, 5, 4, 5);
+            grbExtraOption.Location = new Point(896, 51);
             grbExtraOption.Name = "grbExtraOption";
-            grbExtraOption.Padding = new Padding(4, 5, 4, 5);
-            grbExtraOption.Size = new Size(623, 252);
+            grbExtraOption.Size = new Size(436, 151);
             grbExtraOption.TabIndex = 54;
             grbExtraOption.TabStop = false;
             grbExtraOption.Text = "추가 학습 설정";
@@ -960,40 +898,36 @@ namespace DonkeyCarUI
             lbExtraExpl.AutoSize = true;
             lbExtraExpl.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbExtraExpl.ForeColor = Color.MidnightBlue;
-            lbExtraExpl.Location = new Point(35, 163);
-            lbExtraExpl.Margin = new Padding(4, 0, 4, 0);
+            lbExtraExpl.Location = new Point(24, 98);
             lbExtraExpl.Name = "lbExtraExpl";
-            lbExtraExpl.Size = new Size(60, 31);
+            lbExtraExpl.Size = new Size(39, 20);
             lbExtraExpl.TabIndex = 51;
             lbExtraExpl.Text = "설명";
             // 
             // txtExtraExpl
             // 
             txtExtraExpl.ForeColor = Color.MidnightBlue;
-            txtExtraExpl.Location = new Point(127, 162);
-            txtExtraExpl.Margin = new Padding(4, 5, 4, 5);
+            txtExtraExpl.Location = new Point(89, 97);
             txtExtraExpl.Name = "txtExtraExpl";
-            txtExtraExpl.Size = new Size(475, 33);
+            txtExtraExpl.Size = new Size(334, 25);
             txtExtraExpl.TabIndex = 50;
             // 
             // lbCaution
             // 
             lbCaution.AutoSize = true;
             lbCaution.ForeColor = Color.DarkViolet;
-            lbCaution.Location = new Point(13, 210);
-            lbCaution.Margin = new Padding(4, 0, 4, 0);
+            lbCaution.Location = new Point(9, 126);
             lbCaution.Name = "lbCaution";
-            lbCaution.Size = new Size(548, 28);
+            lbCaution.Size = new Size(360, 17);
             lbCaution.TabIndex = 52;
             lbCaution.Text = "※ 기존 모델의 추가 학습은 추가 학습 설정에서 진행하세요.";
             // 
             // txtExtraModel
             // 
             txtExtraModel.ForeColor = Color.MidnightBlue;
-            txtExtraModel.Location = new Point(127, 112);
-            txtExtraModel.Margin = new Padding(4, 5, 4, 5);
+            txtExtraModel.Location = new Point(89, 67);
             txtExtraModel.Name = "txtExtraModel";
-            txtExtraModel.Size = new Size(475, 33);
+            txtExtraModel.Size = new Size(334, 25);
             txtExtraModel.TabIndex = 49;
             // 
             // lbExtraModelName
@@ -1001,10 +935,9 @@ namespace DonkeyCarUI
             lbExtraModelName.AutoSize = true;
             lbExtraModelName.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbExtraModelName.ForeColor = Color.MidnightBlue;
-            lbExtraModelName.Location = new Point(13, 110);
-            lbExtraModelName.Margin = new Padding(4, 0, 4, 0);
+            lbExtraModelName.Location = new Point(9, 66);
             lbExtraModelName.Name = "lbExtraModelName";
-            lbExtraModelName.Size = new Size(114, 31);
+            lbExtraModelName.Size = new Size(74, 20);
             lbExtraModelName.TabIndex = 48;
             lbExtraModelName.Text = "모델 이름";
             // 
@@ -1012,20 +945,18 @@ namespace DonkeyCarUI
             // 
             lbExtraModelPath.AutoSize = true;
             lbExtraModelPath.ForeColor = Color.MidnightBlue;
-            lbExtraModelPath.Location = new Point(217, 52);
-            lbExtraModelPath.Margin = new Padding(4, 0, 4, 0);
+            lbExtraModelPath.Location = new Point(152, 31);
             lbExtraModelPath.Name = "lbExtraModelPath";
-            lbExtraModelPath.Size = new Size(52, 28);
+            lbExtraModelPath.Size = new Size(34, 17);
             lbExtraModelPath.TabIndex = 1;
             lbExtraModelPath.Text = "경로";
             // 
             // btnExtraModel
             // 
             btnExtraModel.ForeColor = Color.MidnightBlue;
-            btnExtraModel.Location = new Point(9, 40);
-            btnExtraModel.Margin = new Padding(4, 5, 4, 5);
+            btnExtraModel.Location = new Point(6, 24);
             btnExtraModel.Name = "btnExtraModel";
-            btnExtraModel.Size = new Size(200, 50);
+            btnExtraModel.Size = new Size(140, 30);
             btnExtraModel.TabIndex = 0;
             btnExtraModel.Text = "학습 모델 불러오기";
             btnExtraModel.UseVisualStyleBackColor = true;
@@ -1034,39 +965,35 @@ namespace DonkeyCarUI
             // 
             lbLearningRate.AutoSize = true;
             lbLearningRate.ForeColor = Color.MidnightBlue;
-            lbLearningRate.Location = new Point(170, 419);
-            lbLearningRate.Margin = new Padding(4, 0, 4, 0);
+            lbLearningRate.Location = new Point(119, 251);
             lbLearningRate.Name = "lbLearningRate";
-            lbLearningRate.Size = new Size(118, 28);
+            lbLearningRate.Size = new Size(78, 17);
             lbLearningRate.TabIndex = 53;
             lbLearningRate.Text = "학습률 : 0%";
             // 
             // btnLearningStop
             // 
             btnLearningStop.ForeColor = Color.MidnightBlue;
-            btnLearningStop.Location = new Point(5, 419);
-            btnLearningStop.Margin = new Padding(4, 5, 4, 5);
+            btnLearningStop.Location = new Point(4, 251);
             btnLearningStop.Name = "btnLearningStop";
-            btnLearningStop.Size = new Size(156, 47);
+            btnLearningStop.Size = new Size(109, 28);
             btnLearningStop.TabIndex = 52;
             btnLearningStop.Text = "학습 중지";
             btnLearningStop.UseVisualStyleBackColor = true;
             // 
             // pbLearning
             // 
-            pbLearning.Location = new Point(170, 354);
-            pbLearning.Margin = new Padding(4, 5, 4, 5);
+            pbLearning.Location = new Point(119, 212);
             pbLearning.Name = "pbLearning";
-            pbLearning.Size = new Size(1733, 53);
+            pbLearning.Size = new Size(1213, 32);
             pbLearning.TabIndex = 51;
             // 
             // btnLearningStart
             // 
             btnLearningStart.ForeColor = Color.MidnightBlue;
-            btnLearningStart.Location = new Point(5, 351);
-            btnLearningStart.Margin = new Padding(4, 5, 4, 5);
+            btnLearningStart.Location = new Point(4, 211);
             btnLearningStart.Name = "btnLearningStart";
-            btnLearningStart.Size = new Size(156, 58);
+            btnLearningStart.Size = new Size(109, 35);
             btnLearningStart.TabIndex = 50;
             btnLearningStart.Text = "학습 시작";
             btnLearningStart.UseVisualStyleBackColor = true;
@@ -1090,11 +1017,9 @@ namespace DonkeyCarUI
             grbModelOption.Controls.Add(lbModelSelect);
             grbModelOption.Controls.Add(txtExpl);
             grbModelOption.ForeColor = Color.MidnightBlue;
-            grbModelOption.Location = new Point(4, 85);
-            grbModelOption.Margin = new Padding(4, 5, 4, 5);
+            grbModelOption.Location = new Point(3, 51);
             grbModelOption.Name = "grbModelOption";
-            grbModelOption.Padding = new Padding(4, 5, 4, 5);
-            grbModelOption.Size = new Size(1268, 252);
+            grbModelOption.Size = new Size(888, 151);
             grbModelOption.TabIndex = 49;
             grbModelOption.TabStop = false;
             grbModelOption.Text = "모델 설정";
@@ -1103,10 +1028,9 @@ namespace DonkeyCarUI
             // 
             lbDonkeyPath.AutoSize = true;
             lbDonkeyPath.ForeColor = Color.MidnightBlue;
-            lbDonkeyPath.Location = new Point(679, 207);
-            lbDonkeyPath.Margin = new Padding(4, 0, 4, 0);
+            lbDonkeyPath.Location = new Point(475, 124);
             lbDonkeyPath.Name = "lbDonkeyPath";
-            lbDonkeyPath.Size = new Size(52, 28);
+            lbDonkeyPath.Size = new Size(34, 17);
             lbDonkeyPath.TabIndex = 54;
             lbDonkeyPath.Text = "경로";
             // 
@@ -1114,20 +1038,18 @@ namespace DonkeyCarUI
             // 
             lbSavePath.AutoSize = true;
             lbSavePath.ForeColor = Color.MidnightBlue;
-            lbSavePath.Location = new Point(571, 157);
-            lbSavePath.Margin = new Padding(4, 0, 4, 0);
+            lbSavePath.Location = new Point(400, 94);
             lbSavePath.Name = "lbSavePath";
-            lbSavePath.Size = new Size(52, 28);
+            lbSavePath.Size = new Size(34, 17);
             lbSavePath.TabIndex = 54;
             lbSavePath.Text = "경로";
             // 
             // btnDonkeyPath
             // 
             btnDonkeyPath.ForeColor = Color.MidnightBlue;
-            btnDonkeyPath.Location = new Point(456, 199);
-            btnDonkeyPath.Margin = new Padding(4, 5, 4, 5);
+            btnDonkeyPath.Location = new Point(319, 119);
             btnDonkeyPath.Name = "btnDonkeyPath";
-            btnDonkeyPath.Size = new Size(214, 45);
+            btnDonkeyPath.Size = new Size(150, 27);
             btnDonkeyPath.TabIndex = 53;
             btnDonkeyPath.Text = "동키카 프로젝트 경로";
             btnDonkeyPath.UseVisualStyleBackColor = true;
@@ -1135,10 +1057,9 @@ namespace DonkeyCarUI
             // btnSavePath
             // 
             btnSavePath.ForeColor = Color.MidnightBlue;
-            btnSavePath.Location = new Point(456, 148);
-            btnSavePath.Margin = new Padding(4, 5, 4, 5);
+            btnSavePath.Location = new Point(319, 89);
             btnSavePath.Name = "btnSavePath";
-            btnSavePath.Size = new Size(107, 45);
+            btnSavePath.Size = new Size(75, 27);
             btnSavePath.TabIndex = 53;
             btnSavePath.Text = "저장 경로";
             btnSavePath.UseVisualStyleBackColor = true;
@@ -1148,10 +1069,9 @@ namespace DonkeyCarUI
             cmbMulti.ForeColor = Color.MidnightBlue;
             cmbMulti.FormattingEnabled = true;
             cmbMulti.Items.AddRange(new object[] { "1", "16", "32", "64", "128" });
-            cmbMulti.Location = new Point(253, 181);
-            cmbMulti.Margin = new Padding(4, 5, 4, 5);
+            cmbMulti.Location = new Point(177, 109);
             cmbMulti.Name = "cmbMulti";
-            cmbMulti.Size = new Size(140, 36);
+            cmbMulti.Size = new Size(99, 25);
             cmbMulti.TabIndex = 51;
             // 
             // lbMulti
@@ -1159,20 +1079,18 @@ namespace DonkeyCarUI
             lbMulti.AutoSize = true;
             lbMulti.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbMulti.ForeColor = Color.MidnightBlue;
-            lbMulti.Location = new Point(20, 181);
-            lbMulti.Margin = new Padding(4, 0, 4, 0);
+            lbMulti.Location = new Point(14, 109);
             lbMulti.Name = "lbMulti";
-            lbMulti.Size = new Size(222, 31);
+            lbMulti.Size = new Size(144, 20);
             lbMulti.TabIndex = 50;
             lbMulti.Text = "동시 처리 데이터 수";
             // 
             // label32
             // 
             label32.AutoSize = true;
-            label32.Location = new Point(411, 33);
-            label32.Margin = new Padding(4, 0, 4, 0);
+            label32.Location = new Point(288, 20);
             label32.Name = "label32";
-            label32.Size = new Size(17, 224);
+            label32.Size = new Size(11, 136);
             label32.TabIndex = 49;
             label32.Text = "l\r\nl\r\nl\r\nl\r\nl\r\nl\r\nl\r\nl\r\n";
             // 
@@ -1181,20 +1099,18 @@ namespace DonkeyCarUI
             lbExpl.AutoSize = true;
             lbExpl.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbExpl.ForeColor = Color.MidnightBlue;
-            lbExpl.Location = new Point(480, 100);
-            lbExpl.Margin = new Padding(4, 0, 4, 0);
+            lbExpl.Location = new Point(336, 60);
             lbExpl.Name = "lbExpl";
-            lbExpl.Size = new Size(60, 31);
+            lbExpl.Size = new Size(39, 20);
             lbExpl.TabIndex = 48;
             lbExpl.Text = "설명";
             // 
             // txtModelName
             // 
             txtModelName.ForeColor = Color.MidnightBlue;
-            txtModelName.Location = new Point(570, 48);
-            txtModelName.Margin = new Padding(4, 5, 4, 5);
+            txtModelName.Location = new Point(399, 29);
             txtModelName.Name = "txtModelName";
-            txtModelName.Size = new Size(670, 33);
+            txtModelName.Size = new Size(470, 25);
             txtModelName.TabIndex = 47;
             // 
             // lbModelName
@@ -1202,20 +1118,18 @@ namespace DonkeyCarUI
             lbModelName.AutoSize = true;
             lbModelName.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbModelName.ForeColor = Color.MidnightBlue;
-            lbModelName.Location = new Point(456, 47);
-            lbModelName.Margin = new Padding(4, 0, 4, 0);
+            lbModelName.Location = new Point(319, 28);
             lbModelName.Name = "lbModelName";
-            lbModelName.Size = new Size(114, 31);
+            lbModelName.Size = new Size(74, 20);
             lbModelName.TabIndex = 46;
             lbModelName.Text = "모델 이름";
             // 
             // txtEpoch
             // 
             txtEpoch.ForeColor = Color.MidnightBlue;
-            txtEpoch.Location = new Point(222, 111);
-            txtEpoch.Margin = new Padding(4, 5, 4, 5);
+            txtEpoch.Location = new Point(155, 67);
             txtEpoch.Name = "txtEpoch";
-            txtEpoch.Size = new Size(171, 33);
+            txtEpoch.Size = new Size(121, 25);
             txtEpoch.TabIndex = 45;
             // 
             // lbEpoch
@@ -1223,10 +1137,9 @@ namespace DonkeyCarUI
             lbEpoch.AutoSize = true;
             lbEpoch.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbEpoch.ForeColor = Color.MidnightBlue;
-            lbEpoch.Location = new Point(20, 116);
-            lbEpoch.Margin = new Padding(4, 0, 4, 0);
+            lbEpoch.Location = new Point(14, 70);
             lbEpoch.Name = "lbEpoch";
-            lbEpoch.Size = new Size(168, 31);
+            lbEpoch.Size = new Size(109, 20);
             lbEpoch.TabIndex = 44;
             lbEpoch.Text = "반복 학습 횟수";
             // 
@@ -1235,10 +1148,9 @@ namespace DonkeyCarUI
             cmbModelSelect.ForeColor = Color.MidnightBlue;
             cmbModelSelect.FormattingEnabled = true;
             cmbModelSelect.Items.AddRange(new object[] { "Linear", "Behavioral" });
-            cmbModelSelect.Location = new Point(222, 44);
-            cmbModelSelect.Margin = new Padding(4, 5, 4, 5);
+            cmbModelSelect.Location = new Point(155, 26);
             cmbModelSelect.Name = "cmbModelSelect";
-            cmbModelSelect.Size = new Size(171, 36);
+            cmbModelSelect.Size = new Size(121, 25);
             cmbModelSelect.TabIndex = 1;
             // 
             // lbModelSelect
@@ -1246,20 +1158,18 @@ namespace DonkeyCarUI
             lbModelSelect.AutoSize = true;
             lbModelSelect.Font = new Font("맑은 고딕", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbModelSelect.ForeColor = Color.MidnightBlue;
-            lbModelSelect.Location = new Point(20, 47);
-            lbModelSelect.Margin = new Padding(4, 0, 4, 0);
+            lbModelSelect.Location = new Point(14, 28);
             lbModelSelect.Name = "lbModelSelect";
-            lbModelSelect.Size = new Size(168, 31);
+            lbModelSelect.Size = new Size(109, 20);
             lbModelSelect.TabIndex = 0;
             lbModelSelect.Text = "모델 종류 선택";
             // 
             // txtExpl
             // 
             txtExpl.ForeColor = Color.MidnightBlue;
-            txtExpl.Location = new Point(570, 99);
-            txtExpl.Margin = new Padding(4, 5, 4, 5);
+            txtExpl.Location = new Point(399, 59);
             txtExpl.Name = "txtExpl";
-            txtExpl.Size = new Size(670, 33);
+            txtExpl.Size = new Size(470, 25);
             txtExpl.TabIndex = 42;
             // 
             // lbDataLearning
@@ -1267,10 +1177,9 @@ namespace DonkeyCarUI
             lbDataLearning.AutoSize = true;
             lbDataLearning.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbDataLearning.ForeColor = Color.MidnightBlue;
-            lbDataLearning.Location = new Point(26, 23);
-            lbDataLearning.Margin = new Padding(4, 0, 4, 0);
+            lbDataLearning.Location = new Point(18, 14);
             lbDataLearning.Name = "lbDataLearning";
-            lbDataLearning.Size = new Size(172, 40);
+            lbDataLearning.Size = new Size(114, 25);
             lbDataLearning.TabIndex = 48;
             lbDataLearning.Text = "데이터 학습";
             // 
@@ -1281,10 +1190,9 @@ namespace DonkeyCarUI
             tabPage3.Controls.Add(pnOption);
             tabPage3.Controls.Add(splitContainer1);
             tabPage3.Location = new Point(4, 44);
-            tabPage3.Margin = new Padding(4, 5, 4, 5);
             tabPage3.Name = "tabPage3";
-            tabPage3.Padding = new Padding(4, 5, 4, 5);
-            tabPage3.Size = new Size(1916, 1014);
+            tabPage3.Padding = new Padding(3);
+            tabPage3.Size = new Size(1339, 589);
             tabPage3.TabIndex = 2;
             tabPage3.Text = "학습 미리보기";
             // 
@@ -1292,25 +1200,25 @@ namespace DonkeyCarUI
             // 
             tbFrameSlider2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             tbFrameSlider2.AutoSize = false;
-            tbFrameSlider2.Location = new Point(4, 662);
-            tbFrameSlider2.Margin = new Padding(4, 5, 4, 5);
+            tbFrameSlider2.Location = new Point(3, 397);
             tbFrameSlider2.Name = "tbFrameSlider2";
-            tbFrameSlider2.Size = new Size(1903, 68);
+            tbFrameSlider2.Size = new Size(1332, 41);
             tbFrameSlider2.TabIndex = 44;
             // 
             // pnOption
             // 
+            pnOption.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             pnOption.Controls.Add(grbRawData);
             pnOption.Controls.Add(grbImgCorrection);
             pnOption.Controls.Add(grbPlayOption2);
-            pnOption.Location = new Point(4, 740);
-            pnOption.Margin = new Padding(4, 5, 4, 5);
+            pnOption.Location = new Point(3, 444);
             pnOption.Name = "pnOption";
-            pnOption.Size = new Size(1963, 292);
+            pnOption.Size = new Size(1340, 149);
             pnOption.TabIndex = 43;
             // 
             // grbRawData
             // 
+            grbRawData.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grbRawData.BackColor = Color.AliceBlue;
             grbRawData.Controls.Add(pbRawDataSpeed);
             grbRawData.Controls.Add(lbRawDataSpeed);
@@ -1319,31 +1227,27 @@ namespace DonkeyCarUI
             grbRawData.Controls.Add(lbRawDataDir2);
             grbRawData.Controls.Add(lbRawDataDir);
             grbRawData.ForeColor = Color.MidnightBlue;
-            grbRawData.Location = new Point(1068, 10);
-            grbRawData.Margin = new Padding(4, 5, 4, 5);
+            grbRawData.Location = new Point(748, 6);
             grbRawData.Name = "grbRawData";
-            grbRawData.Padding = new Padding(4, 5, 4, 5);
-            grbRawData.Size = new Size(349, 254);
+            grbRawData.Size = new Size(244, 140);
             grbRawData.TabIndex = 40;
             grbRawData.TabStop = false;
             grbRawData.Text = "원본 주행 데이터";
             // 
             // pbRawDataSpeed
             // 
-            pbRawDataSpeed.Location = new Point(139, 169);
-            pbRawDataSpeed.Margin = new Padding(4, 5, 4, 5);
+            pbRawDataSpeed.Location = new Point(97, 101);
             pbRawDataSpeed.Name = "pbRawDataSpeed";
-            pbRawDataSpeed.Size = new Size(164, 17);
+            pbRawDataSpeed.Size = new Size(115, 10);
             pbRawDataSpeed.TabIndex = 13;
             // 
             // lbRawDataSpeed
             // 
             lbRawDataSpeed.AutoSize = true;
             lbRawDataSpeed.ForeColor = Color.MidnightBlue;
-            lbRawDataSpeed.Location = new Point(9, 163);
-            lbRawDataSpeed.Margin = new Padding(4, 0, 4, 0);
+            lbRawDataSpeed.Location = new Point(6, 98);
             lbRawDataSpeed.Name = "lbRawDataSpeed";
-            lbRawDataSpeed.Size = new Size(52, 28);
+            lbRawDataSpeed.Size = new Size(34, 17);
             lbRawDataSpeed.TabIndex = 13;
             lbRawDataSpeed.Text = "속도";
             // 
@@ -1351,29 +1255,26 @@ namespace DonkeyCarUI
             // 
             lbRawDataSpeed2.AutoSize = true;
             lbRawDataSpeed2.ForeColor = Color.MidnightBlue;
-            lbRawDataSpeed2.Location = new Point(67, 161);
-            lbRawDataSpeed2.Margin = new Padding(4, 0, 4, 0);
+            lbRawDataSpeed2.Location = new Point(47, 97);
             lbRawDataSpeed2.Name = "lbRawDataSpeed2";
-            lbRawDataSpeed2.Size = new Size(66, 28);
+            lbRawDataSpeed2.Size = new Size(43, 17);
             lbRawDataSpeed2.TabIndex = 14;
             lbRawDataSpeed2.Text = "label8";
             // 
             // pbRawDataDir
             // 
-            pbRawDataDir.Location = new Point(137, 88);
-            pbRawDataDir.Margin = new Padding(4, 5, 4, 5);
+            pbRawDataDir.Location = new Point(96, 53);
             pbRawDataDir.Name = "pbRawDataDir";
-            pbRawDataDir.Size = new Size(164, 17);
+            pbRawDataDir.Size = new Size(115, 10);
             pbRawDataDir.TabIndex = 2;
             // 
             // lbRawDataDir2
             // 
             lbRawDataDir2.AutoSize = true;
             lbRawDataDir2.ForeColor = Color.MidnightBlue;
-            lbRawDataDir2.Location = new Point(67, 81);
-            lbRawDataDir2.Margin = new Padding(4, 0, 4, 0);
+            lbRawDataDir2.Location = new Point(47, 49);
             lbRawDataDir2.Name = "lbRawDataDir2";
-            lbRawDataDir2.Size = new Size(66, 28);
+            lbRawDataDir2.Size = new Size(43, 17);
             lbRawDataDir2.TabIndex = 1;
             lbRawDataDir2.Text = "label6";
             // 
@@ -1381,15 +1282,15 @@ namespace DonkeyCarUI
             // 
             lbRawDataDir.AutoSize = true;
             lbRawDataDir.ForeColor = Color.MidnightBlue;
-            lbRawDataDir.Location = new Point(10, 83);
-            lbRawDataDir.Margin = new Padding(4, 0, 4, 0);
+            lbRawDataDir.Location = new Point(7, 50);
             lbRawDataDir.Name = "lbRawDataDir";
-            lbRawDataDir.Size = new Size(52, 28);
+            lbRawDataDir.Size = new Size(34, 17);
             lbRawDataDir.TabIndex = 0;
             lbRawDataDir.Text = "방향";
             // 
             // grbImgCorrection
             // 
+            grbImgCorrection.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grbImgCorrection.BackColor = Color.AliceBlue;
             grbImgCorrection.Controls.Add(chkImgActBW);
             grbImgCorrection.Controls.Add(lbImgBW);
@@ -1398,11 +1299,9 @@ namespace DonkeyCarUI
             grbImgCorrection.Controls.Add(tbImgBright);
             grbImgCorrection.Controls.Add(tbImgBlur);
             grbImgCorrection.ForeColor = Color.MidnightBlue;
-            grbImgCorrection.Location = new Point(7, 10);
-            grbImgCorrection.Margin = new Padding(4, 5, 4, 5);
+            grbImgCorrection.Location = new Point(5, 6);
             grbImgCorrection.Name = "grbImgCorrection";
-            grbImgCorrection.Padding = new Padding(4, 5, 4, 5);
-            grbImgCorrection.Size = new Size(407, 255);
+            grbImgCorrection.Size = new Size(285, 140);
             grbImgCorrection.TabIndex = 2;
             grbImgCorrection.TabStop = false;
             grbImgCorrection.Text = "이미지 보정";
@@ -1411,10 +1310,9 @@ namespace DonkeyCarUI
             // 
             chkImgActBW.AutoSize = true;
             chkImgActBW.ForeColor = Color.MidnightBlue;
-            chkImgActBW.Location = new Point(144, 196);
-            chkImgActBW.Margin = new Padding(4, 5, 4, 5);
+            chkImgActBW.Location = new Point(101, 118);
             chkImgActBW.Name = "chkImgActBW";
-            chkImgActBW.Size = new Size(98, 32);
+            chkImgActBW.Size = new Size(66, 21);
             chkImgActBW.TabIndex = 5;
             chkImgActBW.Text = "활성화";
             chkImgActBW.UseVisualStyleBackColor = true;
@@ -1424,10 +1322,9 @@ namespace DonkeyCarUI
             lbImgBW.AutoSize = true;
             lbImgBW.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbImgBW.ForeColor = Color.MidnightBlue;
-            lbImgBW.Location = new Point(21, 196);
-            lbImgBW.Margin = new Padding(4, 0, 4, 0);
+            lbImgBW.Location = new Point(15, 118);
             lbImgBW.Name = "lbImgBW";
-            lbImgBW.Size = new Size(99, 28);
+            lbImgBW.Size = new Size(65, 17);
             lbImgBW.TabIndex = 4;
             lbImgBW.Text = "흑백 반전";
             // 
@@ -1436,10 +1333,9 @@ namespace DonkeyCarUI
             lbImgBlur.AutoSize = true;
             lbImgBlur.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbImgBlur.ForeColor = Color.MidnightBlue;
-            lbImgBlur.Location = new Point(7, 119);
-            lbImgBlur.Margin = new Padding(4, 0, 4, 0);
+            lbImgBlur.Location = new Point(5, 71);
             lbImgBlur.Name = "lbImgBlur";
-            lbImgBlur.Size = new Size(146, 28);
+            lbImgBlur.Size = new Size(96, 17);
             lbImgBlur.TabIndex = 3;
             lbImgBlur.Text = "흐림 효과 조절";
             // 
@@ -1448,31 +1344,29 @@ namespace DonkeyCarUI
             lbImgBright.AutoSize = true;
             lbImgBright.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbImgBright.ForeColor = Color.MidnightBlue;
-            lbImgBright.Location = new Point(21, 55);
-            lbImgBright.Margin = new Padding(4, 0, 4, 0);
+            lbImgBright.Location = new Point(15, 33);
             lbImgBright.Name = "lbImgBright";
-            lbImgBright.Size = new Size(99, 28);
+            lbImgBright.Size = new Size(65, 17);
             lbImgBright.TabIndex = 2;
             lbImgBright.Text = "밝기 조절";
             // 
             // tbImgBright
             // 
-            tbImgBright.Location = new Point(144, 53);
-            tbImgBright.Margin = new Padding(4, 5, 4, 5);
+            tbImgBright.Location = new Point(101, 32);
             tbImgBright.Name = "tbImgBright";
-            tbImgBright.Size = new Size(254, 69);
+            tbImgBright.Size = new Size(178, 45);
             tbImgBright.TabIndex = 0;
             // 
             // tbImgBlur
             // 
-            tbImgBlur.Location = new Point(144, 117);
-            tbImgBlur.Margin = new Padding(4, 5, 4, 5);
+            tbImgBlur.Location = new Point(101, 70);
             tbImgBlur.Name = "tbImgBlur";
-            tbImgBlur.Size = new Size(254, 69);
+            tbImgBlur.Size = new Size(178, 45);
             tbImgBlur.TabIndex = 1;
             // 
             // grbPlayOption2
             // 
+            grbPlayOption2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             grbPlayOption2.BackColor = Color.AliceBlue;
             grbPlayOption2.Controls.Add(btnRun2);
             grbPlayOption2.Controls.Add(lbSpeed2);
@@ -1484,11 +1378,9 @@ namespace DonkeyCarUI
             grbPlayOption2.Controls.Add(btnNextFrame2);
             grbPlayOption2.Controls.Add(lblFrmInx2);
             grbPlayOption2.ForeColor = Color.MidnightBlue;
-            grbPlayOption2.Location = new Point(423, 10);
-            grbPlayOption2.Margin = new Padding(4, 5, 4, 5);
+            grbPlayOption2.Location = new Point(296, 6);
             grbPlayOption2.Name = "grbPlayOption2";
-            grbPlayOption2.Padding = new Padding(4, 5, 4, 5);
-            grbPlayOption2.Size = new Size(637, 255);
+            grbPlayOption2.Size = new Size(446, 140);
             grbPlayOption2.TabIndex = 37;
             grbPlayOption2.TabStop = false;
             grbPlayOption2.Text = "재생 설정";
@@ -1496,10 +1388,9 @@ namespace DonkeyCarUI
             // btnRun2
             // 
             btnRun2.ForeColor = Color.MidnightBlue;
-            btnRun2.Location = new Point(312, 142);
-            btnRun2.Margin = new Padding(4, 5, 4, 5);
+            btnRun2.Location = new Point(218, 85);
             btnRun2.Name = "btnRun2";
-            btnRun2.Size = new Size(293, 77);
+            btnRun2.Size = new Size(205, 46);
             btnRun2.TabIndex = 33;
             btnRun2.Text = "▶";
             btnRun2.UseVisualStyleBackColor = true;
@@ -1509,10 +1400,9 @@ namespace DonkeyCarUI
             lbSpeed2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbSpeed2.AutoSize = true;
             lbSpeed2.ForeColor = Color.MidnightBlue;
-            lbSpeed2.Location = new Point(45, 188);
-            lbSpeed2.Margin = new Padding(4, 0, 4, 0);
+            lbSpeed2.Location = new Point(32, 113);
             lbSpeed2.Name = "lbSpeed2";
-            lbSpeed2.Size = new Size(52, 28);
+            lbSpeed2.Size = new Size(34, 17);
             lbSpeed2.TabIndex = 32;
             lbSpeed2.Text = "배속";
             // 
@@ -1521,20 +1411,18 @@ namespace DonkeyCarUI
             lbFrmMvm2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lbFrmMvm2.AutoSize = true;
             lbFrmMvm2.ForeColor = Color.MidnightBlue;
-            lbFrmMvm2.Location = new Point(23, 112);
-            lbFrmMvm2.Margin = new Padding(4, 0, 4, 0);
+            lbFrmMvm2.Location = new Point(16, 67);
             lbFrmMvm2.Name = "lbFrmMvm2";
-            lbFrmMvm2.Size = new Size(119, 28);
+            lbFrmMvm2.Size = new Size(78, 17);
             lbFrmMvm2.TabIndex = 30;
             lbFrmMvm2.Text = "프레임 이동";
             // 
             // txtFrmMvm2
             // 
             txtFrmMvm2.ForeColor = Color.MidnightBlue;
-            txtFrmMvm2.Location = new Point(144, 108);
-            txtFrmMvm2.Margin = new Padding(4, 5, 4, 5);
+            txtFrmMvm2.Location = new Point(101, 65);
             txtFrmMvm2.Name = "txtFrmMvm2";
-            txtFrmMvm2.Size = new Size(145, 33);
+            txtFrmMvm2.Size = new Size(103, 25);
             txtFrmMvm2.TabIndex = 29;
             // 
             // cmbSpeed2
@@ -1542,19 +1430,17 @@ namespace DonkeyCarUI
             cmbSpeed2.ForeColor = Color.MidnightBlue;
             cmbSpeed2.FormattingEnabled = true;
             cmbSpeed2.Items.AddRange(new object[] { "1.0", "1.5", "2.0", "2.5", "3.0" });
-            cmbSpeed2.Location = new Point(144, 182);
-            cmbSpeed2.Margin = new Padding(4, 5, 4, 5);
+            cmbSpeed2.Location = new Point(101, 109);
             cmbSpeed2.Name = "cmbSpeed2";
-            cmbSpeed2.Size = new Size(145, 36);
+            cmbSpeed2.Size = new Size(103, 25);
             cmbSpeed2.TabIndex = 28;
             // 
             // button8
             // 
             button8.Anchor = AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            button8.Location = new Point(17, 735);
-            button8.Margin = new Padding(4, 5, 4, 5);
+            button8.Location = new Point(12, 428);
             button8.Name = "button8";
-            button8.Size = new Size(660, 75);
+            button8.Size = new Size(462, 45);
             button8.TabIndex = 11;
             button8.Text = "▶";
             button8.UseVisualStyleBackColor = true;
@@ -1562,10 +1448,9 @@ namespace DonkeyCarUI
             // btnPrevFrame2
             // 
             btnPrevFrame2.ForeColor = Color.MidnightBlue;
-            btnPrevFrame2.Location = new Point(312, 47);
-            btnPrevFrame2.Margin = new Padding(4, 5, 4, 5);
+            btnPrevFrame2.Location = new Point(218, 28);
             btnPrevFrame2.Name = "btnPrevFrame2";
-            btnPrevFrame2.Size = new Size(140, 85);
+            btnPrevFrame2.Size = new Size(98, 51);
             btnPrevFrame2.TabIndex = 11;
             btnPrevFrame2.Text = "<";
             btnPrevFrame2.UseVisualStyleBackColor = true;
@@ -1573,10 +1458,9 @@ namespace DonkeyCarUI
             // btnNextFrame2
             // 
             btnNextFrame2.ForeColor = Color.MidnightBlue;
-            btnNextFrame2.Location = new Point(460, 47);
-            btnNextFrame2.Margin = new Padding(4, 5, 4, 5);
+            btnNextFrame2.Location = new Point(322, 28);
             btnNextFrame2.Name = "btnNextFrame2";
-            btnNextFrame2.Size = new Size(144, 85);
+            btnNextFrame2.Size = new Size(101, 51);
             btnNextFrame2.TabIndex = 12;
             btnNextFrame2.Text = ">";
             btnNextFrame2.UseVisualStyleBackColor = true;
@@ -1586,18 +1470,16 @@ namespace DonkeyCarUI
             lblFrmInx2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             lblFrmInx2.AutoSize = true;
             lblFrmInx2.ForeColor = Color.MidnightBlue;
-            lblFrmInx2.Location = new Point(23, 47);
-            lblFrmInx2.Margin = new Padding(4, 0, 4, 0);
+            lblFrmInx2.Location = new Point(16, 28);
             lblFrmInx2.Name = "lblFrmInx2";
-            lblFrmInx2.Size = new Size(262, 28);
+            lblFrmInx2.Size = new Size(176, 17);
             lblFrmInx2.TabIndex = 0;
             lblFrmInx2.Text = "해당 프레임    :        00000";
             // 
             // splitContainer1
             // 
             splitContainer1.Dock = DockStyle.Top;
-            splitContainer1.Location = new Point(4, 5);
-            splitContainer1.Margin = new Padding(4, 5, 4, 5);
+            splitContainer1.Location = new Point(3, 3);
             splitContainer1.Name = "splitContainer1";
             // 
             // splitContainer1.Panel1
@@ -1609,30 +1491,27 @@ namespace DonkeyCarUI
             // 
             splitContainer1.Panel2.Controls.Add(panel3);
             splitContainer1.Panel2.Controls.Add(panel1);
-            splitContainer1.Size = new Size(1908, 647);
-            splitContainer1.SplitterDistance = 953;
-            splitContainer1.SplitterWidth = 6;
+            splitContainer1.Size = new Size(1333, 388);
+            splitContainer1.SplitterDistance = 665;
             splitContainer1.TabIndex = 40;
             // 
             // panel4
             // 
             panel4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel4.Controls.Add(pictureBox2);
-            panel4.Location = new Point(0, 143);
-            panel4.Margin = new Padding(4, 5, 4, 5);
+            panel4.Location = new Point(0, 86);
             panel4.Name = "panel4";
-            panel4.Padding = new Padding(14, 17, 14, 17);
-            panel4.Size = new Size(953, 503);
+            panel4.Padding = new Padding(10);
+            panel4.Size = new Size(665, 302);
             panel4.TabIndex = 43;
             // 
             // pictureBox2
             // 
             pictureBox2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox2.BackColor = Color.Linen;
-            pictureBox2.Location = new Point(14, 17);
-            pictureBox2.Margin = new Padding(4, 5, 4, 5);
+            pictureBox2.Location = new Point(10, 10);
             pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(926, 470);
+            pictureBox2.Size = new Size(646, 282);
             pictureBox2.TabIndex = 1;
             pictureBox2.TabStop = false;
             // 
@@ -1645,9 +1524,8 @@ namespace DonkeyCarUI
             panel5.Controls.Add(lbCmp);
             panel5.Dock = DockStyle.Top;
             panel5.Location = new Point(0, 0);
-            panel5.Margin = new Padding(4, 5, 4, 5);
             panel5.Name = "panel5";
-            panel5.Size = new Size(953, 143);
+            panel5.Size = new Size(665, 86);
             panel5.TabIndex = 41;
             // 
             // grbModelData
@@ -1660,11 +1538,9 @@ namespace DonkeyCarUI
             grbModelData.Controls.Add(lbAIDir2);
             grbModelData.Controls.Add(lbAIDir1);
             grbModelData.ForeColor = Color.MidnightBlue;
-            grbModelData.Location = new Point(586, 12);
-            grbModelData.Margin = new Padding(4, 5, 4, 5);
+            grbModelData.Location = new Point(410, 7);
             grbModelData.Name = "grbModelData";
-            grbModelData.Padding = new Padding(4, 5, 4, 5);
-            grbModelData.Size = new Size(333, 120);
+            grbModelData.Size = new Size(231, 72);
             grbModelData.TabIndex = 39;
             grbModelData.TabStop = false;
             grbModelData.Text = "AI모델 주행 데이터";
@@ -1672,20 +1548,18 @@ namespace DonkeyCarUI
             // pbAISpeed
             // 
             pbAISpeed.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pbAISpeed.Location = new Point(139, 85);
-            pbAISpeed.Margin = new Padding(4, 5, 4, 5);
+            pbAISpeed.Location = new Point(97, 51);
             pbAISpeed.Name = "pbAISpeed";
-            pbAISpeed.Size = new Size(186, 17);
+            pbAISpeed.Size = new Size(128, 10);
             pbAISpeed.TabIndex = 13;
             // 
             // lbAISpeed
             // 
             lbAISpeed.AutoSize = true;
             lbAISpeed.ForeColor = Color.MidnightBlue;
-            lbAISpeed.Location = new Point(9, 80);
-            lbAISpeed.Margin = new Padding(4, 0, 4, 0);
+            lbAISpeed.Location = new Point(6, 48);
             lbAISpeed.Name = "lbAISpeed";
-            lbAISpeed.Size = new Size(52, 28);
+            lbAISpeed.Size = new Size(34, 17);
             lbAISpeed.TabIndex = 13;
             lbAISpeed.Text = "속도";
             // 
@@ -1693,30 +1567,27 @@ namespace DonkeyCarUI
             // 
             lbAISpeed2.AutoSize = true;
             lbAISpeed2.ForeColor = Color.MidnightBlue;
-            lbAISpeed2.Location = new Point(67, 80);
-            lbAISpeed2.Margin = new Padding(4, 0, 4, 0);
+            lbAISpeed2.Location = new Point(47, 48);
             lbAISpeed2.Name = "lbAISpeed2";
-            lbAISpeed2.Size = new Size(66, 28);
+            lbAISpeed2.Size = new Size(43, 17);
             lbAISpeed2.TabIndex = 14;
             lbAISpeed2.Text = "label8";
             // 
             // pbAIDir
             // 
             pbAIDir.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            pbAIDir.Location = new Point(137, 43);
-            pbAIDir.Margin = new Padding(4, 5, 4, 5);
+            pbAIDir.Location = new Point(96, 26);
             pbAIDir.Name = "pbAIDir";
-            pbAIDir.Size = new Size(186, 17);
+            pbAIDir.Size = new Size(128, 10);
             pbAIDir.TabIndex = 2;
             // 
             // lbAIDir2
             // 
             lbAIDir2.AutoSize = true;
             lbAIDir2.ForeColor = Color.MidnightBlue;
-            lbAIDir2.Location = new Point(67, 35);
-            lbAIDir2.Margin = new Padding(4, 0, 4, 0);
+            lbAIDir2.Location = new Point(47, 21);
             lbAIDir2.Name = "lbAIDir2";
-            lbAIDir2.Size = new Size(66, 28);
+            lbAIDir2.Size = new Size(43, 17);
             lbAIDir2.TabIndex = 1;
             lbAIDir2.Text = "label6";
             // 
@@ -1724,10 +1595,9 @@ namespace DonkeyCarUI
             // 
             lbAIDir1.AutoSize = true;
             lbAIDir1.ForeColor = Color.MidnightBlue;
-            lbAIDir1.Location = new Point(9, 37);
-            lbAIDir1.Margin = new Padding(4, 0, 4, 0);
+            lbAIDir1.Location = new Point(6, 22);
             lbAIDir1.Name = "lbAIDir1";
-            lbAIDir1.Size = new Size(52, 28);
+            lbAIDir1.Size = new Size(34, 17);
             lbAIDir1.TabIndex = 0;
             lbAIDir1.Text = "방향";
             // 
@@ -1736,20 +1606,18 @@ namespace DonkeyCarUI
             lbRawDataPath.AutoSize = true;
             lbRawDataPath.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbRawDataPath.ForeColor = Color.MidnightBlue;
-            lbRawDataPath.Location = new Point(293, 80);
-            lbRawDataPath.Margin = new Padding(4, 0, 4, 0);
+            lbRawDataPath.Location = new Point(205, 48);
             lbRawDataPath.Name = "lbRawDataPath";
-            lbRawDataPath.Size = new Size(52, 28);
+            lbRawDataPath.Size = new Size(34, 17);
             lbRawDataPath.TabIndex = 41;
             lbRawDataPath.Text = "경로";
             // 
             // btnRawData
             // 
             btnRawData.ForeColor = Color.MidnightBlue;
-            btnRawData.Location = new Point(7, 70);
-            btnRawData.Margin = new Padding(4, 5, 4, 5);
+            btnRawData.Location = new Point(5, 42);
             btnRawData.Name = "btnRawData";
-            btnRawData.Size = new Size(263, 48);
+            btnRawData.Size = new Size(184, 29);
             btnRawData.TabIndex = 40;
             btnRawData.Text = "원본 주행 데이터 불러오기";
             btnRawData.UseVisualStyleBackColor = true;
@@ -1759,46 +1627,42 @@ namespace DonkeyCarUI
             lbCmp.AutoSize = true;
             lbCmp.Font = new Font("맑은 고딕", 14.25F, FontStyle.Bold, GraphicsUnit.Point, 129);
             lbCmp.ForeColor = Color.MidnightBlue;
-            lbCmp.Location = new Point(7, 18);
-            lbCmp.Margin = new Padding(4, 0, 4, 0);
+            lbCmp.Location = new Point(5, 11);
             lbCmp.Name = "lbCmp";
-            lbCmp.Size = new Size(201, 40);
+            lbCmp.Size = new Size(133, 25);
             lbCmp.TabIndex = 39;
             lbCmp.Text = "학습 비교보기";
             // 
             // panel3
             // 
-            panel3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             panel3.Controls.Add(pictureBox1);
-            panel3.Location = new Point(0, 143);
-            panel3.Margin = new Padding(4, 5, 4, 5);
+            panel3.Dock = DockStyle.Bottom;
+            panel3.Location = new Point(0, 86);
             panel3.Name = "panel3";
-            panel3.Padding = new Padding(14, 17, 14, 17);
-            panel3.Size = new Size(882, 503);
+            panel3.Padding = new Padding(10);
+            panel3.Size = new Size(664, 302);
             panel3.TabIndex = 2;
             // 
             // pictureBox1
             // 
             pictureBox1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             pictureBox1.BackColor = Color.Linen;
-            pictureBox1.Location = new Point(14, 17);
-            pictureBox1.Margin = new Padding(4, 5, 4, 5);
+            pictureBox1.Location = new Point(10, 10);
             pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(853, 470);
+            pictureBox1.Size = new Size(644, 282);
             pictureBox1.TabIndex = 0;
             pictureBox1.TabStop = false;
             // 
             // panel1
             // 
-            panel1.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             panel1.BackColor = Color.AliceBlue;
             panel1.Controls.Add(groupBox10);
             panel1.Controls.Add(label9);
             panel1.Controls.Add(btn);
+            panel1.Dock = DockStyle.Top;
             panel1.Location = new Point(0, 0);
-            panel1.Margin = new Padding(4, 5, 4, 5);
             panel1.Name = "panel1";
-            panel1.Size = new Size(882, 143);
+            panel1.Size = new Size(664, 86);
             panel1.TabIndex = 0;
             // 
             // groupBox10
@@ -1811,11 +1675,9 @@ namespace DonkeyCarUI
             groupBox10.Controls.Add(label22);
             groupBox10.Controls.Add(label23);
             groupBox10.ForeColor = Color.MidnightBlue;
-            groupBox10.Location = new Point(587, 12);
-            groupBox10.Margin = new Padding(4, 5, 4, 5);
+            groupBox10.Location = new Point(411, 7);
             groupBox10.Name = "groupBox10";
-            groupBox10.Padding = new Padding(4, 5, 4, 5);
-            groupBox10.Size = new Size(266, 120);
+            groupBox10.Size = new Size(233, 72);
             groupBox10.TabIndex = 44;
             groupBox10.TabStop = false;
             groupBox10.Text = "AI모델 주행 데이터";
@@ -1823,20 +1685,18 @@ namespace DonkeyCarUI
             // progressBar4
             // 
             progressBar4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar4.Location = new Point(137, 85);
-            progressBar4.Margin = new Padding(4, 5, 4, 5);
+            progressBar4.Location = new Point(96, 51);
             progressBar4.Name = "progressBar4";
-            progressBar4.Size = new Size(119, 17);
+            progressBar4.Size = new Size(130, 10);
             progressBar4.TabIndex = 13;
             // 
             // label20
             // 
             label20.AutoSize = true;
             label20.ForeColor = Color.MidnightBlue;
-            label20.Location = new Point(9, 80);
-            label20.Margin = new Padding(4, 0, 4, 0);
+            label20.Location = new Point(6, 48);
             label20.Name = "label20";
-            label20.Size = new Size(52, 28);
+            label20.Size = new Size(34, 17);
             label20.TabIndex = 13;
             label20.Text = "속도";
             // 
@@ -1844,30 +1704,27 @@ namespace DonkeyCarUI
             // 
             label21.AutoSize = true;
             label21.ForeColor = Color.MidnightBlue;
-            label21.Location = new Point(66, 80);
-            label21.Margin = new Padding(4, 0, 4, 0);
+            label21.Location = new Point(46, 48);
             label21.Name = "label21";
-            label21.Size = new Size(66, 28);
+            label21.Size = new Size(43, 17);
             label21.TabIndex = 14;
             label21.Text = "label8";
             // 
             // progressBar5
             // 
             progressBar5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar5.Location = new Point(136, 43);
-            progressBar5.Margin = new Padding(4, 5, 4, 5);
+            progressBar5.Location = new Point(95, 26);
             progressBar5.Name = "progressBar5";
-            progressBar5.Size = new Size(119, 17);
+            progressBar5.Size = new Size(130, 10);
             progressBar5.TabIndex = 2;
             // 
             // label22
             // 
             label22.AutoSize = true;
             label22.ForeColor = Color.MidnightBlue;
-            label22.Location = new Point(66, 37);
-            label22.Margin = new Padding(4, 0, 4, 0);
+            label22.Location = new Point(46, 22);
             label22.Name = "label22";
-            label22.Size = new Size(66, 28);
+            label22.Size = new Size(43, 17);
             label22.TabIndex = 1;
             label22.Text = "label6";
             // 
@@ -1875,10 +1732,9 @@ namespace DonkeyCarUI
             // 
             label23.AutoSize = true;
             label23.ForeColor = Color.MidnightBlue;
-            label23.Location = new Point(9, 37);
-            label23.Margin = new Padding(4, 0, 4, 0);
+            label23.Location = new Point(6, 22);
             label23.Name = "label23";
-            label23.Size = new Size(52, 28);
+            label23.Size = new Size(34, 17);
             label23.TabIndex = 0;
             label23.Text = "방향";
             // 
@@ -1887,33 +1743,30 @@ namespace DonkeyCarUI
             label9.AutoSize = true;
             label9.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             label9.ForeColor = Color.MidnightBlue;
-            label9.Location = new Point(250, 80);
-            label9.Margin = new Padding(4, 0, 4, 0);
+            label9.Location = new Point(175, 48);
             label9.Name = "label9";
-            label9.Size = new Size(52, 28);
+            label9.Size = new Size(34, 17);
             label9.TabIndex = 43;
             label9.Text = "경로";
             // 
             // btn
             // 
             btn.ForeColor = Color.MidnightBlue;
-            btn.Location = new Point(19, 70);
-            btn.Margin = new Padding(4, 5, 4, 5);
+            btn.Location = new Point(13, 42);
             btn.Name = "btn";
-            btn.Size = new Size(223, 48);
+            btn.Size = new Size(156, 29);
             btn.TabIndex = 42;
             btn.Text = "학습 모델 불러오기";
             btn.UseVisualStyleBackColor = true;
             // 
             // DataManager
             // 
-            AutoScaleDimensions = new SizeF(10F, 25F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.Lavender;
-            ClientSize = new Size(1924, 1062);
+            ClientSize = new Size(1347, 637);
             Controls.Add(tabControl1);
             ForeColor = SystemColors.ControlText;
-            Margin = new Padding(4, 5, 4, 5);
             Name = "DataManager";
             Text = "데이터 관리 및 모델 학습 프로그램";
             tabControl1.ResumeLayout(false);
