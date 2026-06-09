@@ -153,6 +153,7 @@ namespace DonkeyCarUI
             panel4 = new Panel();
             pictureBox2 = new PictureBox();
             panel5 = new Panel();
+            button1 = new Button();
             grbModelData = new GroupBox();
             pbAISpeed = new ProgressBar();
             lbAISpeed = new Label();
@@ -167,14 +168,15 @@ namespace DonkeyCarUI
             pictureBox1 = new PictureBox();
             panel1 = new Panel();
             groupBox10 = new GroupBox();
-            progressBar4 = new ProgressBar();
-            label20 = new Label();
-            label21 = new Label();
-            progressBar5 = new ProgressBar();
-            label22 = new Label();
-            label23 = new Label();
+            pbAISpeed2 = new ProgressBar();
+            lbAISpeed3 = new Label();
+            lbAISpeed4 = new Label();
+            pbAIDir2 = new ProgressBar();
+            lbAIDir4 = new Label();
+            lbAIDir3 = new Label();
             label9 = new Label();
             btn = new Button();
+            label1 = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             grbDataCorrection.SuspendLayout();
@@ -1538,6 +1540,8 @@ namespace DonkeyCarUI
             // panel5
             // 
             panel5.BackColor = Color.AliceBlue;
+            panel5.Controls.Add(label1);
+            panel5.Controls.Add(button1);
             panel5.Controls.Add(grbModelData);
             panel5.Controls.Add(lbRawDataPath);
             panel5.Controls.Add(btnRawData);
@@ -1547,6 +1551,16 @@ namespace DonkeyCarUI
             panel5.Name = "panel5";
             panel5.Size = new Size(665, 86);
             panel5.TabIndex = 41;
+            // 
+            // button1
+            // 
+            button1.ForeColor = Color.MidnightBlue;
+            button1.Location = new Point(141, 11);
+            button1.Name = "button1";
+            button1.Size = new Size(149, 29);
+            button1.TabIndex = 42;
+            button1.Text = "주행 데이터 불러오기";
+            button1.UseVisualStyleBackColor = true;
             // 
             // grbModelData
             // 
@@ -1688,12 +1702,12 @@ namespace DonkeyCarUI
             // groupBox10
             // 
             groupBox10.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            groupBox10.Controls.Add(progressBar4);
-            groupBox10.Controls.Add(label20);
-            groupBox10.Controls.Add(label21);
-            groupBox10.Controls.Add(progressBar5);
-            groupBox10.Controls.Add(label22);
-            groupBox10.Controls.Add(label23);
+            groupBox10.Controls.Add(pbAISpeed2);
+            groupBox10.Controls.Add(lbAISpeed3);
+            groupBox10.Controls.Add(lbAISpeed4);
+            groupBox10.Controls.Add(pbAIDir2);
+            groupBox10.Controls.Add(lbAIDir4);
+            groupBox10.Controls.Add(lbAIDir3);
             groupBox10.ForeColor = Color.MidnightBlue;
             groupBox10.Location = new Point(411, 7);
             groupBox10.Name = "groupBox10";
@@ -1702,61 +1716,61 @@ namespace DonkeyCarUI
             groupBox10.TabStop = false;
             groupBox10.Text = "AI모델 주행 데이터";
             // 
-            // progressBar4
+            // pbAISpeed2
             // 
-            progressBar4.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar4.Location = new Point(96, 51);
-            progressBar4.Name = "progressBar4";
-            progressBar4.Size = new Size(130, 10);
-            progressBar4.TabIndex = 13;
+            pbAISpeed2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pbAISpeed2.Location = new Point(96, 51);
+            pbAISpeed2.Name = "pbAISpeed2";
+            pbAISpeed2.Size = new Size(130, 10);
+            pbAISpeed2.TabIndex = 13;
             // 
-            // label20
+            // lbAISpeed3
             // 
-            label20.AutoSize = true;
-            label20.ForeColor = Color.MidnightBlue;
-            label20.Location = new Point(6, 48);
-            label20.Name = "label20";
-            label20.Size = new Size(34, 17);
-            label20.TabIndex = 13;
-            label20.Text = "속도";
+            lbAISpeed3.AutoSize = true;
+            lbAISpeed3.ForeColor = Color.MidnightBlue;
+            lbAISpeed3.Location = new Point(6, 48);
+            lbAISpeed3.Name = "lbAISpeed3";
+            lbAISpeed3.Size = new Size(34, 17);
+            lbAISpeed3.TabIndex = 13;
+            lbAISpeed3.Text = "속도";
             // 
-            // label21
+            // lbAISpeed4
             // 
-            label21.AutoSize = true;
-            label21.ForeColor = Color.MidnightBlue;
-            label21.Location = new Point(46, 48);
-            label21.Name = "label21";
-            label21.Size = new Size(43, 17);
-            label21.TabIndex = 14;
-            label21.Text = "label8";
+            lbAISpeed4.AutoSize = true;
+            lbAISpeed4.ForeColor = Color.MidnightBlue;
+            lbAISpeed4.Location = new Point(46, 48);
+            lbAISpeed4.Name = "lbAISpeed4";
+            lbAISpeed4.Size = new Size(43, 17);
+            lbAISpeed4.TabIndex = 14;
+            lbAISpeed4.Text = "label8";
             // 
-            // progressBar5
+            // pbAIDir2
             // 
-            progressBar5.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-            progressBar5.Location = new Point(95, 26);
-            progressBar5.Name = "progressBar5";
-            progressBar5.Size = new Size(130, 10);
-            progressBar5.TabIndex = 2;
+            pbAIDir2.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+            pbAIDir2.Location = new Point(95, 26);
+            pbAIDir2.Name = "pbAIDir2";
+            pbAIDir2.Size = new Size(130, 10);
+            pbAIDir2.TabIndex = 2;
             // 
-            // label22
+            // lbAIDir4
             // 
-            label22.AutoSize = true;
-            label22.ForeColor = Color.MidnightBlue;
-            label22.Location = new Point(46, 22);
-            label22.Name = "label22";
-            label22.Size = new Size(43, 17);
-            label22.TabIndex = 1;
-            label22.Text = "label6";
+            lbAIDir4.AutoSize = true;
+            lbAIDir4.ForeColor = Color.MidnightBlue;
+            lbAIDir4.Location = new Point(46, 22);
+            lbAIDir4.Name = "lbAIDir4";
+            lbAIDir4.Size = new Size(43, 17);
+            lbAIDir4.TabIndex = 1;
+            lbAIDir4.Text = "label6";
             // 
-            // label23
+            // lbAIDir3
             // 
-            label23.AutoSize = true;
-            label23.ForeColor = Color.MidnightBlue;
-            label23.Location = new Point(6, 22);
-            label23.Name = "label23";
-            label23.Size = new Size(34, 17);
-            label23.TabIndex = 0;
-            label23.Text = "방향";
+            lbAIDir3.AutoSize = true;
+            lbAIDir3.ForeColor = Color.MidnightBlue;
+            lbAIDir3.Location = new Point(6, 22);
+            lbAIDir3.Name = "lbAIDir3";
+            lbAIDir3.Size = new Size(34, 17);
+            lbAIDir3.TabIndex = 0;
+            lbAIDir3.Text = "방향";
             // 
             // label9
             // 
@@ -1778,6 +1792,15 @@ namespace DonkeyCarUI
             btn.TabIndex = 42;
             btn.Text = "학습 모델 불러오기";
             btn.UseVisualStyleBackColor = true;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(296, 17);
+            label1.Name = "label1";
+            label1.Size = new Size(34, 17);
+            label1.TabIndex = 43;
+            label1.Text = "경로";
             // 
             // DataManager
             // 
@@ -1911,12 +1934,12 @@ namespace DonkeyCarUI
         private Label lbAIDir2;
         private Label lbAIDir1;
         private GroupBox groupBox10;
-        private ProgressBar progressBar4;
-        private Label label20;
-        private Label label21;
-        private ProgressBar progressBar5;
-        private Label label22;
-        private Label label23;
+        private ProgressBar pbAISpeed2;
+        private Label lbAISpeed3;
+        private Label lbAISpeed4;
+        private ProgressBar pbAIDir2;
+        private Label lbAIDir4;
+        private Label lbAIDir3;
         private Panel pnModelManage;
         private Label lbModelManage;
         private ListView lstvModelManage;
@@ -1996,5 +2019,7 @@ namespace DonkeyCarUI
         private Label lbModelScore;
         private Panel panelTimeline;
         private Panel panel2;
+        private Button button1;
+        private Label label1;
     }
 }

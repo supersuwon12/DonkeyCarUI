@@ -176,6 +176,7 @@ namespace DonkeyCarUI
 
             pictureBox2.Paint += PictureBox2_Paint;
             pictureBox1.Paint += PictureBox1_Paint;
+            button1.Click += BtnLoadPreviewData_Click;
             btnRawData.Click += BtnLoadLeftModel_Click;
             btn.Click += BtnLoadRightModel_Click;
 
@@ -625,13 +626,6 @@ namespace DonkeyCarUI
                     tbFrameSlider1.Maximum = _records.Count - 1;
                     tbFrameSlider1.Value = 0;
                     UpdateUIForFrame(0);
-
-                    // 학습 미리보기 탭
-                    tbFrameSlider2.Minimum = 0;
-                    tbFrameSlider2.Maximum = _records.Count - 1;
-                    tbFrameSlider2.Value = 0;
-
-                    UpdatePreviewFrame(0);
                 }
 
                 UpdateDataListText();
@@ -1836,19 +1830,65 @@ namespace DonkeyCarUI
             lstvModelManage.Columns.Add("전이학습", 150);
         }
 
-        private void BtnSelectDonkeyProjectPath_Click(object? sender, EventArgs e)
+        private async void BtnSelectDonkeyProjectPath_Click(object? sender, EventArgs e)
         {
-            _wslProjectPath = "/home/geonho0927/mysim";
-            _donkeyProjectPath = _wslProjectPath;
+            string[] candidates =
+            {
+                "~/mysim",
+                "~/mycar",
+                "~/donkeycar",
+                "~/projects/mysim",
+                "~/Desktop/mysim"
+            };
 
-            lbDonkeyPath.Text = _wslProjectPath;
-            AddLog($"WSL DonkeyCar 프로젝트 경로 설정: {_wslProjectPath}", Color.SteelBlue);
+            foreach (string path in candidates)
+            {
+                string found = await RunWslCommandAsync(
+                    $"if [ -f {path}/train.py ]; then cd {path} && pwd; fi");
 
-            MessageBox.Show(
-                $"WSL DonkeyCar 프로젝트 경로가 설정되었습니다.\n{_wslProjectPath}",
-                "프로젝트 경로 설정",
-                MessageBoxButtons.OK,
-                MessageBoxIcon.Information);
+                if (!string.IsNullOrWhiteSpace(found))
+                {
+                    _wslProjectPath = found.Trim();
+                    _donkeyProjectPath = _wslProjectPath;
+                    lbDonkeyPath.Text = _wslProjectPath;
+                    AddLog($"WSL DonkeyCar 프로젝트 자동 설정: {_wslProjectPath}", Color.SteelBlue);
+                    return;
+                }
+            }
+
+            string searched = await RunWslCommandAsync(
+                "find ~ -maxdepth 4 -name train.py -type f 2>/dev/null | head -n 1");
+
+            if (!string.IsNullOrWhiteSpace(searched))
+            {
+                _wslProjectPath = Path.GetDirectoryName(searched.Trim())!.Replace("\\", "/");
+                _donkeyProjectPath = _wslProjectPath;
+                lbDonkeyPath.Text = _wslProjectPath;
+                AddLog($"WSL DonkeyCar 프로젝트 자동 검색 성공: {_wslProjectPath}", Color.SteelBlue);
+                return;
+            }
+
+            MessageBox.Show("DonkeyCar 프로젝트 경로를 자동으로 찾지 못했습니다.");
+        }
+        private async Task<string> RunWslCommandAsync(string command)
+        {
+            var psi = new ProcessStartInfo
+            {
+                FileName = "wsl",
+                Arguments = $"bash -lc \"{command}\"",
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false,
+                CreateNoWindow = true
+            };
+
+            using var process = Process.Start(psi);
+            if (process == null) return "";
+
+            string output = await process.StandardOutput.ReadToEndAsync();
+            await process.WaitForExitAsync();
+
+            return output.Trim();
         }
 
         private void BtnSelectModelSavePath_Click(object? sender, EventArgs e)
@@ -2180,8 +2220,8 @@ namespace DonkeyCarUI
             lblFrmInx2.Text = "해당 프레임    :        00000";
             lbAISpeed2.Text = "0.00";
             lbAIDir2.Text = "0.00";
-            label21.Text = "-";
-            label22.Text = "-";
+            lbAISpeed4.Text = "-";
+            lbAIDir4.Text = "-";
         }
 
         private void BtnLoadPreviewData_Click(object? sender, EventArgs e)
@@ -2192,7 +2232,7 @@ namespace DonkeyCarUI
             if (fbd.ShowDialog() != DialogResult.OK) return;
 
             _previewBaseDirectory = fbd.SelectedPath;
-            lbRawDataPath.Text = _previewBaseDirectory;
+            label1.Text = _previewBaseDirectory;
 
             bool isMultiJsonFormat = false;
             string[] multiJsonFiles = Array.Empty<string>();
@@ -2208,14 +2248,21 @@ namespace DonkeyCarUI
 
             if (_previewRecords.Count == 0)
             {
-                MessageBox.Show("미리보기용 데이터를 찾을 수 없습니다.", "알림", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("미리보기용 데이터를 찾을 수 없습니다.");
                 return;
             }
 
             tbFrameSlider2.Minimum = 0;
             tbFrameSlider2.Maximum = _previewRecords.Count - 1;
             tbFrameSlider2.Value = 0;
+
+            _leftPredictionCache.Clear();
+            _rightPredictionCache.Clear();
+            _leftPredictionReady = false;
+            _rightPredictionReady = false;
+
             UpdatePreviewFrame(0);
+
             AddLog($"미리보기 데이터 로드: {_previewRecords.Count}장", Color.SteelBlue);
         }
 
@@ -2235,24 +2282,24 @@ namespace DonkeyCarUI
 
         private void TrackBar3_ValueChanged(object? sender, EventArgs e)
         {
-            if (_records.Count == 0) return;
+            if (_previewRecords.Count == 0) return;
 
             UpdatePreviewFrame(tbFrameSlider2.Value);
         }
 
         private async void UpdatePreviewFrame(int index)
         {
-            if (_records.Count == 0)
+            if (_previewRecords.Count == 0)
             {
                 lblFrmInx2.Text = "주행 데이터 없음";
                 return;
             }
 
-            if (index < 0 || index >= _records.Count) return;
+            if (index < 0 || index >= _previewRecords.Count) return;
 
-            var record = _records[index];
+            var record = _previewRecords[index];
 
-            lblFrmInx2.Text = $"해당 프레임    :        {index + 1} / {_records.Count}";
+            lblFrmInx2.Text = $"해당 프레임    :        {index + 1} / {_previewRecords.Count}";
 
             _originalSteering = record.Angle;
             _originalThrottle = record.Throttle;
@@ -2262,7 +2309,7 @@ namespace DonkeyCarUI
             pbRawDataDir.Value = Math.Max(0, Math.Min(100, (int)((_originalSteering + 1) * 50)));
             pbRawDataSpeed.Value = Math.Max(0, Math.Min(100, (int)((_originalThrottle + 1) * 50)));
 
-            string imgPath = GetImageFullPath(record, _baseDirectory);
+            string imgPath = GetImageFullPath(record, _previewBaseDirectory);
 
             // 1. 이미지 먼저 표시
             if (File.Exists(imgPath))
@@ -2319,10 +2366,10 @@ namespace DonkeyCarUI
             pbAIDir.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedSteering + 1) * 50)));
             pbAISpeed.Value = Math.Max(0, Math.Min(100, (int)((_leftPredictedThrottle + 1) * 50)));
 
-            label22.Text = _rightPredictionReady ? _rightPredictedSteering.ToString("F2") : "-";
-            label21.Text = _rightPredictionReady ? _rightPredictedThrottle.ToString("F2") : "-";
-            progressBar5.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedSteering + 1) * 50)));
-            progressBar4.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedThrottle + 1) * 50)));
+            lbAIDir4.Text = _rightPredictionReady ? _rightPredictedSteering.ToString("F2") : "-";
+            lbAISpeed4.Text = _rightPredictionReady ? _rightPredictedThrottle.ToString("F2") : "-";
+            pbAIDir2.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedSteering + 1) * 50)));
+            pbAISpeed2.Value = Math.Max(0, Math.Min(100, (int)((_rightPredictedThrottle + 1) * 50)));
 
             pictureBox2.Invalidate();
             pictureBox1.Invalidate();
@@ -2371,7 +2418,7 @@ namespace DonkeyCarUI
 
         private void BtnPreviewPlay_Click(object? sender, EventArgs e)
         {
-            if (_records.Count == 0) return;
+            if (_previewRecords.Count == 0) return;
 
             if (_isPreviewPlaying)
             {
@@ -2396,7 +2443,7 @@ namespace DonkeyCarUI
 
         private void PreviewTimer_Tick(object? sender, EventArgs e)
         {
-            if (_records.Count == 0)
+            if (_previewRecords.Count == 0)
             {
                 StopPreviewPlayback();
                 return;
@@ -2414,13 +2461,13 @@ namespace DonkeyCarUI
 
         private void BtnPreviewPrev_Click(object? sender, EventArgs e)
         {
-            if (_records.Count == 0) return;
+            if (_previewRecords.Count == 0) return;
             tbFrameSlider2.Value = Math.Max(tbFrameSlider2.Minimum, tbFrameSlider2.Value - GetPreviewFrameStep());
         }
 
         private void BtnPreviewNext_Click(object? sender, EventArgs e)
         {
-            if (_records.Count == 0) return;
+            if (_previewRecords.Count == 0) return;
             tbFrameSlider2.Value = Math.Min(tbFrameSlider2.Maximum, tbFrameSlider2.Value + GetPreviewFrameStep());
         }
 
@@ -2476,6 +2523,11 @@ namespace DonkeyCarUI
         }
         private async void BtnLoadLeftModel_Click(object? sender, EventArgs e)
         {
+            if (_previewRecords.Count == 0)
+            {
+                MessageBox.Show("먼저 주행 데이터 불러오기로 미리보기 데이터 폴더를 선택하세요.");
+                return;
+            }
             using var ofd = new OpenFileDialog();
             ofd.Title = "왼쪽 비교 모델을 선택하세요.";
             ofd.Filter = "Keras Model (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
@@ -2498,6 +2550,11 @@ namespace DonkeyCarUI
 
         private async void BtnLoadRightModel_Click(object? sender, EventArgs e)
         {
+            if (_previewRecords.Count == 0)
+            {
+                MessageBox.Show("먼저 주행 데이터 불러오기로 미리보기 데이터 폴더를 선택하세요.");
+                return;
+            }
             using var ofd = new OpenFileDialog();
             ofd.Title = "오른쪽 비교 모델을 선택하세요.";
             ofd.Filter = "Keras Model (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
@@ -2507,8 +2564,8 @@ namespace DonkeyCarUI
                 _rightModelPath = ofd.FileName;
                 label9.Text = _rightModelPath;
 
-                label22.Text = "전체 예측 중";
-                label21.Text = "전체 예측 중";
+                lbAIDir4.Text = "전체 예측 중";
+                lbAISpeed4.Text = "전체 예측 중";
 
                 btn.Enabled = false;
                 await PredictAllFramesAsync(_rightModelPath, _rightPredictionCache);
@@ -2577,7 +2634,7 @@ namespace DonkeyCarUI
     string modelPath,
     Dictionary<int, (double steering, double throttle)> cache)
         {
-            if (_records.Count == 0) return;
+            if (_previewRecords.Count == 0) return;
             if (string.IsNullOrEmpty(modelPath) || !File.Exists(modelPath)) return;
 
             cache.Clear();
@@ -2588,9 +2645,9 @@ namespace DonkeyCarUI
 
             var imageList = new List<object>();
 
-            for (int i = 0; i < _records.Count; i++)
+            for (int i = 0; i < _previewRecords.Count; i++)
             {
-                string imgPath = GetImageFullPath(_records[i], _baseDirectory);
+                string imgPath = GetImageFullPath(_previewRecords[i], _previewBaseDirectory);
 
                 if (File.Exists(imgPath))
                 {
@@ -2667,7 +2724,7 @@ namespace DonkeyCarUI
                 }
             }
 
-            AddLog($"전체 예측 완료: {cache.Count}/{_records.Count}", Color.ForestGreen);
+            AddLog($"전체 예측 완료: {cache.Count}/{_previewRecords.Count}", Color.ForestGreen);
         }
     }
 }
