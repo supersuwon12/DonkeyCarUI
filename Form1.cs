@@ -619,13 +619,11 @@ namespace DonkeyCarUI
         private async void LoadCatalogData()
         {
             _records.Clear();
+            _deletedIndices.Clear();
+            _deleteMarkHistory.Clear();
+            _timelineThumbCache.Clear();
             _isMultiJsonFormat = false;
             _multiJsonFiles = Array.Empty<string>();
-
-            _trashDirectory = Path.Combine(_baseDirectory, ".trash");
-            Directory.CreateDirectory(_trashDirectory);
-            _catalogBackupDirectory = Path.Combine(_trashDirectory, "catalog_backup");
-            Directory.CreateDirectory(_catalogBackupDirectory);
 
             // catalog_0.catalog 우선 탐색, 없으면 .catalog 파일 전체 수집
             string defaultCatalog = Path.Combine(_baseDirectory, "catalog_0.catalog");
@@ -1553,8 +1551,7 @@ namespace DonkeyCarUI
                     System.Globalization.CultureInfo.InvariantCulture,
                     out double threshold))
             {
-                MessageBox.Show("올바른 숫자(예: 0.1)를 입력해주세요.", "오류",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("올바른 숫자(예: 0.01)를 입력해주세요.");
                 return;
             }
 
@@ -1564,7 +1561,7 @@ namespace DonkeyCarUI
             Func<FrameData, double> selector =
                 field.Contains("속도") ? r => r.Throttle : r => r.Angle;
 
-            bool Keep(FrameData r)
+            bool Match(FrameData r)
             {
                 double v = selector(r);
 
@@ -1572,8 +1569,8 @@ namespace DonkeyCarUI
                 {
                     ">" => v > threshold,
                     "<" => v < threshold,
-                    "≥" => v >= threshold,
-                    "≤" => v <= threshold,
+                    "≥" or ">=" => v >= threshold,
+                    "≤" or "<=" => v <= threshold,
                     _ => Math.Abs(v) >= threshold
                 };
             }
@@ -1582,11 +1579,14 @@ namespace DonkeyCarUI
 
             for (int i = 0; i < _records.Count; i++)
             {
-                // 조건에 안 맞는 데이터는 저장 제외 표시
-                if (!Keep(_records[i]))
+                if (_deletedIndices.Contains(i))
+                    continue;
+
+                // 조건에 맞는 데이터를 저장 제외 표시
+                if (Match(_records[i]))
                 {
-                    if (_deletedIndices.Add(i))
-                        filteredNow.Add(i);
+                    _deletedIndices.Add(i);
+                    filteredNow.Add(i);
                 }
             }
 
