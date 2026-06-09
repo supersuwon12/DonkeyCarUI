@@ -85,12 +85,30 @@ namespace DonkeyCarUI
         private bool _leftPredictionReady = false;
         private bool _rightPredictionReady = false;
 
+        private readonly Stack<List<int>> _deleteMarkHistory = new();
+
         private readonly Dictionary<int, (double steering, double throttle)> _leftPredictionCache = new();
         private readonly Dictionary<int, (double steering, double throttle)> _rightPredictionCache = new();
+
+        private readonly HashSet<int> _deletedIndices = new();
+
+        private string _trainingDataDirectory = string.Empty;
+
         public DataManager()
         {
             InitializeComponent();
 
+            try
+            {
+                string logPath = Path.Combine(
+                    AppDomain.CurrentDomain.BaseDirectory,
+                    "training_log.txt");
+
+                File.WriteAllText(logPath, "");
+            }
+            catch
+            {
+            }
             // 탭 헤더 색상
             tabControl1.DrawItem += (sender, e) =>
             {
@@ -159,16 +177,8 @@ namespace DonkeyCarUI
             _playbackTimer.Interval = 33;
             _playbackTimer.Tick += PlaybackTimer_Tick;
 
-            // 고급 기능 버튼 추가 (정지 데이터 제거, 데이터 스무딩)
-            Button btnRemoveStopped = new Button { Text = "정지 데이터 제거", Left = 12, Top = 570, Width = 120, Height = 25, ForeColor = Color.White, BackColor = Color.DarkSlateGray, FlatStyle = FlatStyle.Flat };
             btnRemoveStopped.Click += BtnRemoveStopped_Click;
-            btnRemoveStopped.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            this.Controls.Add(btnRemoveStopped);
-
-            Button btnSmoothData = new Button { Text = "조향 스무딩(MA)", Left = 137, Top = 570, Width = 120, Height = 25, ForeColor = Color.White, BackColor = Color.DarkSlateBlue, FlatStyle = FlatStyle.Flat };
             btnSmoothData.Click += BtnSmoothData_Click;
-            btnSmoothData.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
-            this.Controls.Add(btnSmoothData);
 
             // 키보드 단축키 지원 활성화
             this.KeyPreview = true;
@@ -180,10 +190,26 @@ namespace DonkeyCarUI
             btnRawData.Click += BtnLoadLeftModel_Click;
             btn.Click += BtnLoadRightModel_Click;
 
+            btnSave.Click += BtnSave_Click;
+
+            btnLoadData2.Click += BtnLoadTrainingData_Click;
+
             ConfigureUiMappings();
             SetupTimelinePanel();
             InitializeTrainingTab();
             SetupPreviewTab();
+        }
+        private void BtnLoadTrainingData_Click(object? sender, EventArgs e)
+        {
+            using var fbd = new FolderBrowserDialog();
+            fbd.Description = "학습에 사용할 DonkeyCar 데이터 폴더를 선택하세요.";
+
+            if (fbd.ShowDialog() != DialogResult.OK) return;
+
+            _trainingDataDirectory = fbd.SelectedPath;
+            lblDataPath.Text = _trainingDataDirectory;
+
+            AddLog($"학습 데이터 경로 선택: {_trainingDataDirectory}", Color.SteelBlue);
         }
         private void EnableDoubleBuffer(Control control)
         {
@@ -233,6 +259,30 @@ namespace DonkeyCarUI
                     e.Graphics.FillRectangle(Brushes.DimGray, rect);
                 }
             }
+            foreach (int deletedIndex in _deletedIndices)
+            {
+                if (deletedIndex < 0 || deletedIndex >= _records.Count)
+                    continue;
+
+                int startX = (int)Math.Round(
+                    (double)deletedIndex /
+                    Math.Max(1, _records.Count - 1) *
+                    (width - 1));
+
+                int endX = (int)Math.Round(
+                    (double)(deletedIndex + 1) /
+                    Math.Max(1, _records.Count - 1) *
+                    (width - 1));
+
+                using var redBrush = new SolidBrush(Color.FromArgb(30, Color.Red));
+
+                e.Graphics.FillRectangle(
+                    redBrush,
+                    startX,
+                    0,
+                    Math.Max(2, endX - startX),
+                    height);
+            }
             if (_startIndex != -1 && _endIndex != -1)
             {
                 int start = Math.Min(_startIndex, _endIndex);
@@ -252,7 +302,7 @@ namespace DonkeyCarUI
             }
             int currentX = (int)Math.Round((double)tbFrameSlider1.Value / Math.Max(1, _records.Count - 1) * (width - 1));
 
-            using (var pen = new Pen(Color.Red, 3))
+            using (var pen = new Pen(Color.ForestGreen, 3))
             {
                 e.Graphics.DrawLine(pen, currentX, 0, currentX, height);
             }
@@ -991,6 +1041,7 @@ namespace DonkeyCarUI
         {
             if (e.Index < 0 || e.Index >= lstDataList.Items.Count) return;
 
+            bool isDeleted = _deletedIndices.Contains(e.Index);
             bool isSelected = (e.State & DrawItemState.Selected) != 0;
             bool inRange = _startIndex != -1 && _endIndex != -1
                                && e.Index >= Math.Min(_startIndex, _endIndex)
@@ -1001,19 +1052,24 @@ namespace DonkeyCarUI
 
             if (isSelected)
             {
-                backColor = Color.FromArgb(51, 153, 255);   // 밝은 파랑 - 현재 프레임
+                backColor = Color.FromArgb(51, 153, 255);
+                foreColor = Color.White;
+            }
+            else if (isDeleted)
+            {
+                backColor = Color.FromArgb(180, 60, 60);
                 foreColor = Color.White;
             }
             else if (inRange)
             {
-                backColor = Color.FromArgb(255, 230, 100);  // 노랑 - 선택 범위
+                backColor = Color.FromArgb(255, 230, 100);
                 foreColor = Color.Black;
             }
             else
             {
                 backColor = e.Index % 2 == 0
                     ? Color.FromArgb(30, 30, 30)
-                    : Color.FromArgb(40, 40, 40);            // 짝수/홀수 줄 구분
+                    : Color.FromArgb(40, 40, 40);
                 foreColor = Color.FromArgb(200, 200, 200);
             }
 
@@ -1271,7 +1327,174 @@ namespace DonkeyCarUI
             AddLog($"끝 지점 선택: {_endIndex + 1}", Color.Gray);
             panelTimeline?.Invalidate();
         }
+        private async void BtnSave_Click(object? sender, EventArgs e)
+        {
+            if (_records.Count == 0)
+            {
+                MessageBox.Show("저장할 데이터가 없습니다.");
+                return;
+            }
 
+            using var fbd = new FolderBrowserDialog();
+            fbd.Description = "가공된 데이터를 저장할 폴더를 선택하세요.";
+
+            if (fbd.ShowDialog() != DialogResult.OK) return;
+
+            string saveDir = fbd.SelectedPath;
+            string imagesDir = Path.Combine(saveDir, "images");
+
+            btnSave.Enabled = false;
+
+            try
+            {
+                await Task.Run(() =>
+                {
+                    // 기존 저장 폴더에 남아있는 옛 catalog/manifest 제거
+                    Directory.CreateDirectory(saveDir);
+
+                    foreach (var file in Directory.GetFiles(saveDir, "catalog_*.catalog"))
+                        File.Delete(file);
+
+                    foreach (var file in Directory.GetFiles(saveDir, "catalog_*.catalog_manifest"))
+                        File.Delete(file);
+
+                    string oldManifest = Path.Combine(saveDir, "manifest.json");
+                    if (File.Exists(oldManifest))
+                        File.Delete(oldManifest);
+
+                    if (Directory.Exists(imagesDir))
+                        Directory.Delete(imagesDir, true);
+
+                    Directory.CreateDirectory(imagesDir);
+
+                    var savedRecords = new List<FrameData>();
+
+                    for (int i = 0; i < _records.Count; i++)
+                    {
+                        if (_deletedIndices.Contains(i))
+                            continue;
+
+                        var record = _records[i].Clone();
+                        string srcImgPath = GetImageFullPath(record, _baseDirectory);
+
+                        if (!File.Exists(srcImgPath))
+                            continue;
+
+                        string fileName = Path.GetFileName(srcImgPath);
+                        string dstImgPath = Path.Combine(imagesDir, fileName);
+
+                        using (var fs = new FileStream(srcImgPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                        using (var img = Image.FromStream(fs))
+                        {
+                            using Bitmap bitmap = new Bitmap(img);
+                            using Bitmap adjusted = ApplyImageAdjustments(new Bitmap(bitmap));
+
+                            adjusted.Save(dstImgPath, System.Drawing.Imaging.ImageFormat.Jpeg);
+                        }
+
+                        record.ImagePath = fileName;
+                        savedRecords.Add(record);
+                    }
+
+                    string catalogPath = Path.Combine(saveDir, "catalog_0.catalog");
+                    string catalogManifestPath = Path.Combine(saveDir, "catalog_0.catalog_manifest");
+                    string manifestPath = Path.Combine(saveDir, "manifest.json");
+
+                    // catalog_0.catalog 생성
+                    var catalogLines = savedRecords
+                        .Select(r => JsonSerializer.Serialize(r))
+                        .ToArray();
+
+                    File.WriteAllLines(catalogPath, catalogLines);
+
+                    // catalog_0.catalog_manifest 생성
+                    // catalog 각 줄의 길이를 기록해야 DonkeyCar가 원하는 프레임을 찾아 읽을 수 있음
+                    var lineLengths = catalogLines
+                        .Select(line => System.Text.Encoding.UTF8.GetByteCount(line + Environment.NewLine))
+                        .ToArray();
+
+                    var catalogManifest = new
+                    {
+                        line_lengths = lineLengths
+                    };
+
+                    File.WriteAllText(
+                        catalogManifestPath,
+                        JsonSerializer.Serialize(catalogManifest)
+                    );
+
+                    // manifest.json 생성
+                    // DonkeyCar v5는 이 파일을 3줄로 읽음:
+                    // 1줄: inputs, 2줄: types, 3줄: metadata
+                    long now = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                    var manifestLines = new[]
+                    {
+                        JsonSerializer.Serialize(new[]
+                        {
+                            "cam/image_array",
+                            "user/angle",
+                            "user/throttle",
+                            "user/mode"
+                        }),
+
+                        JsonSerializer.Serialize(new[]
+                        {
+                            "image_array",
+                            "float",
+                            "float",
+                            "str"
+                        }),
+
+                        JsonSerializer.Serialize(new { }),
+
+                        JsonSerializer.Serialize(new
+                        {
+                            created_at = now,
+                            sessions = new
+                            {
+                                all_full_ids = new[]
+                                {
+                                    DateTime.Now.ToString("yy-MM-dd_0")
+                                },
+                                last_id = 0,
+                                last_full_id = DateTime.Now.ToString("yy-MM-dd_0")
+                            }
+                        }),
+
+                        JsonSerializer.Serialize(new
+                        {
+                            paths = new[]
+                            {
+                                "catalog_0.catalog"
+                            },
+                            current_index = savedRecords.Count,
+                            max_len = 1000,
+                            deleted_indexes = Array.Empty<int>()
+                        })
+                    };
+
+                    File.WriteAllLines(manifestPath, manifestLines);
+                });
+
+                MessageBox.Show(
+                    $"저장 완료!\n저장 위치: {saveDir}",
+                    "완료",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
+
+                AddLog($"저장 완료: {saveDir}", Color.ForestGreen);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"저장 중 오류 발생:\n{ex.Message}");
+                AddLog($"저장 실패: {ex.Message}", Color.OrangeRed);
+            }
+            finally
+            {
+                btnSave.Enabled = true;
+            }
+        }
         private void BtnDelete_Click(object? sender, EventArgs e)
         {
             if (_startIndex == -1 || _endIndex == -1)
@@ -1282,134 +1505,45 @@ namespace DonkeyCarUI
 
             int start = Math.Min(_startIndex, _endIndex);
             int end = Math.Max(_startIndex, _endIndex);
-            int count = end - start + 1;
 
-            var confirm = MessageBox.Show(
-                $"프레임 {start + 1} ~ {end + 1} ({count}개)를 삭제하시겠습니까?\n이미지는 .trash 폴더로 이동됩니다.",
-                "삭제 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (confirm != DialogResult.Yes) return;
+            var deletedNow = new List<int>();
 
-            // UI 잠금 (중복 클릭 방지)
-            btnDelete.Enabled = false;
-
-            var toRemove = _records.Skip(start).Take(count).ToList();
-            var beforeDelete = _records
-                .Select(r => r.Clone())
-                .ToList();
-            var afterDelete = _records
-                .Where((_, idx) => idx < start || idx > end)
-                .Select(r => r.Clone())
-                .ToList();
-            _ = Task.Run(async () =>
+            for (int i = start; i <= end; i++)
             {
-                try
-                {
-                    await BackupCatalogFilesAsync($"delete_{start + 1}_{end + 1}");
-                    // 1) 이미지 → .trash 이동
-                    var deletedFiles = await MoveFilesToTrashAsync(toRemove);
+                if (_deletedIndices.Add(i))
+                    deletedNow.Add(i);
+            }
 
-                    // 2) 메모리에서 제거 (UI 스레드에서 리스트 수정)
-                    BeginInvoke(new Action(() =>
-                    {
-                        _records = afterDelete;
+            if (deletedNow.Count > 0)
+                _deleteMarkHistory.Push(deletedNow);
 
-                        // 3) 히스토리 저장
-                        var history = new HistoryState
-                        {
-                            Records = beforeDelete,
-                            DeletedFiles = deletedFiles,
-                            Reason = $"삭제: {start + 1}~{end + 1}"
-                        };
-                        _undoStack.Push(history);
-                        _redoStack.Clear();
+            lstDataList?.Invalidate();
+            panelTimeline?.Invalidate();
 
-                        // 4) UI 갱신
-                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider1.Value = Math.Min(start, tbFrameSlider1.Maximum);
-                        UpdateDataListText();
-                        ResetSelection();
-                        if (_records.Count > 0) UpdateUIForFrame(tbFrameSlider1.Value);
-                        btnDelete.Enabled = true;
-                        AddLog($"✅ 삭제 완료: {count}개 제거 → 남은 프레임 {_records.Count}장", Color.IndianRed);
-                    }));
-
-                    // 5) catalog 동기화 (백그라운드)
-                    await SyncCatalogAsync(afterDelete);
-                }
-                catch (Exception ex)
-                {
-                    BeginInvoke(new Action(() =>
-                    {
-                        btnDelete.Enabled = true;
-                        MessageBox.Show($"삭제 중 오류 발생:\n{ex.Message}", "오류",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        AddLog($"❌ 삭제 실패: {ex.Message}", Color.OrangeRed);
-                    }));
-                }
-            });
+            AddLog($"삭제 표시: {start + 1}~{end + 1}", Color.IndianRed);
+            ResetSelection();
         }
 
         private void BtnRestore_Click(object? sender, EventArgs e)
         {
-            if (_undoStack.Count == 0)
+            if (_deleteMarkHistory.Count == 0)
             {
-                MessageBox.Show("복원할 기록이 없습니다.");
+                MessageBox.Show("되돌릴 삭제 표시가 없습니다.");
                 return;
             }
 
-            var confirm = MessageBox.Show(
-                "가장 최근 삭제를 복원하시겠습니까?",
-                "복원 확인",
-                MessageBoxButtons.YesNo,
-                MessageBoxIcon.Question);
+            var lastDeleted = _deleteMarkHistory.Pop();
 
-            if (confirm != DialogResult.Yes)
-                return;
-
-            var restoreState = _undoStack.Pop();
-
-            _ = Task.Run(async () =>
+            foreach (int index in lastDeleted)
             {
-                try
-                {
-                    // 이미지 복원
-                    await RestoreDeletedFilesAsync(restoreState.DeletedFiles);
+                _deletedIndices.Remove(index);
+            }
 
-                    // catalog / records 복원
-                    _records = restoreState.Records
-                        .Select(r => r.Clone())
-                        .ToList();
+            lstDataList?.Invalidate();
+            panelTimeline?.Invalidate();
 
-                    await SyncCatalogAsync(_records);
-
-                    BeginInvoke(new Action(() =>
-                    {
-                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider1.Value = 0;
-
-                        UpdateDataListText();
-                        ResetSelection();
-
-                        if (_records.Count > 0)
-                            UpdateUIForFrame(0);
-
-                        AddLog("✅ 최근 삭제 복원 완료", Color.ForestGreen);
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    BeginInvoke(new Action(() =>
-                    {
-                        MessageBox.Show(
-                            $"복원 실패:\n{ex.Message}",
-                            "오류",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Error);
-                    }));
-                }
-            });
+            AddLog($"삭제 표시 복원: {lastDeleted.Count}개", Color.ForestGreen);
         }
-
         private void BtnFilter_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
@@ -1419,17 +1553,21 @@ namespace DonkeyCarUI
                     System.Globalization.CultureInfo.InvariantCulture,
                     out double threshold))
             {
-                MessageBox.Show("올바른 숫자(예: 0.1)를 입력해주세요.", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("올바른 숫자(예: 0.1)를 입력해주세요.", "오류",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             var field = cmbDirSpeed.SelectedItem?.ToString() ?? cmbDirSpeed.Text;
             var op = cmbRange.SelectedItem?.ToString() ?? cmbRange.Text;
-            Func<FrameData, double> selector = field.Contains("속도") ? r => r.Throttle : r => r.Angle;
+
+            Func<FrameData, double> selector =
+                field.Contains("속도") ? r => r.Throttle : r => r.Angle;
 
             bool Keep(FrameData r)
             {
                 double v = selector(r);
+
                 return op switch
                 {
                     ">" => v > threshold,
@@ -1440,121 +1578,66 @@ namespace DonkeyCarUI
                 };
             }
 
-            var kept = _records.Where(Keep).ToList();
-            var removed = _records.Where(r => !Keep(r)).ToList();
+            var filteredNow = new List<int>();
 
-            if (kept.Count == 0)
+            for (int i = 0; i < _records.Count; i++)
             {
-                MessageBox.Show("조건에 맞는 데이터가 없습니다.", "경고", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                // 조건에 안 맞는 데이터는 저장 제외 표시
+                if (!Keep(_records[i]))
+                {
+                    if (_deletedIndices.Add(i))
+                        filteredNow.Add(i);
+                }
+            }
+
+            if (filteredNow.Count == 0)
+            {
+                MessageBox.Show("새롭게 제외 표시할 데이터가 없습니다.");
                 return;
             }
 
-            var confirm = MessageBox.Show(
-                $"조건 미달 {removed.Count}개를 .trash로 이동하겠습니까?\n남은 프레임: {kept.Count}개",
-                "필터 확인", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (confirm != DialogResult.Yes) return;
+            _deleteMarkHistory.Push(filteredNow);
 
-            btnFilter.Enabled = false;
+            lstDataList?.Invalidate();
+            panelTimeline?.Invalidate();
 
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    await BackupCatalogFilesAsync("filter");
-                    var deletedFiles = await MoveFilesToTrashAsync(removed);
-
-                    BeginInvoke(new Action(() =>
-                    {
-                        _records = kept;
-
-                        var history = new HistoryState
-                        {
-                            Records = _records.Select(r => r.Clone()).ToList(),
-                            DeletedFiles = deletedFiles,
-                            Reason = $"필터: {field} {op} {threshold}"
-                        };
-                        _undoStack.Push(history);
-                        _redoStack.Clear();
-
-                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider1.Value = 0;
-                        UpdateDataListText();
-                        UpdateUIForFrame(0);
-                        btnFilter.Enabled = true;
-                        AddLog($"✅ 필터 완료: {kept.Count}장 유지, {removed.Count}장 제거", Color.SteelBlue);
-                    }));
-
-                    await SyncCatalogAsync(kept);
-                }
-                catch (Exception ex)
-                {
-                    BeginInvoke(new Action(() =>
-                    {
-                        btnFilter.Enabled = true;
-                        MessageBox.Show($"필터 중 오류:\n{ex.Message}", "오류",
-                            MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }));
-                }
-            });
+            AddLog($"필터 적용: {filteredNow.Count}개 저장 제외 표시", Color.SteelBlue);
         }
-
         // 특별 기능 1: 주행 속도(Throttle)가 완전히 0(정지 상태)인 불필요한 데이터 일괄 제거
         private void BtnRemoveStopped_Click(object? sender, EventArgs e)
         {
             if (_records.Count == 0) return;
 
             double epsilon = 0.01;
-            var kept = _records.Where(r => Math.Abs(r.Throttle) > epsilon).ToList();
-            var removed = _records.Where(r => Math.Abs(r.Throttle) <= epsilon).ToList();
+            var markedNow = new List<int>();
 
-            if (removed.Count == 0)
+            for (int i = 0; i < _records.Count; i++)
             {
-                MessageBox.Show("정지 상태 데이터가 없습니다.", "알림");
+                if (Math.Abs(_records[i].Throttle) <= epsilon)
+                {
+                    if (_deletedIndices.Add(i))
+                        markedNow.Add(i);
+                }
+            }
+
+            if (markedNow.Count == 0)
+            {
+                MessageBox.Show("새롭게 제외 표시할 정지 상태 데이터가 없습니다.", "알림");
                 return;
             }
 
-            var confirm = MessageBox.Show(
-                $"정지 상태 {removed.Count}개를 .trash로 이동하겠습니까?\n남은 프레임: {kept.Count}개",
-                "정지 데이터 제거", MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (confirm != DialogResult.Yes) return;
+            _deleteMarkHistory.Push(markedNow);
 
-            _ = Task.Run(async () =>
-            {
-                try
-                {
-                    var deletedFiles = await MoveFilesToTrashAsync(removed);
+            lstDataList?.Invalidate();
+            panelTimeline?.Invalidate();
 
-                    BeginInvoke(new Action(() =>
-                    {
-                        _records = kept;
+            AddLog($"정지 데이터 제외 표시: {markedNow.Count}개", Color.IndianRed);
 
-                        var history = new HistoryState
-                        {
-                            Records = _records.Select(r => r.Clone()).ToList(),
-                            DeletedFiles = deletedFiles,
-                            Reason = $"정지 제거 ({removed.Count}개)"
-                        };
-                        _undoStack.Push(history);
-                        _redoStack.Clear();
-
-                        tbFrameSlider1.Maximum = Math.Max(0, _records.Count - 1);
-                        tbFrameSlider1.Value = 0;
-                        UpdateDataListText();
-                        UpdateUIForFrame(0);
-                        AddLog($"✅ 정지 데이터 {removed.Count}개 제거 완료", Color.IndianRed);
-                        MessageBox.Show(
-                            $"정지 데이터 {removed.Count}개 제거 완료\n남은 프레임: {kept.Count}장",
-                            "완료", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    }));
-
-                    await SyncCatalogAsync(kept);
-                }
-                catch (Exception ex)
-                {
-                    BeginInvoke(new Action(() =>
-                        MessageBox.Show($"오류: {ex.Message}", "오류", MessageBoxButtons.OK, MessageBoxIcon.Error)));
-                }
-            });
+            MessageBox.Show(
+                $"정지 상태 데이터 {markedNow.Count}개를 저장 제외로 표시했습니다.\n원본 파일은 수정되지 않습니다.",
+                "완료",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information);
         }
 
         // 특별 기능 2: 조향각(Steering) 데이터 스무딩(Moving Average) - 극단적으로 떨리는 손떨림 보정
@@ -1923,9 +2006,9 @@ namespace DonkeyCarUI
 
         private void BtnStartTraining_Click(object? sender, EventArgs e)
         {
-            if (string.IsNullOrEmpty(_baseDirectory))
+            if (string.IsNullOrEmpty(_trainingDataDirectory))
             {
-                MessageBox.Show("먼저 학습에 사용할 데이터 폴더를 불러오세요.");
+                MessageBox.Show("먼저 학습 데이터 경로를 선택하세요.");
                 return;
             }
 
@@ -1960,7 +2043,7 @@ namespace DonkeyCarUI
 
             string modelPath = Path.Combine(_modelSaveDirectory, modelName + ".h5");
 
-            string wslTubPath = ConvertWindowsPathToWslPath(_baseDirectory);
+            string wslTubPath = ConvertWindowsPathToWslPath(_trainingDataDirectory);
             string wslModelPath = ConvertWindowsPathToWslPath(modelPath);
 
             // DonkeyCar v5.3.0 기준: train.py + --tubs 사용
@@ -1972,6 +2055,11 @@ namespace DonkeyCarUI
                 $"--tubs \"{wslTubPath}\" " +
                 $"--model \"{wslModelPath}\" " +
                 $"--type {donkeyType} ";
+
+            AddLog($"학습 데이터 경로: {_trainingDataDirectory}", Color.SteelBlue);
+            AddLog($"WSL 데이터 경로: {wslTubPath}", Color.SteelBlue);
+            AddLog($"WSL 프로젝트 경로: {_wslProjectPath}", Color.SteelBlue);
+            AddLog($"학습 명령어: {wslCommand}", Color.SteelBlue);
 
             // 전이학습은 현재 DonkeyCar v5.3.0 train.py 옵션 확인 후 연결 필요
             if (!string.IsNullOrEmpty(_transferModelPath))
@@ -2029,7 +2117,7 @@ namespace DonkeyCarUI
                         AddTrainedModelToList(
                             modelName,
                             modelKind,
-                            _baseDirectory,
+                            _trainingDataDirectory,
                             string.IsNullOrWhiteSpace(txtExpl.Text)
                                 ? (_bestEpoch > 0 ? $"Best Epoch {_bestEpoch}, Best Loss {_bestLoss:F4}" : string.Empty)
                                 : txtExpl.Text.Trim(),

@@ -41,6 +41,7 @@ namespace DonkeyCarUI
             tbBright = new TrackBar();
             tbBlur = new TrackBar();
             grbEditRange = new GroupBox();
+            btnSave = new Button();
             btnSetPoint1 = new Button();
             btnCancel = new Button();
             btnDelete = new Button();
@@ -49,6 +50,8 @@ namespace DonkeyCarUI
             lblRange = new Label();
             lstProcess = new ListView();
             grbFiltering = new GroupBox();
+            btnSmoothData = new Button();
+            btnRemoveStopped = new Button();
             tbCriteria = new TextBox();
             cmbRange = new ComboBox();
             cmbDirSpeed = new ComboBox();
@@ -153,6 +156,7 @@ namespace DonkeyCarUI
             panel4 = new Panel();
             pictureBox2 = new PictureBox();
             panel5 = new Panel();
+            label1 = new Label();
             button1 = new Button();
             grbModelData = new GroupBox();
             pbAISpeed = new ProgressBar();
@@ -176,7 +180,8 @@ namespace DonkeyCarUI
             lbAIDir3 = new Label();
             label9 = new Label();
             btn = new Button();
-            label1 = new Label();
+            btnLoadData2 = new Button();
+            lblDataPath = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             grbDataCorrection.SuspendLayout();
@@ -345,6 +350,7 @@ namespace DonkeyCarUI
             // 
             grbEditRange.Anchor = AnchorStyles.Top | AnchorStyles.Right;
             grbEditRange.BackColor = Color.AliceBlue;
+            grbEditRange.Controls.Add(btnSave);
             grbEditRange.Controls.Add(btnSetPoint1);
             grbEditRange.Controls.Add(btnCancel);
             grbEditRange.Controls.Add(btnDelete);
@@ -359,15 +365,25 @@ namespace DonkeyCarUI
             grbEditRange.TabStop = false;
             grbEditRange.Text = "선택 범위 편집";
             // 
+            // btnSave
+            // 
+            btnSave.Location = new Point(113, 141);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(94, 38);
+            btnSave.TabIndex = 51;
+            btnSave.Text = "데이터 저장";
+            btnSave.UseVisualStyleBackColor = true;
+            // 
             // btnSetPoint1
             // 
             btnSetPoint1.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+            btnSetPoint1.Font = new Font("맑은 고딕", 8.2F);
             btnSetPoint1.ForeColor = Color.MidnightBlue;
             btnSetPoint1.Location = new Point(10, 22);
             btnSetPoint1.Name = "btnSetPoint1";
             btnSetPoint1.Size = new Size(92, 35);
             btnSetPoint1.TabIndex = 41;
-            btnSetPoint1.Text = "시작 지점\r\n선택";
+            btnSetPoint1.Text = "시작 지점 선택";
             btnSetPoint1.UseVisualStyleBackColor = true;
             // 
             // btnCancel
@@ -375,7 +391,7 @@ namespace DonkeyCarUI
             btnCancel.ForeColor = Color.MidnightBlue;
             btnCancel.Location = new Point(10, 141);
             btnCancel.Name = "btnCancel";
-            btnCancel.Size = new Size(197, 38);
+            btnCancel.Size = new Size(92, 38);
             btnCancel.TabIndex = 50;
             btnCancel.Text = "선택 취소";
             btnCancel.UseVisualStyleBackColor = true;
@@ -438,6 +454,8 @@ namespace DonkeyCarUI
             // grbFiltering
             // 
             grbFiltering.BackColor = Color.AliceBlue;
+            grbFiltering.Controls.Add(btnSmoothData);
+            grbFiltering.Controls.Add(btnRemoveStopped);
             grbFiltering.Controls.Add(tbCriteria);
             grbFiltering.Controls.Add(cmbRange);
             grbFiltering.Controls.Add(cmbDirSpeed);
@@ -450,6 +468,24 @@ namespace DonkeyCarUI
             grbFiltering.TabIndex = 48;
             grbFiltering.TabStop = false;
             grbFiltering.Text = "범위 필터링";
+            // 
+            // btnSmoothData
+            // 
+            btnSmoothData.Location = new Point(7, 103);
+            btnSmoothData.Name = "btnSmoothData";
+            btnSmoothData.Size = new Size(104, 30);
+            btnSmoothData.TabIndex = 27;
+            btnSmoothData.Text = "떨림 보정";
+            btnSmoothData.UseVisualStyleBackColor = true;
+            // 
+            // btnRemoveStopped
+            // 
+            btnRemoveStopped.Location = new Point(7, 70);
+            btnRemoveStopped.Name = "btnRemoveStopped";
+            btnRemoveStopped.Size = new Size(104, 30);
+            btnRemoveStopped.TabIndex = 27;
+            btnRemoveStopped.Text = "정지데이터 삭제";
+            btnRemoveStopped.UseVisualStyleBackColor = true;
             // 
             // tbCriteria
             // 
@@ -875,6 +911,8 @@ namespace DonkeyCarUI
             // 
             // pnDataLearning
             // 
+            pnDataLearning.Controls.Add(lblDataPath);
+            pnDataLearning.Controls.Add(btnLoadData2);
             pnDataLearning.Controls.Add(grbExtraOption);
             pnDataLearning.Controls.Add(lbLearningRate);
             pnDataLearning.Controls.Add(btnLearningStop);
@@ -1552,6 +1590,15 @@ namespace DonkeyCarUI
             panel5.Size = new Size(665, 86);
             panel5.TabIndex = 41;
             // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(296, 17);
+            label1.Name = "label1";
+            label1.Size = new Size(34, 17);
+            label1.TabIndex = 43;
+            label1.Text = "경로";
+            // 
             // button1
             // 
             button1.ForeColor = Color.MidnightBlue;
@@ -1793,14 +1840,23 @@ namespace DonkeyCarUI
             btn.Text = "학습 모델 불러오기";
             btn.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // btnLoadData2
             // 
-            label1.AutoSize = true;
-            label1.Location = new Point(296, 17);
-            label1.Name = "label1";
-            label1.Size = new Size(34, 17);
-            label1.TabIndex = 43;
-            label1.Text = "경로";
+            btnLoadData2.Location = new Point(155, 16);
+            btnLoadData2.Name = "btnLoadData2";
+            btnLoadData2.Size = new Size(147, 23);
+            btnLoadData2.TabIndex = 55;
+            btnLoadData2.Text = "주행 데이터 불러오기";
+            btnLoadData2.UseVisualStyleBackColor = true;
+            // 
+            // lblDataPath
+            // 
+            lblDataPath.AutoSize = true;
+            lblDataPath.Location = new Point(308, 19);
+            lblDataPath.Name = "lblDataPath";
+            lblDataPath.Size = new Size(34, 17);
+            lblDataPath.TabIndex = 56;
+            lblDataPath.Text = "경로";
             // 
             // DataManager
             // 
@@ -2021,5 +2077,10 @@ namespace DonkeyCarUI
         private Panel panel2;
         private Button button1;
         private Label label1;
+        private Button btnSave;
+        private Button btnSmoothData;
+        private Button btnRemoveStopped;
+        private Label lblDataPath;
+        private Button btnLoadData2;
     }
 }
