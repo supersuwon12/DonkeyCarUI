@@ -582,13 +582,7 @@ namespace DonkeyCarUI
             }
             else if (e.Control && e.KeyCode == Keys.Z)
             {
-                UndoLastAction();
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-            }
-            else if (e.Control && e.KeyCode == Keys.Y)
-            {
-                RedoLastAction();
+                BtnRestore_Click(this, EventArgs.Empty);
                 e.Handled = true;
                 e.SuppressKeyPress = true;
             }
@@ -1958,7 +1952,7 @@ namespace DonkeyCarUI
             var psi = new ProcessStartInfo
             {
                 FileName = "wsl",
-                Arguments = $"bash -lc \"{command}\"",
+                Arguments = $"bash -lc \"{command.Replace("\"", "\\\"")}\"",
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
@@ -1969,11 +1963,42 @@ namespace DonkeyCarUI
             if (process == null) return "";
 
             string output = await process.StandardOutput.ReadToEndAsync();
+            string error = await process.StandardError.ReadToEndAsync();
+
             await process.WaitForExitAsync();
+
+            if (process.ExitCode != 0)
+            {
+                AddLog($"WSL 명령 실패: {error}", Color.OrangeRed);
+                throw new Exception(error);
+            }
 
             return output.Trim();
         }
+        private async Task UpdateMyConfigTrainingSettingsAsync(int epochs, int batchSize)
+{
+    string command =
+        $"cd \"{_wslProjectPath}\" && " +
+        $"python3 - <<'PY'\n" +
+        $"from pathlib import Path\n" +
+        $"import re\n" +
+        $"p = Path('myconfig.py')\n" +
+        $"text = p.read_text()\n" +
+        $"def set_value(text, key, value):\n" +
+        $"    line = f'{{key}} = {{value}}'\n" +
+        $"    pattern = rf'^\\s*{{key}}\\s*=.*$'\n" +
+        $"    if re.search(pattern, text, flags=re.M):\n" +
+        $"        return re.sub(pattern, line, text, flags=re.M)\n" +
+        $"    return text + '\\n' + line + '\\n'\n" +
+        $"text = set_value(text, 'MAX_EPOCHS', {epochs})\n" +
+        $"text = set_value(text, 'BATCH_SIZE', {batchSize})\n" +
+        $"p.write_text(text)\n" +
+        $"PY";
 
+    await RunWslCommandAsync(command);
+
+    AddLog($"myconfig.py 수정 완료: MAX_EPOCHS={epochs}, BATCH_SIZE={batchSize}", Color.ForestGreen);
+}
         private void BtnSelectModelSavePath_Click(object? sender, EventArgs e)
         {
             using var fbd = new FolderBrowserDialog();
@@ -2004,7 +2029,7 @@ namespace DonkeyCarUI
             }
         }
 
-        private void BtnStartTraining_Click(object? sender, EventArgs e)
+        private async void BtnStartTraining_Click(object? sender, EventArgs e)
         {
             if (string.IsNullOrEmpty(_trainingDataDirectory))
             {
@@ -2038,7 +2063,16 @@ namespace DonkeyCarUI
 
             if (!int.TryParse(cmbMulti.SelectedItem?.ToString() ?? "32", out int batchSize))
                 batchSize = 32;
-
+            try
+            {
+                AddLog("myconfig.py 수정 시작", Color.SteelBlue);
+                await UpdateMyConfigTrainingSettingsAsync(epochs, batchSize);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"myconfig.py 설정 변경 실패:\n{ex.Message}");
+                return;
+            }
             Directory.CreateDirectory(_modelSaveDirectory);
 
             string modelPath = Path.Combine(_modelSaveDirectory, modelName + ".h5");
