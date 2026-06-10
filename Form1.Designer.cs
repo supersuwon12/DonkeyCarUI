@@ -96,6 +96,8 @@ namespace DonkeyCarUI
             lbLoss = new Label();
             lbModelScore = new Label();
             pnDataLearning = new Panel();
+            lblDataPath = new Label();
+            btnLoadData2 = new Button();
             grbExtraOption = new GroupBox();
             lbExtraExpl = new Label();
             txtExtraExpl = new TextBox();
@@ -180,8 +182,6 @@ namespace DonkeyCarUI
             lbAIDir3 = new Label();
             label9 = new Label();
             btn = new Button();
-            btnLoadData2 = new Button();
-            lblDataPath = new Label();
             tabControl1.SuspendLayout();
             tabPage1.SuspendLayout();
             grbDataCorrection.SuspendLayout();
@@ -926,6 +926,24 @@ namespace DonkeyCarUI
             pnDataLearning.Size = new Size(1333, 289);
             pnDataLearning.TabIndex = 48;
             // 
+            // lblDataPath
+            // 
+            lblDataPath.AutoSize = true;
+            lblDataPath.Location = new Point(308, 19);
+            lblDataPath.Name = "lblDataPath";
+            lblDataPath.Size = new Size(34, 17);
+            lblDataPath.TabIndex = 56;
+            lblDataPath.Text = "경로";
+            // 
+            // btnLoadData2
+            // 
+            btnLoadData2.Location = new Point(155, 16);
+            btnLoadData2.Name = "btnLoadData2";
+            btnLoadData2.Size = new Size(147, 23);
+            btnLoadData2.TabIndex = 55;
+            btnLoadData2.Text = "주행 데이터 불러오기";
+            btnLoadData2.UseVisualStyleBackColor = true;
+            // 
             // grbExtraOption
             // 
             grbExtraOption.Anchor = AnchorStyles.Top | AnchorStyles.Right;
@@ -1082,6 +1100,7 @@ namespace DonkeyCarUI
             // 
             // lbDonkeyPath
             // 
+            lbDonkeyPath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbDonkeyPath.AutoSize = true;
             lbDonkeyPath.ForeColor = Color.MidnightBlue;
             lbDonkeyPath.Location = new Point(475, 124);
@@ -1092,6 +1111,7 @@ namespace DonkeyCarUI
             // 
             // lbSavePath
             // 
+            lbSavePath.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
             lbSavePath.AutoSize = true;
             lbSavePath.ForeColor = Color.MidnightBlue;
             lbSavePath.Location = new Point(400, 94);
@@ -1252,7 +1272,7 @@ namespace DonkeyCarUI
             tabPage3.Padding = new Padding(3);
             tabPage3.Size = new Size(1339, 589);
             tabPage3.TabIndex = 2;
-            tabPage3.Text = "학습 미리보기";
+            tabPage3.Text = "학습 비교보기";
             // 
             // tbFrameSlider2
             // 
@@ -1687,7 +1707,7 @@ namespace DonkeyCarUI
             lbRawDataPath.AutoSize = true;
             lbRawDataPath.Font = new Font("맑은 고딕", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 129);
             lbRawDataPath.ForeColor = Color.MidnightBlue;
-            lbRawDataPath.Location = new Point(205, 48);
+            lbRawDataPath.Location = new Point(159, 48);
             lbRawDataPath.Name = "lbRawDataPath";
             lbRawDataPath.Size = new Size(34, 17);
             lbRawDataPath.TabIndex = 41;
@@ -1696,11 +1716,11 @@ namespace DonkeyCarUI
             // btnRawData
             // 
             btnRawData.ForeColor = Color.MidnightBlue;
-            btnRawData.Location = new Point(5, 42);
+            btnRawData.Location = new Point(20, 42);
             btnRawData.Name = "btnRawData";
-            btnRawData.Size = new Size(184, 29);
+            btnRawData.Size = new Size(133, 29);
             btnRawData.TabIndex = 40;
-            btnRawData.Text = "원본 주행 데이터 불러오기";
+            btnRawData.Text = "학습 모델 불러오기";
             btnRawData.UseVisualStyleBackColor = true;
             // 
             // lbCmp
@@ -1839,24 +1859,6 @@ namespace DonkeyCarUI
             btn.TabIndex = 42;
             btn.Text = "학습 모델 불러오기";
             btn.UseVisualStyleBackColor = true;
-            // 
-            // btnLoadData2
-            // 
-            btnLoadData2.Location = new Point(155, 16);
-            btnLoadData2.Name = "btnLoadData2";
-            btnLoadData2.Size = new Size(147, 23);
-            btnLoadData2.TabIndex = 55;
-            btnLoadData2.Text = "주행 데이터 불러오기";
-            btnLoadData2.UseVisualStyleBackColor = true;
-            // 
-            // lblDataPath
-            // 
-            lblDataPath.AutoSize = true;
-            lblDataPath.Location = new Point(308, 19);
-            lblDataPath.Name = "lblDataPath";
-            lblDataPath.Size = new Size(34, 17);
-            lblDataPath.TabIndex = 56;
-            lblDataPath.Text = "경로";
             // 
             // DataManager
             // 
