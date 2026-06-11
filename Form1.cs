@@ -194,10 +194,41 @@ namespace DonkeyCarUI
 
             btnLoadData2.Click += BtnLoadTrainingData_Click;
 
+            tbFrameSlider2.PreviewKeyDown += (_, e) =>
+            {
+                if (e.KeyCode == Keys.Left || e.KeyCode == Keys.Right)
+                    e.IsInputKey = true;
+            };
+
             ConfigureUiMappings();
             SetupTimelinePanel();
             InitializeTrainingTab();
             SetupPreviewTab();
+        }
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (tabControl1.SelectedTab == tabPage3)
+            {
+                if (keyData == Keys.Space)
+                {
+                    btnRun2.PerformClick();
+                    return true;
+                }
+
+                if (keyData == Keys.Left)
+                {
+                    btnPrevFrame2.PerformClick();
+                    return true;
+                }
+
+                if (keyData == Keys.Right)
+                {
+                    btnNextFrame2.PerformClick();
+                    return true;
+                }
+            }
+
+            return base.ProcessCmdKey(ref msg, keyData);
         }
         private void BtnLoadTrainingData_Click(object? sender, EventArgs e)
         {
@@ -538,7 +569,28 @@ namespace DonkeyCarUI
         private void Form1_KeyDown(object? sender, KeyEventArgs e)
         {
             if (_records.Count == 0) return;
+            // 비교보기 탭일 때만
+            if (tabControl1.SelectedTab == tabPage3)
+            {
+                if (e.KeyCode == Keys.Left)
+                {
+                    btnPrevFrame2.PerformClick();
+                    e.Handled = true;
+                }
+                else if (e.KeyCode == Keys.Right)
+                {
+                    btnNextFrame2.PerformClick();
+                    e.Handled = true;
+                }
+                else if (e.KeyCode == Keys.Space)
+                {
+                    btnRun2.PerformClick();
+                    e.Handled = true;
+                    e.SuppressKeyPress = true; // 띵 소리 방지
+                }
 
+                return;
+            }
             // 스페이스바: 재생/일시정지
             if (e.KeyCode == Keys.Space)
             {
@@ -2015,7 +2067,7 @@ namespace DonkeyCarUI
         private void BtnLoadTransferModel_Click(object? sender, EventArgs e)
         {
             using var ofd = new OpenFileDialog();
-            ofd.Title = "전이학습에 사용할 기존 모델을 선택하세요.";
+            ofd.Title = "추가학습에 사용할 기존 모델을 선택하세요.";
             ofd.Filter = "Model Files (*.h5;*.keras)|*.h5;*.keras|All Files (*.*)|*.*";
 
             if (ofd.ShowDialog() == DialogResult.OK)
@@ -2023,9 +2075,9 @@ namespace DonkeyCarUI
                 _transferModelPath = ofd.FileName;
 
                 txtExtraModel.Text = Path.GetFileNameWithoutExtension(ofd.FileName);
-                txtExtraExpl.Text = ofd.FileName;
+                txtExtraExpl.Text = $"기존 모델 기반 추가학습: {ofd.FileName}";
 
-                AddLog($"전이학습 모델 선택: {_transferModelPath}", Color.SteelBlue);
+                AddLog($"추가학습 모델 선택: {_transferModelPath}", Color.SteelBlue);
             }
         }
 
@@ -2077,6 +2129,14 @@ namespace DonkeyCarUI
 
             string modelPath = Path.Combine(_modelSaveDirectory, modelName + ".h5");
 
+            if (!string.IsNullOrEmpty(_transferModelPath) && File.Exists(_transferModelPath))
+            {
+                File.Copy(_transferModelPath, modelPath, true);
+                AddLog($"추가학습 준비: 기존 모델을 새 모델 경로로 복사", Color.SteelBlue);
+                AddLog($"기존 모델: {_transferModelPath}", Color.Gray);
+                AddLog($"새 모델: {modelPath}", Color.Gray);
+            }
+
             string wslTubPath = ConvertWindowsPathToWslPath(_trainingDataDirectory);
             string wslModelPath = ConvertWindowsPathToWslPath(modelPath);
 
@@ -2095,11 +2155,6 @@ namespace DonkeyCarUI
             AddLog($"WSL 프로젝트 경로: {_wslProjectPath}", Color.SteelBlue);
             AddLog($"학습 명령어: {wslCommand}", Color.SteelBlue);
 
-            // 전이학습은 현재 DonkeyCar v5.3.0 train.py 옵션 확인 후 연결 필요
-            if (!string.IsNullOrEmpty(_transferModelPath))
-            {
-                AddLog("전이학습 모델은 선택되었지만 현재 train.py 명령에는 자동 반영하지 않습니다.", Color.DarkOrange);
-            }
 
             pbLearning.Value = 0;
             lbLearningRate.Text = "학습 준비 중...";
